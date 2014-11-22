@@ -1,0 +1,18 @@
+{
+    "name": "csburton/silex_ecom",
+    "description": "Simple Ecommerce Framework built on Silex",
+    "require": {
+        "silex/silex": "~1.2",
+        "twig/twig": "1.6.5",
+        "dflydev/doctrine-orm-service-provider": "~1.0.6"
+    },
+    "authors": [
+        {
+            "name": "Chris Burton",
+            "email": "csburton@gmail.com"
+        }
+    ],
+    "config": {
+        "bin-dir" : "bin"
+    }
+}
