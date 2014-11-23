@@ -30,9 +30,12 @@ class Session
      */
     protected $last_action;
     /**
-     * @OneToMany(targetEntity="SilEcom\Customers\Entity\Customer", mappedBy="id")
+     * @ManyToOne(targetEntity="SilEcom\Customers\Entity\Customer")
      */
     protected $customer;
 
+    /**
+     * @ManyToOne(targetEntity="SilEcom\Acl\Entity\AdminUser")
+     */
     protected $admin_user;
 }

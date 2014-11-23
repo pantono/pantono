@@ -3,9 +3,13 @@ use \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
 use \Silex\Application;
 use \Silex\Provider\DoctrineServiceProvider;
 
+define('APPLICATION_BASE', __DIR__);
+define('APPLICATION_PUBLIC', APPLICATION_BASE . '/public');
+
 require_once __DIR__ . '/vendor/autoload.php';
+$config = new \SilEcom\Core\Model\Config\Config(__DIR__.'/config/config.yml');
 $app = new Application();
-$loadedModules = [
+$baseModules = [
   'Acl',
   'Assets',
   'Cart',
@@ -33,7 +37,7 @@ $app->register(
 );
 
 $entityMappings = [];
-foreach ($loadedModules as $module) {
+foreach ($baseModules as $module) {
     $entityMappings[] = [
       'type'      => 'annotation',
       'namespace' => 'SilEcom\\' . $module . '\\Entity',

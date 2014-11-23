@@ -17,7 +17,16 @@ class Supplier
      * @Column(type="integer")
      */
     protected $id;
+    /**
+     * @Column(type="string")
+     */
     protected $company_name;
-    protected $status;
+    /**
+     * @Column(type="integer", length=1)
+     */
+    protected $active;
+    /**
+     * @OneToMany(targetEntity="SilEcom\Suppliers\Entity\Contact", mappedBy="supplier")
+     */
     protected $contacts;
 }

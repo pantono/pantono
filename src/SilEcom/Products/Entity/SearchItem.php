@@ -2,6 +2,13 @@
 
 namespace SilEcom\Products\Entity;
 
+/**
+ * Class SearchItem
+ *
+ * @package SilEcom\Products\Entity
+ * @Entity
+ * @Table(name="product_search_item")
+ */
 class SearchItem
 {
     /**
@@ -10,10 +17,30 @@ class SearchItem
      * @Column(type="integer")
      */
     protected $id;
+    /**
+     * @ManyToOne(targetEntity="SilEcom\Products\Entity\Search")
+     */
     protected $search;
+    /**
+     * @Column(type="string")
+     */
     protected $brands;
+    /**
+     * @Column(type="string")
+     */
     protected $sku;
+    /**
+     * @var int
+     * @Column(type="integer")
+     */
     protected $min_price = 0;
+    /**
+     * @var int
+     * @Column(type="integer")
+     */
     protected $max_price = 0;
+    /**
+     * @Column(type="string")
+     */
     protected $categories;
 }

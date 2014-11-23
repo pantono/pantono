@@ -3,13 +3,13 @@
 namespace SilEcom\Payments\Entity;
 
 /**
- * Class Payment
+ * Class Method
  *
  * @package SilEcom\Payments\Entity
  * @Entity
- * @Table(name="payment")
+ * @Table(name="payment_setting")
  */
-class Payment
+class Setting
 {
     /**
      * @Id
@@ -17,20 +17,18 @@ class Payment
      * @Column(type="integer")
      */
     protected $id;
+
     /**
      * @ManyToOne(targetEntity="SilEcom\Payments\Entity\Method")
      */
     protected $method;
     /**
-     * @Column(type="datetime")
+     * @Column(type="string")
      */
-    protected $date;
+    protected $name;
     /**
-     * @Column(type="decimal", scale=2, precision=10)
+     * @Column(type="string")
      */
-    protected $amount;
-    /**
-     * @Column(type="decimal", length=1)
-     */
-    protected $approved = false;
+    protected $value;
+
 }

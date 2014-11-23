@@ -3,13 +3,13 @@
 namespace SilEcom\Products\Entity;
 
 /**
- * Class Search
+ * Class Draft
  *
  * @package SilEcom\Products\Entity
  * @Entity
- * @Table(name="product_search")
+ * @Table(name="product_vat_status")
  */
-class Search
+class VatStatus
 {
     /**
      * @Id
@@ -22,11 +22,7 @@ class Search
      */
     protected $name;
     /**
-     * @Column(type="datetime")
+     * @Column(type="decimal", scale=2, precision=10)
      */
-    protected $date_created;
-    /**
-     * @OneToMany(targetEntity="SilEcom\Products\Entity\SearchItem", mappedBy="search")
-     */
-    protected $items;
+    protected $amount;
 }

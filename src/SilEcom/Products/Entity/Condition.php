@@ -2,6 +2,13 @@
 
 namespace SilEcom\Products\Entity;
 
+/**
+ * Class Condition
+ *
+ * @package SilEcom\Products\Entity
+ * @Entity
+ * @Table(name="product_condition")
+ */
 class Condition
 {
     /**
@@ -10,5 +17,8 @@ class Condition
      * @Column(type="integer")
      */
     protected $id;
+    /**
+     * @Column(type="string")
+     */
     protected $name;
 }

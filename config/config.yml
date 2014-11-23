@@ -1,0 +1,6 @@
+database:
+    dbname: silecom
+    user: silecom
+    password: silecom
+    host: localhost
+    driver: pdo_mysql

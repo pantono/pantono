@@ -18,6 +18,10 @@ class Contact
      */
     protected $id;
     /**
+     * @ManyToOne(targetEntity="SilEcom\Customers\Entity\Customer")
+     */
+    protected $customer;
+    /**
      * @Column(type="string")
      */
     protected $first_name;
