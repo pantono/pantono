@@ -13,6 +13,11 @@
             "email": "csburton@gmail.com"
         }
     ],
+    "autoload" : {
+        "psr-4" : {
+            "Csburton\\SilEcom\\" : "src//Csburton/SilEcom"
+        }
+    },
     "config": {
         "bin-dir" : "bin"
     }
