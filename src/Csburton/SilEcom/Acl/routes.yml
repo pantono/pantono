@@ -1,0 +1,8 @@
+admin_login:
+    route: '/admin/login'
+    controller: 'Csburton\SilEcom\Acl\Controller\Authentication'
+    action: 'adminLoginAction'
+login:
+    route: '/login'
+    controller: 'Csburton\SilEcom\Acl\Controller\Authentication'
+    action: 'loginAction'

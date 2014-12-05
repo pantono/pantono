@@ -9,13 +9,14 @@ class Admin
 {
     protected $application;
     protected $request;
+    protected $controller;
+    protected $action;
 
-    public function handleRequest(Application $app, Request $request)
+    public function __construct(Application $app, $controller, $action)
     {
         $this->application = $app;
-        $this->request = $request;
-
-        var_dump($request);
+        $this->controller = $controller;
+        $this->action = $action;
     }
 
     protected function getApplication()
@@ -26,5 +27,10 @@ class Admin
     protected function getRequest()
     {
         return $this->request;
+    }
+
+    protected function renderTemplate($templatePath, $variables = [])
+    {
+        return $this->getApplication()['twig']->render($templatePath, $variables);
     }
 }

@@ -1,0 +1,2 @@
+factories:
+    Authentication: 'SilEcom\Acl\Model\Authentication.php'

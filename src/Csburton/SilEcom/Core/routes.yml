@@ -1,10 +1,5 @@
-admin_login:
-    route: '/admin/login'
-    controller: 'SilEcom\Core\Controller\Admin\IndexController'
-    action: 'loginAction'
-    admin: true
 admin_home:
     route: '/admin'
-    controller: 'SilEcom\Core\Controller\Admin\IndexController'
+    controller: 'Csburton\SilEcom\Core\Controller\Admin\IndexController'
     action: 'homeAction'
     admin: true

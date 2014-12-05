@@ -3,13 +3,15 @@
 namespace Csburton\SilEcom\Core\Module;
 
 use Csburton\SilEcom\Core\Container\Application;
+use Csburton\SilEcom\Core\Exception\Bootstrap\Routes;
 
 class Loader
 {
     private $application;
     private $modules = [];
-    private $entity_mappings = [];
     private $routes = [];
+    private $controllers = [];
+    private $config = [];
 
     public function __construct(Application $application)
     {
@@ -44,13 +46,16 @@ class Loader
 
     public function getConfig()
     {
-        $config = [];
-        foreach ($this->modules as $module) {
-            if ($module->getConfig()) {
-                var_dump($module->getConfig());
-                exit;
+        if (!$this->config) {
+            $config = [];
+            foreach ($this->modules as $module) {
+                if ($module->getConfig()) {
+                    $config += $module->getConfig();
+                }
             }
+            $this->config = $config;
         }
+        return $this->config;
     }
 
     public function getRoutes()
@@ -68,14 +73,29 @@ class Loader
     public function loadRoutes()
     {
         $routes = $this->getRoutes();
-        $this->application['routes'] = $routes;
+        $this->application['defined_routes'] = $routes;
+        $app =& $this->application;
         foreach ($routes as $name => $route) {
-            if ($route['admin'] === true) {
-                $controller = 'Csburton\\SilEcom\\Core\\Model\\Controller\\Admin';
-            } else {
-                $controller = 'Csburton\\SilEcom\\Core\\Model\\Controller\\Frontend';
+            $controllerId = str_replace('\\', '.', $route['controller']);
+            if (!class_exists($route['controller'])) {
+                throw new Routes('Controller '.$route['controller'].' for route '.$routes['route'].' does not exist');
             }
-            $this->application->match($route['route'], $controller.'::handleRequest')->bind($name);
+
+            if (!method_exists($route['controller'], $route['action'])) {
+                throw new Routes('Action '.$route['action'].' does not exist within controller '.$route['controller']);
+            }
+
+            if (!isset($this->controllers[$controllerId])) {
+                $this->controllers[$controllerId] = true;
+                $app[$controllerId] = $app->share(function() use ($app, $route) {
+                    $controller = $route['controller'];
+                    return new $controller($app, $route['controller'], $route['action']);
+                });
+            }
+            if ($route['route']) {
+                $app->match($route['route'], $controllerId.':'.$route['action']);//->bind($name);
+                //@todo insert ACL here in ->before()
+            }
         }
     }
 }

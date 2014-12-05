@@ -8,6 +8,7 @@ namespace Csburton\SilEcom\Acl\Entity;
  * @package SilEcom\Acl\Entity
  * @Entity
  * @Table(name="admin_role")
+ * @Repository("Repository\AdminRole")
  */
 class AdminRole
 {

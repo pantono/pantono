@@ -6,5 +6,8 @@ use Csburton\SilEcom\Core\Model\Controller\Frontend;
 
 class IndexController extends Frontend
 {
+    public function homeAction()
+    {
 
+    }
 }

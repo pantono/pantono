@@ -47,9 +47,13 @@ $config = $moduleLoader->getConfig();
 $app->register(new DoctrineOrmServiceProvider(), [
     "orm.proxies_dir" => __DIR__ . "/proxies",
     "orm.em.options" => [
-        //"mappings" => $entityMappings,
         "mappings" => $moduleLoader->getEntityMappings(),
     ],
 ]);
 
 $app['moduleLoader'] = $moduleLoader;
+$app->register(new Silex\Provider\ServiceControllerServiceProvider());
+
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
+    'twig.path' => __DIR__.'/themes/core/templates',
+));
