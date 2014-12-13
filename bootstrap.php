@@ -13,7 +13,9 @@ if (php_sapi_name() == 'cli') {
     $app['locale'] = 'en';
 } else {
     $locale = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-    list($locale, $subLocale) = explode('_', $locale);
+    if (false !== strpos($locale, '_')) {
+        list($locale, $subLocale) = explode('_', $locale);
+    }
     $app['locale'] = $locale;
 }
 $app['debug'] = $config->getItem('debug');
