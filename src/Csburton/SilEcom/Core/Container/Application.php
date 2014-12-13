@@ -8,6 +8,7 @@ use Csburton\SilEcom\Core\Exception\Service\NotFound;
 use Csburton\SilEcom\Core\Model\Config\Config;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class Application extends \Silex\Application
 {
@@ -58,7 +59,8 @@ class Application extends \Silex\Application
     /**
      * @return Config
      */
-    public function getConfig() {
+    public function getConfig()
+    {
         return $this['config'];
     }
 
@@ -108,5 +110,13 @@ class Application extends \Silex\Application
     public function getTranslator()
     {
         return $this['translator'];
+    }
+
+    /**
+     * @return Session
+     */
+    public function getSession()
+    {
+        return $this['session'];
     }
 }

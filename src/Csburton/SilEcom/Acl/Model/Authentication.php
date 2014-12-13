@@ -27,7 +27,7 @@ class Authentication
                 $hash = password_hash($user->getPassword(), PASSWORD_DEFAULT);
                 $user->setPassword($hash);
             }
-            return true;
+            return $user;
         }
         return false;
     }

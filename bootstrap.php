@@ -1,5 +1,4 @@
 <?php
-use \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
 use Csburton\SilEcom\Core\Container\Application;
 use \Silex\Provider\DoctrineServiceProvider;
 

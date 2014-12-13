@@ -4,6 +4,7 @@ namespace Csburton\SilEcom\Acl\Controller;
 
 use Csburton\SilEcom\Core\Model\Controller\Admin;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
@@ -20,13 +21,13 @@ class Authentication extends Admin
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                if ($this->getAuthenticationModel()->authenticateAdminUser($form['username']->getData(), $form['password']->getData())) {
-                    die('Logged In');
+                $user = $this->getAuthenticationModel()->authenticateAdminUser($form['username']->getData(), $form['password']->getData());
+                if ($user) {
+                    $this->getApplication()->getSession()->set('userid', $user->getId());
+                    return new RedirectResponse('/admin');
                 } else {
                     $form->addError(new FormError($this->getApplication()->getTranslator()->trans('user_not_found')));
                 }
-            } else {
-
             }
         }
         return $this->renderTemplate('admin/login/login.twig', ['form' => $form->createView()]);

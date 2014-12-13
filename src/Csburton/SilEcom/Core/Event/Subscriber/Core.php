@@ -22,6 +22,9 @@ class Core implements EventSubscriberInterface
         return [
             'silecom.bootstrap.start' => [
                 ['onBootstrap']
+            ],
+            'silecom.application.start' => [
+                ['onApplicationStart']
             ]
         ];
     }
@@ -44,20 +47,19 @@ class Core implements EventSubscriberInterface
         ));
 
 
-
         $app->register(new ValidatorServiceProvider());
         $app->register(new FormServiceProvider());
         $app->register(new TranslationServiceProvider(), [
             'locale_fallbacks' => ['en']
         ]);
-        $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
+        $app['translator'] = $app->share($app->extend('translator', function ($translator, $app) {
             $translator->addLoader('yaml', new YamlFileLoader());
             $locales = $app->getConfig()->getItem('locales');
             if (empty($locales)) {
-                $translator->addResource('yaml', APPLICATION_BASE.'/locales/en.yml', 'en');
+                $translator->addResource('yaml', APPLICATION_BASE . '/locales/en.yml', 'en');
             } else {
                 foreach ($locales as $language => $mappingFile) {
-                    $translator->addResource('yaml', APPLICATION_BASE.'/'.$mappingFile, $language);
+                    $translator->addResource('yaml', APPLICATION_BASE . '/' . $mappingFile, $language);
                 }
             }
 
@@ -70,5 +72,11 @@ class Core implements EventSubscriberInterface
         }));
 
         $app->register(new SessionServiceProvider());
+        var_dump($app['session']);exit;
+    }
+
+    public function onApplicationStart(General $event)
+    {
+
     }
 }
