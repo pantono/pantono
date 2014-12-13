@@ -1,0 +1,2 @@
+event_subscribers:
+    - 'Csburton\SilEcom\Core\Event\Subscriber\Core'

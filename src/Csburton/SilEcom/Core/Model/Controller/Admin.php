@@ -19,6 +19,11 @@ class Admin
         $this->action = $action;
     }
 
+    public function __invoke()
+    {
+
+    }
+
     protected function getApplication()
     {
         return $this->application;

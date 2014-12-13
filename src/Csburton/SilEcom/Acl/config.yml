@@ -1,2 +1,8 @@
-factories:
-    Authentication: 'SilEcom\Acl\Model\Authentication.php'
+services:
+    Authentication: 'Csburton\SilEcom\Acl\Service\Authentication'
+services:
+    AuthTest: 'Csburton\SilEcom\Acl\Test'
+forms:
+    login: 'Csburton\SilEcom\Acl\Form\Login'
+event_subscribers:
+    - 'Csburton\SilEcom\Acl\Event\Subscriber'

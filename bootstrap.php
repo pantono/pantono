@@ -5,10 +5,19 @@ use \Silex\Provider\DoctrineServiceProvider;
 
 define('APPLICATION_BASE', __DIR__);
 define('APPLICATION_PUBLIC', APPLICATION_BASE . '/public');
-
 require_once __DIR__ . '/vendor/autoload.php';
-$config = new \Csburton\SilEcom\Core\Model\Config\Config(__DIR__ . '/config/config.yml');
+$config = new \Csburton\SilEcom\Core\Model\Config\Config();
+$config->addFile(__DIR__ . '/config/config.yml');
 $app = new Application();
+if (php_sapi_name() == 'cli') {
+    $app['locale'] = 'en';
+} else {
+    $locale = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+    list($locale, $subLocale) = explode('_', $locale);
+    $app['locale'] = $locale;
+}
+$app['debug'] = $config->getItem('debug');
+$app['config'] = $config;
 $baseModules = [
     'Acl',
     'Assets',
@@ -26,34 +35,24 @@ $baseModules = [
 ];
 
 $moduleLoader = new \Csburton\SilEcom\Core\Module\Loader($app);
+$app['module_loader'] = $moduleLoader;
 foreach ($baseModules as $module) {
     $moduleLoader->loadModule('Csburton\\SilEcom\\' . $module);
 }
-
+$moduleLoader->loadEventListeners();
+$app->getEventDispatcher()->dispatchGeneralEvent('silecom.application.init');
+$databaseConfig = new \Csburton\SilEcom\Core\Model\Config\Database($config->getItem('database'));
 $app->register(
     new DoctrineServiceProvider, [
         "db.options" => [
-            'dbname' => 'silecom',
-            'user' => 'silecom',
-            'password' => 'silecom',
-            'host' => 'localhost',
-            'driver' => 'pdo_mysql',
+            'dbname' => $databaseConfig->getDatabaseName(),
+            'user' => $databaseConfig->getUsername(),
+            'password' => $databaseConfig->getPassword(),
+            'host' => $databaseConfig->getHost(),
+            'driver' => $databaseConfig->getDriver(),
         ],
     ]
 );
 
-
-$config = $moduleLoader->getConfig();
-$app->register(new DoctrineOrmServiceProvider(), [
-    "orm.proxies_dir" => __DIR__ . "/proxies",
-    "orm.em.options" => [
-        "mappings" => $moduleLoader->getEntityMappings(),
-    ],
-]);
-
-$app['moduleLoader'] = $moduleLoader;
-$app->register(new Silex\Provider\ServiceControllerServiceProvider());
-
-$app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path' => __DIR__.'/themes/core/templates',
-));
+$app->getEventDispatcher()->dispatchGeneralEvent('silecom.bootstrap.start');
+$app->getEventDispatcher()->dispatchGeneralEvent('silecom.bootstrap.end');

@@ -19,7 +19,7 @@ class AdminUser extends EntityRepository
      */
     public function getUserByUsername($username)
     {
-        return $this->find(['username' => $username]);
+        return $this->findOneBy(['username' => $username]);
     }
 
     public function saveUser(UserEntity $user)

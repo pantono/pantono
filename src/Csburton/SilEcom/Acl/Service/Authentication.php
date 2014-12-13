@@ -8,6 +8,6 @@ class Authentication extends Service
 {
     public function getService()
     {
-        return new \Csburton\SilEcom\Core\Model\Authentication();
+        return new \Csburton\SilEcom\Acl\Model\Authentication($this->getApplication()->getRepository('Acl', 'AdminUser'));
     }
 }

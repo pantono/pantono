@@ -6,7 +6,7 @@ namespace Csburton\SilEcom\Acl\Entity;
  * Class AdminUser
  *
  * @package SilEcom\Acl\Entity
- * @Entity
+ * @Entity(repositoryClass="Csburton\SilEcom\Acl\Entity\Repository\AdminUser")
  * @Table(name="admin_user")
  */
 class AdminUser

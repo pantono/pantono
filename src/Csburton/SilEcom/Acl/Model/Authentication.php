@@ -1,6 +1,6 @@
 <?php
 
-namespace Csburton\SilEcom\Core\Model;
+namespace Csburton\SilEcom\Acl\Model;
 
 use Csburton\SilEcom\Acl\Entity\Repository\AdminUser;
 use Csburton\SilEcom\Core\Exception\Authentication\UserNotFound;
@@ -18,7 +18,7 @@ class Authentication
     {
         $user = $this->userRepository->getUserByUsername($username);
         if (!$user) {
-            throw new UserNotFound('Invalid login credential supplied');
+            return false;
         }
         $hash = password_hash($password, PASSWORD_DEFAULT);
 
@@ -27,7 +27,9 @@ class Authentication
                 $hash = password_hash($user->getPassword(), PASSWORD_DEFAULT);
                 $user->setPassword($hash);
             }
+            return true;
         }
+        return false;
     }
 
     public function addAdminUser($username, $password, Contact $contact) {

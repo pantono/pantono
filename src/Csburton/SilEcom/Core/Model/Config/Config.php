@@ -9,7 +9,7 @@ use Symfony\Component\Yaml\Parser;
 class Config
 {
     private $files;
-    private $content;
+    private $contents;
 
     public function addFile($filename)
     {
@@ -17,18 +17,28 @@ class Config
         $this->parseFile($filename);
     }
 
-    public function getItem($section, $value)
+    public function getItem($section, $value = null)
     {
-        if (!$this->content) {
+        if (!$this->contents) {
             $this->parseFile();
+        }
+        if (!isset($this->contents[$section])) {
+            return null;
+        }
+        if (!$value) {
+            return $this->contents[$section];
+        } else {
+            return isset($this->contents[$section][$value])?$this->contents[$section][$value]:null;
         }
     }
 
     private function parseFile()
     {
         $parser = new Parser();
-        $contents = $parser->parse(file_get_contents($this->config_file));
-        print_r($contents);
-        exit;
+        $contents = [];
+        foreach ($this->files as $file) {
+            $contents += $parser->parse(file_get_contents($file));
+        }
+        $this->contents= $contents;
     }
 }

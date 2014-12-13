@@ -1,6 +1,10 @@
 database:
-    dbname: silecom
-    user: silecom
+    database_name: silecom
+    username: silecom
     password: silecom
     host: localhost
     driver: pdo_mysql
+debug: true
+locales:
+    en: locales/en.yml
+    es: locales/es.yml

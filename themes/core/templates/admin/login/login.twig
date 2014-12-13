@@ -1,16 +1,19 @@
 {% extends 'admin/layout.twig' %}
 {% block content %}
-    <form class="form-signin" role="form">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+        {{ form_start(form) }}
+        <h2 class="form-signin-heading">{{ app.translator.trans('Please Sign In') }}</h2>
+        {{ form_errors(form) }}
+        {{ form_widget(form.username) }}
+        <div class="errors">{{ form_errors(form.username) }}</div>
+        {{ form_widget(form.password) }}
+        <div class="errors">{{ form_errors(form.password) }}</div>
         <div class="checkbox">
             <label>
-                <input type="checkbox" value="remember-me"> Remember me
+                {{ form_widget(form.remember_me) }}
+                {{ form_label(form.remember_me) }}
             </label>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">{{ app.translator.trans('Sign In') }}</button>
+        {{ form_end(form) }}
 {% endblock %}
