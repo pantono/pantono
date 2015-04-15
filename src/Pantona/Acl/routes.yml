@@ -1,0 +1,8 @@
+admin_login:
+    route: '/admin/login'
+    controller: 'Pantona\Acl\Controller\Authentication'
+    action: 'adminLoginAction'
+login:
+    route: '/login'
+    controller: 'Pantona\Acl\Controller\Authentication'
+    action: 'loginAction'

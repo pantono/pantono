@@ -1,7 +1,7 @@
 database:
-    database_name: silecom
-    username: silecom
-    password: silecom
+    database_name: pantona
+    username: pantona
+    password: pantona
     host: localhost
     driver: pdo_mysql
 debug: true

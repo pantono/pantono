@@ -1,0 +1,13 @@
+event_subscribers:
+    - 'Pantona\Core\Event\Subscriber\Core'
+services:
+  SfEventDispatcher:
+    class: Symfony\Component\EventDispatcher\EventDispatcher
+  EventManager:
+    class: Pantona\Core\Event\Manager
+    arguments:
+      - @SfEventDispatcher
+  PantonaEventDispatcher:
+    class: Pantona\Core\Event\Dispatcher
+    arguments:
+      - @Application

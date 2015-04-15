@@ -1,0 +1,12 @@
+services:
+    AdminAuthentication:
+      class: 'Pantona\Acl\AdminAuthentication'
+      arguments:
+        - ['Repository', 'Pantona\Acl\Entity\AdminUser']
+
+services:
+    AuthTest: 'Pantona\Acl\Test'
+forms:
+    login: 'Pantona\Acl\Form\Login'
+event_subscribers:
+    - 'Pantona\Acl\Event\Subscriber'

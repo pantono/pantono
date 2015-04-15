@@ -1,0 +1,5 @@
+admin_home:
+    route: '/admin'
+    controller: 'Pantona\Core\Controller\Admin\IndexController'
+    action: 'homeAction'
+    admin: true

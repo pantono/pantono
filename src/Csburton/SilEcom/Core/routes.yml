@@ -1,5 +1,0 @@
-admin_home:
-    route: '/admin'
-    controller: 'Csburton\SilEcom\Core\Controller\Admin\IndexController'
-    action: 'homeAction'
-    admin: true
