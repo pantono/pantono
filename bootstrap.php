@@ -1,14 +1,13 @@
 <?php
-use \Pantona\Core\Container\Application;
-use \Silex\Provider\DoctrineServiceProvider;
-use \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
-use \Pantona\Core\Model\Config\Database;
-use \Pantona\Core\Module\Loader;
+use \Pantono\Core\Container\Application;
+use Silex\Provider\DoctrineServiceProvider;
+use \Pantono\Core\Model\Config\Database;
+use \Pantono\Core\Module\Loader;
 
 define('APPLICATION_BASE', __DIR__);
 define('APPLICATION_PUBLIC', APPLICATION_BASE . '/public');
 require_once __DIR__ . '/vendor/autoload.php';
-$config = new \Pantona\Core\Model\Config\Config();
+$config = new \Pantono\Core\Model\Config\Config();
 $config->addFile(__DIR__ . '/config/config.yml');
 $app = new Application();
 if (php_sapi_name() == 'cli') {
@@ -41,14 +40,14 @@ $baseModules = [
 $moduleLoader = new Loader($app);
 $app['module_loader'] = $moduleLoader;
 foreach ($baseModules as $module) {
-    $moduleLoader->loadModule('Pantona\\' . $module);
+    $moduleLoader->loadModule('Pantono\\' . $module);
 }
 $moduleLoader->loadEventListeners();
 $moduleLoader->loadDependencyInjection();
-$app->getEventDispatcher()->dispatchGeneralEvent('pantona.application.init');
+$app->getEventDispatcher()->dispatchGeneralEvent('pantono.application.init');
 $databaseConfig = new Database($config->getItem('database'));
 $app->register(
-    new DoctrineServiceProvider, [
+    new DoctrineServiceProvider(), [
         "db.options" => [
             'dbname' => $databaseConfig->getDatabaseName(),
             'user' => $databaseConfig->getUsername(),
@@ -56,10 +55,9 @@ $app->register(
             'host' => $databaseConfig->getHost(),
             'driver' => $databaseConfig->getDriver(),
         ],
-        'orm.strategy' => new \Doctrine\ORM\Mapping\UnderscoreNamingStrategy()
     ]
 );
 
-$app->getEventDispatcher()->dispatchGeneralEvent('pantona.bootstrap.start');
-$app->getEventDispatcher()->dispatchGeneralEvent('pantona.bootstrap.end');
+$app->getEventDispatcher()->dispatchGeneralEvent('pantono.bootstrap.start');
+$app->getEventDispatcher()->dispatchGeneralEvent('pantono.bootstrap.end');
 $app->getEntityManager()->getConfiguration()->setNamingStrategy(new \Doctrine\ORM\Mapping\UnderscoreNamingStrategy());

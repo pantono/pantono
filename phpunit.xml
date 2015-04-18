@@ -12,7 +12,7 @@
         >
     <testsuites>
         <testsuite name="Website Module">
-            <directory>./src/Pantona/Products/Tests/</directory>
+            <directory>./src/Pantono/Products/Tests/</directory>
         </testsuite>
     </testsuites>
 

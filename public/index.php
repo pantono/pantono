@@ -2,9 +2,9 @@
 
 require_once __DIR__.'/../bootstrap.php';
 
-$app->getEventDispatcher()->dispatchGeneralEvent('pantona.router.pre');
+$app->getEventDispatcher()->dispatchGeneralEvent('pantono.router.pre');
 $app->getModuleLoader()->loadRoutes();
-$app->getEventDispatcher()->dispatchGeneralEvent('pantona.router.finished');
-$app->getEventDispatcher()->dispatchGeneralEvent('pantona.application.start');
+$app->getEventDispatcher()->dispatchGeneralEvent('pantono.router.finished');
+$app->getEventDispatcher()->dispatchGeneralEvent('pantono.application.start');
 $app->run();
-$app->getEventDispatcher()->dispatchGeneralEvent('pantona.application.shutdown');
+$app->getEventDispatcher()->dispatchGeneralEvent('pantono.application.shutdown');

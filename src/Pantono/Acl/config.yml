@@ -1,0 +1,18 @@
+services:
+    AdminAuthentication:
+      class: 'Pantono\Acl\AdminAuthentication'
+      arguments:
+        - ['Repository', 'Pantono\Acl\Entity\AdminUser']
+        - @session
+        - @config
+
+services:
+    AuthTest: 'Pantono\Acl\Test'
+forms:
+    login: 'Pantono\Acl\Form\Login'
+event_subscribers:
+    - 'Pantono\Acl\Event\Subscriber'
+
+commands:
+  - Pantono\Acl\Command\CreateUser
+  - Pantono\Acl\Command\ChangePassword

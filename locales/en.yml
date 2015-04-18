@@ -4,3 +4,5 @@ password: Password
 remember_me: Remember Me
 sign_in: Sign In
 user_not_found: Sorry, that username & password combination does not exist
+error_password_min_length: Password must be at least %length% characters
+error_min_length: Input must be at least %length% characters

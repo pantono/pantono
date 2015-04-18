@@ -1,0 +1,6 @@
+services:
+  products:
+    class: Pantono\Products\Products
+    arguments:
+      - ["Repository", "Pantono\\Products\\Entity\\Product"]
+      - "@EventManager"

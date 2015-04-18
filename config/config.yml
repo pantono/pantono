@@ -1,10 +1,12 @@
 database:
-    database_name: pantona
-    username: pantona
-    password: pantona
+    database_name: pantono
+    username: pantono
+    password: pantono
     host: localhost
     driver: pdo_mysql
 debug: true
 locales:
     en: locales/en.yml
     es: locales/es.yml
+admin:
+  session_timeout: 1800

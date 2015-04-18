@@ -1,5 +1,0 @@
-services:
-  contacts:
-    class: Pantona\Contacts\Contacts
-    arguments:
-      - ['Repository', 'Pantona\Contacts\Entity\Contact']

@@ -1,0 +1,5 @@
+services:
+  contacts:
+    class: Pantono\Contacts\Contacts
+    arguments:
+      - ['Repository', 'Pantono\Contacts\Entity\Contact']
