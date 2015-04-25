@@ -10,6 +10,9 @@ class Products extends AbstractProductTest
             ->disableOriginalConstructor()
             ->getMock();
 
+        $eventManager = $this->getMockBuilder('Pantono\Core\Event\Manager')
+            ->disableOriginalConstructor()
+            ->getMock();
         $productEntity = $this->getDummyProduct();
 
         $repository->expects($this->once())
@@ -18,7 +21,7 @@ class Products extends AbstractProductTest
             ->willReturn($productEntity);
 
         $model = new Product($productEntity);
-        $products = new \Pantono\Products\Products($repository);
+        $products = new \Pantono\Products\Products($repository, $eventManager);
         $this->assertEquals($model, $products->getSingleProductById(1));
     }
 
@@ -27,7 +30,9 @@ class Products extends AbstractProductTest
         $repository = $this->getMockBuilder('Pantono\Products\Entity\Repository\ProductRepository')
             ->disableOriginalConstructor()
             ->getMock();
-
+        $eventManager = $this->getMockBuilder('Pantono\Core\Event\Manager')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $repository->expects($this->once())
             ->method('getSingleProduct')
@@ -36,7 +41,7 @@ class Products extends AbstractProductTest
 
 
         $this->setExpectedException('Pantono\Products\Exception\ProductNotExists');
-        $products = new \Pantono\Products\Products($repository);
+        $products = new \Pantono\Products\Products($repository, $eventManager);
         $products->getSingleProductById(1);
     }
 }

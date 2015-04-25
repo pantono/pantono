@@ -1,5 +1,0 @@
-admin_home:
-    route: '/admin'
-    controller: 'Pantono\Core\Controller\Admin\IndexController'
-    action: 'homeAction'
-    admin: true

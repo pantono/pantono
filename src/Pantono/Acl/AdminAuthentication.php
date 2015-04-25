@@ -4,8 +4,7 @@ use Pantono\Acl\Entity\AdminUser;
 use Pantono\Acl\Entity\Repository\AdminUserRepository;
 use Pantono\Contacts\Entity\Contact;
 use Pantono\Core\Model\Config\Config;
-use Pantono\Core\Model\Controller\Admin;
-use Silex\Provider\SessionServiceProvider;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class AdminAuthentication
 {
@@ -13,7 +12,7 @@ class AdminAuthentication
     private $session;
     private $config;
 
-    public function __construct(AdminUserRepository $repository, SessionServiceProvider $session, Config $config)
+    public function __construct(AdminUserRepository $repository, Session $session, Config $config)
     {
         $this->repository = $repository;
         $this->session = $session;
@@ -23,6 +22,10 @@ class AdminAuthentication
     public function getCurrentUser()
     {
         $userId = $this->session->get('admin_user_id');
+        if (!$userId)
+        {
+            return false;
+        }
         $user = $this->repository->getUserInfo($userId);
         return $user;
     }
@@ -31,18 +34,20 @@ class AdminAuthentication
     {
         $currentUserId = $this->session->get('admin_user_id');
         $lastAction = $this->session->get('last_admin_action');
-        if (!$lastAction) {
-            $lastAction = new \DateTime('-1 hour');
-        } else {
-            $lastAction = new \DateTime($lastAction);
+        if (!$currentUserId) {
+            return false;
         }
+        if (!$lastAction) {
+            $lastAction = '-1 hour';
+        }
+        $lastAction = new \DateTime($lastAction);
         $currentTime = new \DateTime();
         $timeout = $this->config->getItem('admin', 'session_timeout', 1800);
-        if ($currentTime->diff($lastAction)->format('U') > $timeout) {
-
+        if ($currentTime->format('U') - $lastAction->format('U') >= $timeout) {
+            return false;
         }
         $this->session->set('last_admin_action', $currentTime->format('Y-m-d H:i:s'));
-        return $this->session->get('admin_user_id');
+        return $currentUserId;
     }
 
     public function authenticateAdminUser($username, $password)
@@ -58,6 +63,8 @@ class AdminAuthentication
                 $user->setPassword($hash);
                 $this->repository->save($user);
             }
+            $this->session->set('admin_user_id', $user->getId());
+            $this->session->set('last_admin_action', (new \DateTime)->format('Y-m-d H:i:s'));
             return $user;
         }
         return false;

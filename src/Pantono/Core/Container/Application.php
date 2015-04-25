@@ -12,7 +12,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class Application extends \Silex\Application
 {
-    private $PantonoServices;
+    private $pantonoServices;
+    private $aliases;
 
     /**
      * @param $module - Module name
@@ -112,8 +113,11 @@ class Application extends \Silex\Application
         if (isset($this['Pantono.service.' . $name])) {
             return $this['Pantono.service.' . $name];
         }
+        if (isset($this->aliases[$name])) {
+            return $this[$this->aliases[$name]];
+        }
 
-        $service = isset($this->PantonoServices[$name]) ? $this->PantonoServices[$name] : null;
+        $service = isset($this->pantonoServices[$name]) ? $this->pantonoServices[$name] : null;
 
         if (!$service) {
             /**
@@ -138,15 +142,15 @@ class Application extends \Silex\Application
     public function generateParameter($param)
     {
         if (is_array($param)) {
-            if ($param[0] == 'Repository') {
+            if ($param[0] === 'Repository') {
                 return $this->getEntityManager()->getRepository($param[1]);
             }
         }
 
-        if (substr($param, 0, 1) == '@') {
+        if (substr($param, 0, 1) === '@') {
             return $this->getPantonoService(substr($param, 1));
         }
-        if (substr($param, 0, 1) == '~') {
+        if (substr($param, 0, 1) === '~') {
             $class = substr($param, 1);
             return new $class;
         }
@@ -155,10 +159,15 @@ class Application extends \Silex\Application
 
     public function addPantonoService($name, $class, $params)
     {
-        $this->PantonoServices[$name] = [
+        $this->pantonoServices[$name] = [
             'class' => $class,
             'params' => $params
         ];
         return true;
+    }
+
+    public function registerAlias($name, $alias)
+    {
+        $this->aliases[$name] = $alias;
     }
 }

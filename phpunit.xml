@@ -12,6 +12,7 @@
         >
     <testsuites>
         <testsuite name="Website Module">
+            <directory>./src/Pantono/Acl/Tests/</directory>
             <directory>./src/Pantono/Products/Tests/</directory>
         </testsuite>
     </testsuites>

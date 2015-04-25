@@ -2,7 +2,7 @@
 
 namespace Pantono\Acl\Controller;
 
-use Pantono\Core\Model\Controller\Admin;
+use Pantono\Core\Controller\AdminController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class Authentication extends Admin
+class Authentication extends AdminController
 {
     public function adminLoginAction(Request $request)
     {

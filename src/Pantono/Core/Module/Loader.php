@@ -5,7 +5,11 @@ namespace Pantono\Core\Module;
 use Pantono\Core\Container\Application;
 use Pantono\Core\Exception\Bootstrap\Listener;
 use Pantono\Core\Exception\Bootstrap\Routes;
+use Pantono\Core\Model\Block;
+use Pantono\Core\Model\Route;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class Loader
 {
@@ -153,6 +157,37 @@ class Loader
         return $this->routes;
     }
 
+    public function loadBlocks()
+    {
+        $config = $this->getConfig();
+        $app =& $this->application;
+        $blockLoader = new \Pantono\Core\Block\Loader($this->application, $this->application->getEventDispatcher());
+        $blocks = isset($config['blocks']) ? $config['blocks'] : [];
+        foreach ($blocks as $blockId => $options) {
+            $block = new Block();
+            $block->setName($blockId);
+            if (!is_array($options)) {
+                $block->setClassName($options);
+            }
+
+            if (is_array($options)) {
+                $block->setClassName($options['className']);
+                $block->setCacheable($options['cache']);
+                $block->setCacheLength($options['cacheLength']);
+            }
+            $blockLoader->addBlock($block);
+        }
+
+        $app['Pantono.service.blocks'] = $blockLoader;
+
+        $this->application['twig']->addFunction(new \Twig_SimpleFunction('pantono_block', function($block) use($app) {
+            $args = func_get_args();
+            array_shift($args);
+            $content = $app->getPantonoService('blocks')->renderBlock($block, $args);
+            return $content;
+        }, ['is_safe' => ['html']]));
+    }
+
     public function loadRoutes()
     {
         $routes = $this->getRoutes();
@@ -176,8 +211,21 @@ class Loader
                 });
             }
             if ($route['route']) {
-                $app->match($route['route'], $controllerId . ':' . $route['action'])->bind($name);
-                //@todo insert ACL here in ->before()
+                $app->match($route['route'], $controllerId . ':' . $route['action'])
+                    ->before(function (Request $request, Application $app) use ($route) {
+                        $routeModel = new Route();
+                        $routeModel->setController($route['controller']);
+                        $routeModel->setAction($route['action']);
+                        $routeModel->setPath($route['route']);
+                        $routeModel->setRequiresAdminAuth(isset($route['admin']) ? $route['admin'] : false);
+                        $request->attributes->add(['pantono_route' => $routeModel]);
+                        if ($route['admin']) {
+                            if (!$app->getPantonoService('AdminAuthentication')->isCurrentUserAuthenticated()) {
+                                return new RedirectResponse('/admin/login');
+                            }
+                        }
+                    })
+                    ->bind($name);
             }
         }
     }

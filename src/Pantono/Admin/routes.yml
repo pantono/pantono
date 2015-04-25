@@ -1,0 +1,5 @@
+admin_dashboard:
+    route: '/admin'
+    controller: 'Pantono\Admin\Controller\Dashboard'
+    action: 'indexAction'
+    admin: true

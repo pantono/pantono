@@ -1,6 +1,6 @@
 <?php
 
-namespace Pantono\Acl\Form;
+namespace Pantono\Products\Form;
 
 use Pantono\Core\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -8,13 +8,30 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class Login extends Form
+class Product extends Form
 {
-    public function buildFormFields()
+    public function buildForm(FormBuilderInterface $builder, array $options = [])
     {
-        $builder = $this->getBuilder();
+        if ($options) {
+
+        }
         $builder->setAttribute('role', 'form');
-        $builder->setAttribute('class', 'form-signin');
+        $builder->setAttribute('class', 'product-form');
+        $builder->add(
+            'title',
+            'text',
+            [
+                'constraints' => [
+                    new NotBlank(),
+                    new Email()
+                ]
+            ]
+        );
+        $builder->add(
+            'id',
+            'hidden'
+        );
+
         $builder
             ->add(
                 'username',

@@ -1,0 +1,6 @@
+blocks:
+  admin.dashboard.recent-orders:
+    className: 'Pantono\Admin\Block\RecentOrders'
+    cache: true
+    cacheLength: 1800
+    template: 'admin/dashboard/recent-orders.twig'

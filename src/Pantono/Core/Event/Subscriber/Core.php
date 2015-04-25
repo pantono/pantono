@@ -23,7 +23,7 @@ class Core implements EventSubscriberInterface
             'pantono.bootstrap.start' => [
                 ['onBootstrap']
             ],
-            /*'Pantono.application.start' => [
+            /*'pantono.application.start' => [
                 ['onApplicationStart']
             ]*/
         ];
@@ -66,10 +66,15 @@ class Core implements EventSubscriberInterface
         }));
         $app['twig']->addExtension(new TranslationExtension($app['translator']));
         $app['form.extensions'] = $app->share($app->extend('form.extensions', function ($extensions) use ($app) {
-            $extensions[] = new Extensions($app->getModuleLoader()->getConfig());
+            $extensions[] = new Extensions($app->getModuleLoader()->getConfig(), $app->getEventDispatcher(), $app);
             return $extensions;
         }));
 
-        $app->register(new SessionServiceProvider());
+        if (php_sapi_name() !== 'cli') {
+            $app->register(new SessionServiceProvider());
+            $app->registerAlias('session', 'session');
+        }
+        $app->registerAlias('config', 'config');
+        $app->getModuleLoader()->loadBlocks();
     }
 }

@@ -3,7 +3,7 @@
 namespace Pantono\Core\Model\Controller;
 
 
-class Frontend
+Abstract class Frontend
 {
 
 }

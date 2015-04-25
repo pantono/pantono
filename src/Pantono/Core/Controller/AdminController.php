@@ -1,11 +1,11 @@
 <?php
 
-namespace Pantono\Core\Model\Controller;
+namespace Pantono\Core\Controller;
 
 use Pantono\Core\Container\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class Admin
+abstract class AdminController
 {
     protected $application;
     protected $request;
@@ -17,11 +17,6 @@ class Admin
         $this->application = $app;
         $this->controller = $controller;
         $this->action = $action;
-    }
-
-    public function __invoke()
-    {
-
     }
 
     protected function getApplication()
