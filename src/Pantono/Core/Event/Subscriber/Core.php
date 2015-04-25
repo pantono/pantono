@@ -22,10 +22,7 @@ class Core implements EventSubscriberInterface
         return [
             'pantono.bootstrap.start' => [
                 ['onBootstrap']
-            ],
-            /*'pantono.application.start' => [
-                ['onApplicationStart']
-            ]*/
+            ]
         ];
     }
 

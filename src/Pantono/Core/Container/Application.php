@@ -83,10 +83,10 @@ class Application extends \Silex\Application
      */
     public function getEventDispatcher()
     {
-        if (!isset($this['Pantono.event.dispatcher'])) {
-            $this['Pantono.event.dispatcher'] = new Dispatcher($this);
+        if (!isset($this['pantono.event.dispatcher'])) {
+            $this['pantono.event.dispatcher'] = new Dispatcher($this);
         }
-        return $this['Pantono.event.dispatcher'];
+        return $this['pantono.event.dispatcher'];
     }
 
     /**
@@ -110,8 +110,8 @@ class Application extends \Silex\Application
         if (strtolower($name) === 'application') {
             return $this;
         }
-        if (isset($this['Pantono.service.' . $name])) {
-            return $this['Pantono.service.' . $name];
+        if (isset($this['pantono.service.' . $name])) {
+            return $this['pantono.service.' . $name];
         }
         if (isset($this->aliases[$name])) {
             return $this[$this->aliases[$name]];
@@ -135,8 +135,8 @@ class Application extends \Silex\Application
             [new \ReflectionClass($service['class']), 'newInstance'],
             $params
         );
-        $this['Pantono.service.' . $name] = $result;
-        return $this['Pantono.service.' . $name];
+        $this['pantono.service.' . $name] = $result;
+        return $this['pantono.service.' . $name];
     }
 
     public function generateParameter($param)

@@ -10,7 +10,7 @@ class Subscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'Pantono.bootstrap.finish' => [
+            'pantono.bootstrap.finish' => [
                 ['onBootstrap', 0]
             ]
         ];

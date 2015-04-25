@@ -178,7 +178,7 @@ class Loader
             $blockLoader->addBlock($block);
         }
 
-        $app['Pantono.service.blocks'] = $blockLoader;
+        $app['pantono.service.blocks'] = $blockLoader;
 
         $this->application['twig']->addFunction(new \Twig_SimpleFunction('pantono_block', function($block) use($app) {
             $args = func_get_args();
