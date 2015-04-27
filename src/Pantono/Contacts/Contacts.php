@@ -10,9 +10,4 @@ class Contacts
     {
         $this->contactRepository = $contactRepository;
     }
-
-    public function createContactFromData($data)
-    {
-
-    }
 }
