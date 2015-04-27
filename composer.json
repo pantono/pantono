@@ -3,7 +3,7 @@
     "description": "Simple Ecommerce Framework built on Silex",
     "require": {
         "silex/silex": "~1.2",
-        "twig/twig": "1.12",
+        "twig/twig": "1.18.1",
         "dflydev/doctrine-orm-service-provider": "~1.0.6",
         "symfony/yaml": "~2.6",
         "symfony/form": "~2.6",
