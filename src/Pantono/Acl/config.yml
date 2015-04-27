@@ -10,8 +10,6 @@ services:
     AuthTest: 'Pantono\Acl\Test'
 forms:
     login: 'Pantono\Acl\Form\Login'
-event_subscribers:
-    - 'Pantono\Acl\Event\Subscriber'
 
 commands:
   - Pantono\Acl\Command\CreateUser

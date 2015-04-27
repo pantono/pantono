@@ -1,7 +1,9 @@
 <?php
+
 define('BOOTSTRAP_START', microtime(true));
 define('APPLICATION_BASE', __DIR__);
 define('APPLICATION_PUBLIC', APPLICATION_BASE . '/public');
+
 require_once __DIR__ . '/vendor/autoload.php';
 $config = new \Pantono\Core\Model\Config\Config();
 $config->addFile(__DIR__ . '/config/config.yml');
