@@ -13,4 +13,12 @@ class ProductRepository extends EntityRepository
     {
         return $this->find($id);
     }
+
+    public function getProducts()
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('p')
+            ->from('Products\Entity\Product', 'p');
+        return $qb->getQuery()->getResult();
+    }
 }
