@@ -17,7 +17,7 @@ class Authentication extends Controller
         /**
          * @var $form \Symfony\Component\Form\Form
          */
-        $form = $this->getApplication()->getForm('login', $request->request->all())->getForm();
+        $form = $this->getApplication()->getForm('login')->getForm();
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {

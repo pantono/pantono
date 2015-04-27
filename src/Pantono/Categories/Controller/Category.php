@@ -21,6 +21,6 @@ class Category extends Controller
      */
     private function getCategoryForm(Request $request)
     {
-        return $this->getApplication()->getForm('category', $request->request->all())->getForm();
+        return $this->getApplication()->getForm('category')->getForm();
     }
 }
