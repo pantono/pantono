@@ -72,7 +72,7 @@ trait Visible
 
     /**
      * @param boolean $disabled
-     * @return $this;
+     * @return $this
      */
     public function setDisabled($disabled)
     {
