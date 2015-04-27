@@ -15,7 +15,7 @@ class AdminUserRepository extends EntityRepository
 
     /**
      * @param $username
-     * @return UserEntity
+     * @return UserEntity|null
      */
     public function getUserByUsername($username)
     {
