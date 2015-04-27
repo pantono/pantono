@@ -1,0 +1,4 @@
+add_category:
+    route: '/admin/categories/add'
+    controller: 'Pantono\Categories\Controller\Category'
+    action: 'addAction'

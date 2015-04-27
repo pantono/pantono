@@ -26,6 +26,10 @@ class Category
      */
     protected $status;
     /**
+     * @Column(type="text")
+     */
+    protected $description;
+    /**
      * @Column(type="string")
      */
     protected $title;

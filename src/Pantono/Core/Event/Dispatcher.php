@@ -7,6 +7,7 @@ use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Events\Block;
 use Pantono\Core\Event\Events\Form;
 use Pantono\Core\Event\Events\General;
+use Pantono\Core\Event\Events\Template;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -22,6 +23,16 @@ class Dispatcher
     public function dispatchGeneralEvent($event)
     {
         $this->application['dispatcher']->dispatch($event, new General($this->application));
+    }
+
+    public function dispatchTemplateEvent($event, &$templateFile, &$templateContent, $controller, $action)
+    {
+        $templateEvent = new Template();
+        $templateEvent->setContent($templateContent);
+        $templateEvent->setTemplateFile($templateFile);
+        $templateEvent->setController($controller);
+        $templateEvent->setAction($action);
+        $this->application['dispatcher']->dispatch($event, $templateEvent);
     }
 
     public function dispatchBlockEvent($event, BlockInterface $block)

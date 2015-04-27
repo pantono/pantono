@@ -1,8 +1,8 @@
 <?php namespace Pantono\Admin\Controller;
 
-use Pantono\Core\Controller\AdminController;
+use Pantono\Core\Controller\Controller;
 
-class Dashboard extends AdminController
+class Dashboard extends Controller
 {
     public function indexAction()
     {

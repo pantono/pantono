@@ -139,7 +139,7 @@ class Loader
         foreach ($this->modules as $module) {
             if ($module->getConfig()) {
                 $this->moduleConfig[$module->getNamespace()] = $module->getConfig();
-                $config += $module->getConfig();
+                $config = array_merge_recursive($config, $module->getConfig());
             }
         }
         $this->config = $config;
@@ -180,7 +180,7 @@ class Loader
 
         $app['pantono.service.blocks'] = $blockLoader;
 
-        $this->application['twig']->addFunction(new \Twig_SimpleFunction('pantono_block', function($block) use($app) {
+        $this->application['twig']->addFunction(new \Twig_SimpleFunction('pantono_block', function ($block) use ($app) {
             $args = func_get_args();
             array_shift($args);
             $content = $app->getPantonoService('blocks')->renderBlock($block, $args);
@@ -207,7 +207,7 @@ class Loader
                 $this->controllers[$controllerId] = true;
                 $app[$controllerId] = $app->share(function () use ($app, $route) {
                     $controller = $route['controller'];
-                    return new $controller($app, $route['controller'], $route['action']);
+                    return new $controller($app, $app->getEventDispatcher(), $route['controller'], $route['action']);
                 });
             }
             if ($route['route']) {
