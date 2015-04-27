@@ -12,13 +12,13 @@ class Config
     public function addFile($filename)
     {
         $this->files[] = $filename;
-        $this->parseFile($filename);
+        $this->parseConfigFiles();
     }
 
     public function getItem($section, $value = null, $default = null)
     {
         if (!$this->contents) {
-            $this->parseFile();
+            $this->parseConfigFiles();
         }
         if (!isset($this->contents[$section])) {
             return null;
@@ -30,7 +30,7 @@ class Config
         return isset($this->contents[$section][$value])?$this->contents[$section][$value]:$default;
     }
 
-    private function parseFile()
+    private function parseConfigFiles()
     {
         $parser = new Parser();
         $contents = [];
