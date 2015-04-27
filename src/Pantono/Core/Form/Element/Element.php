@@ -11,11 +11,6 @@ abstract class Element
     protected $required = false;
     protected $constraints;
 
-    public function __construct()
-    {
-        return $this;
-    }
-
     /**
      * @return mixed
      */
