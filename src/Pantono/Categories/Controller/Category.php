@@ -16,10 +16,9 @@ class Category extends Controller
     }
 
     /**
-     * @param Request $request
      * @return \Pantono\Categories\Form\Category
      */
-    private function getCategoryForm(Request $request)
+    private function getCategoryForm()
     {
         return $this->getApplication()->getForm('category')->getForm();
     }
