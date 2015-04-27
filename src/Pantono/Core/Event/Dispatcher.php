@@ -46,7 +46,7 @@ class Dispatcher
     {
         $formEvent = new Form($this->application);
         $formEvent->setBuilder($builder);
-        $formEvent->setName($formName);
+        $formEvent->setFormName($formName);
         $this->application['dispatcher']->dispatch($event, $formEvent);
     }
 }
