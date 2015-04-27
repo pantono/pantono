@@ -13,3 +13,13 @@ matrix:
         - php: nightly
         - php: hhvm-nightly
     fast_finish: true
+
+env:
+    global:
+        - deps=no
+
+before_install:
+    - composer self-update
+
+install:
+    - if [ "$deps" = "no" ]; then composer --prefer-source install; fi;
