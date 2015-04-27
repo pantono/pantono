@@ -2,7 +2,7 @@
 
 use Pantono\Contacts\Entity\Repository\ContactRepository;
 
-class Contact
+class Contacts
 {
     private $contactRepository;
 
@@ -13,8 +13,6 @@ class Contact
 
     public function createContactFromData($data)
     {
-        if (isset($data['id'])) {
 
-        }
     }
 }
