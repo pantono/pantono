@@ -119,7 +119,7 @@ class Loader
 
     public function getConfig()
     {
-        if (!$this->config) {
+        if (empty($this->config)) {
             $this->loadConfig();
         }
         return $this->config;
@@ -127,7 +127,7 @@ class Loader
 
     public function getModuleConfig()
     {
-        if (!$this->moduleConfig) {
+        if (empty($this->moduleConfig)) {
             $this->loadConfig();
         }
         return $this->moduleConfig;
