@@ -8,6 +8,7 @@ use Symfony\Component\Console\Question\Question;
 
 class ChangePassword extends AbstractCommand
 {
+    use UserCommandTraits;
     protected function configure()
     {
         $this->setName('user:change-password')
@@ -40,19 +41,6 @@ class ChangePassword extends AbstractCommand
             return $this->getEmail($input, $output);
         }
         return $user;
-    }
-
-    private function getPassword(InputInterface $input, OutputInterface $output)
-    {
-        $helper = $this->getHelper('question');
-        $passwordQuestion = new Question($this->translate('Please enter the new password for the user').': ', '');
-        $passwordQuestion->setHidden(true);
-        $password = $helper->ask($input, $output, $passwordQuestion);
-        if (!$password) {
-            $this->showError($output, 'error_min_length', ['%length%' => 6]);
-            return $this->getPassword($input, $output);
-        }
-        return $password;
     }
 
     /**
