@@ -42,7 +42,7 @@ class Authentication extends Controller
         return $this->getApplication()->getPantonoService('AdminAuthentication');
     }
 
-    public function loginAction(Request $request)
+    public function loginAction()
     {
         return $this->renderTemplate('user/login.twig');
     }
