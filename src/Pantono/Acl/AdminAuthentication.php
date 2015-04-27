@@ -124,7 +124,7 @@ class AdminAuthentication
 
     /**
      * @param $email
-     * @return \Pantono\Acl\Entity\AdminUser|null
+     * @return \Pantono\Acl\Entity\AdminUser
      */
     public function findSingleUserByEmail($email)
     {
