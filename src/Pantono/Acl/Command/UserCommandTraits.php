@@ -9,7 +9,7 @@ trait UserCommandTraits
     /**
      * @param $name
      */
-    abstract function getHelper($name);
+    abstract public function getHelper($name);
 
     /**
      * @param OutputInterface $output
@@ -17,7 +17,7 @@ trait UserCommandTraits
      * @param $options
      * @return mixed
      */
-    abstract function showError($output, $name, $options);
+    abstract public function showError($output, $name, $options);
     protected function getPassword(InputInterface $input, OutputInterface $output)
     {
         $helper = $this->getHelper('question');
