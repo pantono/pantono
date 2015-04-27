@@ -19,17 +19,23 @@ class AdminAuthentication
         $this->config = $config;
     }
 
+    /**
+     * @return null|object
+     */
     public function getCurrentUser()
     {
         $userId = $this->session->get('admin_user_id');
         if (!$userId)
         {
-            return false;
+            return null;
         }
         $user = $this->repository->getUserInfo($userId);
         return $user;
     }
 
+    /**
+     * @return bool|mixed
+     */
     public function isCurrentUserAuthenticated()
     {
         $currentUserId = $this->session->get('admin_user_id');
@@ -50,6 +56,11 @@ class AdminAuthentication
         return $currentUserId;
     }
 
+    /**
+     * @param $username
+     * @param $password
+     * @return bool|AdminUser
+     */
     public function authenticateAdminUser($username, $password)
     {
         $user = $this->repository->getUserByUsername($username);
@@ -70,6 +81,12 @@ class AdminAuthentication
         return false;
     }
 
+    /**
+     * @param $userName
+     * @param $password
+     * @param $realName
+     * @return AdminUser
+     */
     public function addAdminUser($userName, $password, $realName)
     {
         $contact = new Contact();
@@ -84,6 +101,10 @@ class AdminAuthentication
         return $adminUser;
     }
 
+    /**
+     * @param AdminUser $user
+     * @param $password
+     */
     public function changeUserPassword(AdminUser $user, $password)
     {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -91,12 +112,20 @@ class AdminAuthentication
         $this->repository->save($user);
     }
 
+    /**
+     * @param $email
+     * @return bool
+     */
     public function userExists($email)
     {
         $user = $this->repository->findBy(['username' => $email]);
         return ($user) ? true : false;
     }
 
+    /**
+     * @param $email
+     * @return \Pantono\Acl\Entity\AdminUser|null
+     */
     public function findSingleUserByEmail($email)
     {
         $user = $this->repository->findOneBy(['username' => $email]);
