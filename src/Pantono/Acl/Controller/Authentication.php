@@ -44,9 +44,6 @@ class Authentication extends Controller
 
     public function loginAction(Request $request)
     {
-        if ($request->getMethod() == 'POST') {
-
-        }
         return $this->renderTemplate('user/login.twig');
     }
 }
