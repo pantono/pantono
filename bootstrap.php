@@ -1,15 +1,11 @@
 <?php
-use \Pantono\Core\Container\Application;
-use Silex\Provider\DoctrineServiceProvider;
-use \Pantono\Core\Model\Config\Database;
-use \Pantono\Core\Module\Loader;
 define('BOOTSTRAP_START', microtime(true));
 define('APPLICATION_BASE', __DIR__);
 define('APPLICATION_PUBLIC', APPLICATION_BASE . '/public');
 require_once __DIR__ . '/vendor/autoload.php';
 $config = new \Pantono\Core\Model\Config\Config();
 $config->addFile(__DIR__ . '/config/config.yml');
-$app = new Application();
+$app = new \Pantono\Core\Container\Application();
 if (php_sapi_name() == 'cli') {
     $app['locale'] = 'en';
 } else {
@@ -38,7 +34,7 @@ $baseModules = [
     'Admin'
 ];
 
-$moduleLoader = new Loader($app);
+$moduleLoader = new \Pantono\Core\Module\Loader($app);
 $app['module_loader'] = $moduleLoader;
 foreach ($baseModules as $module) {
     $moduleLoader->loadModule('Pantono\\' . $module);
@@ -46,9 +42,9 @@ foreach ($baseModules as $module) {
 $moduleLoader->loadEventListeners();
 $moduleLoader->loadDependencyInjection();
 $app->getEventDispatcher()->dispatchGeneralEvent('pantono.application.init');
-$databaseConfig = new Database($config->getItem('database'));
+$databaseConfig = new \Pantono\Core\Model\Config\Database($config->getItem('database'));
 $app->register(
-    new DoctrineServiceProvider(), [
+    new Silex\Provider\DoctrineServiceProvider(), [
         "db.options" => [
             'dbname' => $databaseConfig->getDatabaseName(),
             'user' => $databaseConfig->getUsername(),
