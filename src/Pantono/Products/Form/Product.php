@@ -2,6 +2,8 @@
 
 namespace Pantono\Products\Form;
 
+use Pantono\Core\Form\Element\Hidden;
+use Pantono\Core\Form\Element\Text;
 use Pantono\Core\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Email;
@@ -10,66 +12,18 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class Product extends Form
 {
-    public function buildForm(FormBuilderInterface $builder, array $options = [])
+    public function buildFormFields()
     {
-        if ($options) {
+        $this->addAttribute('role', 'form');
+        $this->addAttribute('class', 'product-form');
+        $title = (new Text())->setName('title')->setLabel('Title')
+        ->setConstraints([
+            new NotBlank(),
+            new Email()
+        ]);
+        $this->addElement($title);
 
-        }
-        $builder->setAttribute('role', 'form');
-        $builder->setAttribute('class', 'product-form');
-        $builder->add(
-            'title',
-            'text',
-            [
-                'constraints' => [
-                    new NotBlank(),
-                    new Email()
-                ]
-            ]
-        );
-        $builder->add(
-            'id',
-            'hidden'
-        );
-
-        $builder
-            ->add(
-                'username',
-                'email',
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                        new Email()
-                    ],
-                    'attr' => [
-                        'class' => 'form-control',
-                        'placeholder' => 'Username',
-                    ],
-                    'label' => false
-                ]
-            )
-            ->add(
-                'password',
-                'password',
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                        new Length(['min' => 5])
-                    ],
-                    'attr' => [
-                        'class' => 'form-control',
-                        'placeholder' => 'Password',
-                    ],
-                    'label' => false
-                ]
-            )
-            ->add(
-                'remember_me',
-                'checkbox',
-                [
-                    'label' => 'Remember Me',
-                    'required' => false
-                ]
-            );
+        $id = (new Hidden())->setName('id');
+        $this->addElement($id);
     }
 }
