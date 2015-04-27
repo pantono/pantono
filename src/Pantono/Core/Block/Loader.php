@@ -9,6 +9,7 @@ class Loader
     private $blocks;
     private $eventDispatcher;
     private $blockCache;
+    private $application;
 
     public function __construct(Application $application, Dispatcher $eventDispatcher)
     {
