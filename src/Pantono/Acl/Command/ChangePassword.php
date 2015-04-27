@@ -21,6 +21,10 @@ class ChangePassword extends AbstractCommand
         $password = $this->getPassword($input, $output);
 
         $userEntity = $this->getAuthenticationClass()->findSingleUserByEmail($user);
+        if ($userEntity === null) {
+            $this->showError($output, 'error_user_not_exists', ['%user%' => $user]);
+            return null;
+        }
         $this->getAuthenticationClass()->changeUserPassword($userEntity, $password);
         $this->showInfo($output, 'Password updated');
     }
