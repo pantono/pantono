@@ -18,6 +18,12 @@ trait UserCommandTraits
      * @return mixed
      */
     abstract public function showError($output, $name, $options);
+
+    /**
+     * @param $string
+     * @return mixed
+     */
+    abstract public function translate($string);
     protected function getPassword(InputInterface $input, OutputInterface $output)
     {
         $helper = $this->getHelper('question');
