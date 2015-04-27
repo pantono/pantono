@@ -118,7 +118,7 @@ class AdminAuthentication
      */
     public function userExists($email)
     {
-        $user = $this->repository->findBy(['username' => $email]);
+        $user = $this->repository->getUserByUsername($email);
         return ($user) ? true : false;
     }
 
@@ -128,7 +128,7 @@ class AdminAuthentication
      */
     public function findSingleUserByEmail($email)
     {
-        $user = $this->repository->findOneBy(['username' => $email]);
+        $user = $this->repository->getUserByUsername($email);
         return $user;
     }
 }
