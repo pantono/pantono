@@ -11,8 +11,9 @@ class Category extends Controller
 {
     public function addAction(Request $request)
     {
-        $form = $this->getCategoryForm($request);
-        return $this->renderTemplate('admin/categories/add.twig', ['form' => $form->createView()]);
+        $form = $this->getCategoryForm();
+        $postData = $request->request->all();
+        return $this->renderTemplate('admin/categories/add.twig', ['form' => $form->createView(), 'postData' => $postData]);
     }
 
     /**
