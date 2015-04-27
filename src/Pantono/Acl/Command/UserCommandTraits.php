@@ -6,7 +6,17 @@ use Symfony\Component\Console\Question\Question;
 
 trait UserCommandTraits
 {
+    /**
+     * @param $name
+     */
     abstract function getHelper($name);
+
+    /**
+     * @param OutputInterface $output
+     * @param string $name
+     * @param $options
+     * @return mixed
+     */
     abstract function showError($output, $name, $options);
     protected function getPassword(InputInterface $input, OutputInterface $output)
     {
