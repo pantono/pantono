@@ -129,6 +129,10 @@ class CacheItem implements CacheItemInterface
      */
     public function getExpiration()
     {
-        return $this->ttl;
+        if ($this->ttl instanceof \DateTime) {
+            return $this->ttl;
+        }
+
+        return new \DateTime($this->ttl);
     }
 }
