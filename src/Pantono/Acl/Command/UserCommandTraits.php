@@ -2,9 +2,12 @@
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 
 trait UserCommandTraits
 {
+    abstract function getHelper($name);
+    abstract function showError($output, $name, $options);
     protected function getPassword(InputInterface $input, OutputInterface $output)
     {
         $helper = $this->getHelper('question');
