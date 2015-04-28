@@ -20,7 +20,7 @@ abstract class AbstractBlock implements BlockInterface
 
     abstract public function render(array $arguments = []);
 
-    public function doRender()
+    public function doRender(array $arguments = [])
     {
         $this->setRenderedBlock($this->render());
         return $this->getRenderedBlock();

@@ -54,7 +54,7 @@ class Subscriber implements EventSubscriberInterface
         $this->application['twig']->addFunction(new \Twig_SimpleFunction('pantono_block', function ($block) use ($app) {
             $args = func_get_args();
             array_shift($args);
-            $content = $app->getPantonoService('blocks')->renderBlock($block, $args);
+            $content = $app->getServiceLocator()->getService('Blocks')->renderBlock($block, $args);
             return $content;
         }, ['is_safe' => ['html']]));
     }
