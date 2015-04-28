@@ -31,15 +31,15 @@ class Core implements EventSubscriberInterface
         $this->application = $event->getApplication();
 
         $app = $event->getApplication();
-        $app->registerAlias('config', 'config');
-        $app->registerAlias('dispatcher', 'pantono.event.dispatcher');
+        $app->getServiceLocator()->registerAlias('config', 'config');
+        $app->getServiceLocator()->registerAlias('dispatcher', 'pantono.event.dispatcher');
         $app->register(new ServiceControllerServiceProvider());
         $app->register(new ValidatorServiceProvider());
         $app->register(new FormServiceProvider());
         $this->registerTranslationServiceProvider();
         if (php_sapi_name() !== 'cli') {
             $this->application->register(new SessionServiceProvider());
-            $this->application->registerAlias('session', 'session');
+            $this->application->getServiceLocator()->registerAlias('session', 'session');
         }
     }
 

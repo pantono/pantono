@@ -1,4 +1,4 @@
-<?php namespace Pantono\Products\Filter;
+<?php namespace Pantono\Products\Model\Filter;
 
 class ProductListingFilter
 {

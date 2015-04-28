@@ -9,6 +9,7 @@ use Pantono\Core\Event\Manager;
 use Pantono\Core\Exception\Service\NotFound;
 use Pantono\Core\Model\Config\Config;
 use Doctrine\ORM\EntityManager;
+use Pantono\Core\Service\Locator;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -121,69 +122,16 @@ class Application extends \Silex\Application
         return $this['bootstrap'];
     }
 
+    public function getServiceLocator()
+    {
+        if (!isset($this['pantono.service.locator'])) {
+            $this['pantono.service.locator'] = new Locator($this);
+        }
+        return $this['pantono.service.locator'];
+    }
+
     public function getPantonoService($name)
     {
-        if (strtolower($name) === 'application') {
-            return $this;
-        }
-        if (isset($this['pantono.service.' . $name])) {
-            return $this['pantono.service.' . $name];
-        }
-        if (isset($this->aliases[$name])) {
-            return $this[$this->aliases[$name]];
-        }
-
-        $service = isset($this->pantonoServices[$name]) ? $this->pantonoServices[$name] : null;
-
-        if (!$service) {
-            /**
-             * @todo Add proper exception for this error
-             */
-            throw new \Exception('Service ' . $name . ' is not registered');
-        }
-
-        $params = [];
-        foreach ($service['params'] as $param) {
-
-            $params[] = $this->generateParameter($param);
-        }
-        $result = call_user_func_array(
-            [new \ReflectionClass($service['class']), 'newInstance'],
-            $params
-        );
-        $this['pantono.service.' . $name] = $result;
-        return $this['pantono.service.' . $name];
-    }
-
-    public function generateParameter($param)
-    {
-        if (is_array($param)) {
-            if ($param[0] === 'Repository') {
-                return $this->getEntityManager()->getRepository($param[1]);
-            }
-        }
-
-        if (substr($param, 0, 1) === '@') {
-            return $this->getPantonoService(substr($param, 1));
-        }
-        if (substr($param, 0, 1) === '~') {
-            $class = substr($param, 1);
-            return new $class;
-        }
-        return $param;
-    }
-
-    public function addPantonoService($name, $class, $params)
-    {
-        $this->pantonoServices[$name] = [
-            'class' => $class,
-            'params' => $params
-        ];
-        return true;
-    }
-
-    public function registerAlias($name, $alias)
-    {
-        $this->aliases[$name] = $alias;
+        return $this->getServiceLocator()->getService($name);
     }
 }

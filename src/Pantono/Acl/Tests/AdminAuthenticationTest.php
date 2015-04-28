@@ -84,11 +84,7 @@ class AdminAuthentication extends \PHPUnit_Framework_TestCase
 
     public function testAuthenticateAdminUserValid()
     {
-        $adminUser = new AdminUser();
-        $adminUser->setId(1);
-        $adminUser->setUsername('test');
-        $password = password_hash('test', PASSWORD_DEFAULT);
-        $adminUser->setPassword($password);
+        $adminUser = $this->getTestAdminUser();
         $this->authRepository->expects($this->once())
             ->method('getUserByUsername')
             ->willReturn($adminUser);
@@ -97,11 +93,7 @@ class AdminAuthentication extends \PHPUnit_Framework_TestCase
 
     public function testAuthenticateAdminUserInvalidPassword()
     {
-        $adminUser = new AdminUser();
-        $adminUser->setId(1);
-        $adminUser->setUsername('test');
-        $password = password_hash('test', PASSWORD_DEFAULT);
-        $adminUser->setPassword($password);
+        $adminUser = $this->getTestAdminUser();
         $this->authRepository->expects($this->once())
             ->method('getUserByUsername')
             ->willReturn($adminUser);
@@ -152,17 +144,17 @@ class AdminAuthentication extends \PHPUnit_Framework_TestCase
     public function testUserExists()
     {
         $this->authRepository->expects($this->once())
-            ->method('findBy')
-            ->with(['username' => 'test'])
-            ->willReturn(true);;
+            ->method('getUserByUsername')
+            ->with('test')
+            ->willReturn(true);
         $this->assertEquals(true, $this->adminAuthentication->userExists('test'));
     }
 
     public function testUserExistsNot()
     {
         $this->authRepository->expects($this->once())
-            ->method('findBy')
-            ->with(['username' => 'test'])
+            ->method('getUserByUsername')
+            ->with('test')
             ->willReturn(false);
         $this->assertEquals(false, $this->adminAuthentication->userExists('test'));
     }
@@ -190,5 +182,15 @@ class AdminAuthentication extends \PHPUnit_Framework_TestCase
         return $this->getMockBuilder($class)
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    private function getTestAdminUser()
+    {
+        $adminUser = new AdminUser();
+        $adminUser->setId(1);
+        $adminUser->setUsername('test');
+        $password = password_hash('test', PASSWORD_DEFAULT);
+        $adminUser->setPassword($password);
+        return $adminUser;
     }
 }

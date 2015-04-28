@@ -86,7 +86,7 @@ class Module
     private function loadServices()
     {
         foreach ($this->getConfig()->getItem('services', null, []) as $name => $service) {
-            $this->application->addPantonoService($name, $service['class'], $service['arguments']);
+            $this->application->getServiceLocator()->registerService($name, $service['class'], $service['arguments']);
         }
     }
 
