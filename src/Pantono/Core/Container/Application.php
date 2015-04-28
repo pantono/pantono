@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class Application extends \Silex\Application
 {
     private $pantonoServices;
-    private $aliases;
 
     public function getServices()
     {
