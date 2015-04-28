@@ -17,37 +17,15 @@ class CreateUser extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $fullName = $this->getFullName($input, $output);
-        $user = $this->getEmail($input, $output);
-        $password = $this->getPassword($input, $output);
 
+        $fullName = $this->askQuestion($input, $output, new Question($this->translate('Please enter the name for the user').': ', ''), 'error_min_length', ['%length%' => 6]);
+
+        $user = $this->askQuestion($input, $output, new Question($this->translate('Please enter the email address for the new user').': ', ''), 'error_min_length', ['%length%' => 4]);
+        $passwordQuestion = new Question($this->translate('Please enter the password for the new user') . ': ', '');
+        $passwordQuestion->setHidden(true);
+        $password = $this->askQuestion($input, $output, $passwordQuestion, 'error_min_length', ['%length%' => 4]);
         $userEntity = $this->getAuthenticationClass()->addAdminUser($user, $password, $fullName);
         $this->showInfo($output, 'User Created! ID: %id%', ['%id%' => $userEntity->getId()]);
-    }
-
-    private function getEmail(InputInterface $input, OutputInterface $output)
-    {
-        $helper = $this->getHelper('question');
-        $userQuestion = new Question($this->translate('Please enter the email address for the new user').': ', '');
-        $user = $helper->ask($input, $output, $userQuestion);
-        if (strlen($user) < 4) {
-            $this->showError($output, 'error_min_length', ['%length%' => 4]);
-            return $this->getEmail($input, $output);
-        }
-        return $user;
-    }
-
-
-    private function getFullName(InputInterface $input, OutputInterface $output)
-    {
-        $helper = $this->getHelper('question');
-        $nameQuestion = new Question($this->translate('Please enter the name for the user').': ', '');
-        $password = $helper->ask($input, $output, $nameQuestion);
-        if (!$password) {
-            $this->showError($output, 'error_min_length', ['%length%' => 6]);
-            return $this->getFullName($input, $output);
-        }
-        return $password;
     }
 
     /**

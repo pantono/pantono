@@ -17,8 +17,10 @@ class ChangePassword extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $user = $this->getEmail($input, $output);
-        $password = $this->getPassword($input, $output);
+        $user = $this->askQuestion($input, $output, new Question($this->translate('Please enter the email address for the new user').': ', ''), 'error_min_length', ['%length%' => 4]);
+        $passwordQuestion = new Question($this->translate('Please enter the password for the new user') . ': ', '');
+        $passwordQuestion->setHidden(true);
+        $password = $this->askQuestion($input, $output, $passwordQuestion, 'error_min_length', ['%length%' => 4]);
 
         $userEntity = $this->getAuthenticationClass()->findSingleUserByEmail($user);
         if ($userEntity === null) {
@@ -27,24 +29,6 @@ class ChangePassword extends AbstractCommand
         }
         $this->getAuthenticationClass()->changeUserPassword($userEntity, $password);
         $this->showInfo($output, 'Password updated');
-    }
-
-
-    private function getEmail(InputInterface $input, OutputInterface $output)
-    {
-        $helper = $this->getHelper('question');
-        $userQuestion = new Question($this->translate('Please enter the email address for the user account').': ', '');
-        $user = $helper->ask($input, $output, $userQuestion);
-        if (strlen($user) < 4) {
-            $this->showError($output, 'error_min_length', ['%length%' => 4]);
-            return $this->getEmail($input, $output);
-        }
-
-        if (!$this->getAuthenticationClass()->userExists($user)) {
-            $this->showError($output, 'Username %user% does not exist', ['%user%' => $user]);
-            return $this->getEmail($input, $output);
-        }
-        return $user;
     }
 
     /**
