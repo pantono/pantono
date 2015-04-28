@@ -10,6 +10,7 @@ use Pantono\Core\Form\Extensions;
 class Subscriber implements EventSubscriberInterface
 {
     private $application;
+
     public static function getSubscribedEvents()
     {
         return [
@@ -32,8 +33,7 @@ class Subscriber implements EventSubscriberInterface
             return $extensions;
         }));
         $app = $this->application;
-        foreach ($app->getBootstrap()->getModules() as $module)
-        {
+        foreach ($app->getBootstrap()->getModules() as $module) {
             $blocks = $module->getConfig()->getItem('blocks', null, []);
             foreach ($blocks as $blockId => $options) {
                 $block = new Block();

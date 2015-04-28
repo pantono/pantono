@@ -25,8 +25,7 @@ class AdminAuthentication
     public function getCurrentUser()
     {
         $userId = $this->session->get('admin_user_id');
-        if (!$userId)
-        {
+        if (!$userId) {
             return null;
         }
         $user = $this->repository->getUserInfo($userId);

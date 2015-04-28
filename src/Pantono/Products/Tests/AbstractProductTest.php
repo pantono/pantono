@@ -14,14 +14,14 @@ abstract class AbstractProductTest extends \PHPUnit_Framework_TestCase
         $product = new ProductEntity();
         $draft = new Draft();
         $variations = [];
-        for ($i=0;$i<$numVariations;$i++) {
+        for ($i = 0; $i < $numVariations; $i++) {
             $variation = new Variation();
             $variation->setDraft($draft);
             $vatStatus = new VatStatus();
             $vatStatus->setAmount(20);
             $vatStatus->setName('UK VAT 20%');
             $pricingArray = [];
-            for ($x=0;$x<$prices;$x++) {
+            for ($x = 0; $x < $prices; $x++) {
                 $pricing = new Pricing();
                 $pricing->setVatStatus($vatStatus);
                 $pricing->setVariation($variation);

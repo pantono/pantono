@@ -35,10 +35,10 @@ class ProductTest extends AbstractProductTest
     {
         $productEntity = $this->getDummyProduct(2);
         $product = new Product($productEntity);
-        $this->assertEquals(2,$product->getVariationCount());
+        $this->assertEquals(2, $product->getVariationCount());
 
         $productEntity = $this->getDummyProduct(10);
         $product = new Product($productEntity);
-        $this->assertEquals(10,$product->getVariationCount());
+        $this->assertEquals(10, $product->getVariationCount());
     }
 }

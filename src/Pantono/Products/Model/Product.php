@@ -3,6 +3,7 @@
 class Product
 {
     private $product;
+
     public function __construct(\Pantono\Products\Entity\Product $product)
     {
         $this->product = $product;

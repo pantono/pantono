@@ -1,3 +1,5 @@
 <?php namespace Pantono\Core\Cache\Interfaces;
 
-interface InvalidArgumentException { }
+interface InvalidArgumentException
+{
+}

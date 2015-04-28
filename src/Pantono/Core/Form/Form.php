@@ -40,7 +40,7 @@ abstract class Form extends AbstractType
     public function addElement(ElementInterface $element)
     {
         if (!$this->getBuilder() instanceof FormBuilderInterface) {
-            throw new \Exception(get_class($this).'::buildFormFields needs to be called before adding an element');
+            throw new \Exception(get_class($this) . '::buildFormFields needs to be called before adding an element');
         }
         $this->elements[] = $element;
     }
@@ -59,8 +59,7 @@ abstract class Form extends AbstractType
         foreach ($this->getAttributes() as $name => $value) {
             $builder->setAttribute($name, $value);
         }
-        foreach ($this->getElements() as $element)
-        {
+        foreach ($this->getElements() as $element) {
             $builder->add(
                 $element->getName(),
                 $element->getType(),

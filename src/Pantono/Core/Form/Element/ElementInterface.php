@@ -3,5 +3,6 @@
 interface ElementInterface
 {
     public function getType();
+
     public function getOptions();
 }

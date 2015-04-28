@@ -9,6 +9,7 @@ use Silex\Provider\DoctrineServiceProvider;
 class Subscriber implements EventSubscriberInterface
 {
     private $application;
+
     public static function getSubscribedEvents()
     {
         return [
@@ -34,6 +35,7 @@ class Subscriber implements EventSubscriberInterface
                 ],
             ]
         );
+        $this->application->getEntityManager()->getConfiguration()->setNamingStrategy(new \Doctrine\ORM\Mapping\UnderscoreNamingStrategy());
     }
 
 

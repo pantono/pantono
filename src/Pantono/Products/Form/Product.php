@@ -17,10 +17,10 @@ class Product extends Form
         $this->addAttribute('role', 'form');
         $this->addAttribute('class', 'product-form');
         $title = (new Text())->setName('title')->setLabel('Title')
-        ->setConstraints([
-            new NotBlank(),
-            new Email()
-        ]);
+            ->setConstraints([
+                new NotBlank(),
+                new Email()
+            ]);
         $this->addElement($title);
 
         $id = (new Hidden())->setName('id');

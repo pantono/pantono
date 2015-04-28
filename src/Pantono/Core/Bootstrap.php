@@ -32,10 +32,18 @@ class Bootstrap
         $application['debug'] = true;
         $this->application = $application;
         $this->application['bootstrap'] = $this;
+        $this->initDefinitions();
         $this->initLocale();
         $this->loadModules();
         $this->loadRoutes();
         return $this->application;
+    }
+
+    private function initDefinitions()
+    {
+        define('BOOTSTRAP_START', microtime(true));
+        define('APPLICATION_BASE', __DIR__ . '/../../../');
+        define('APPLICATION_PUBLIC', APPLICATION_BASE . '/public');
     }
 
     public function addModule($namespace)

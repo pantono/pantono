@@ -43,9 +43,9 @@ class Loader
             /**
              * @var $blockModel Block
              */
-            $blockModel = isset($this->blocks[$name])?$this->blocks[$name]:null;
+            $blockModel = isset($this->blocks[$name]) ? $this->blocks[$name] : null;
             if (!$blockModel) {
-                throw new Exception\BlockNotRegistered('Block '.$name.' called but not registered');
+                throw new Exception\BlockNotRegistered('Block ' . $name . ' called but not registered');
             }
             $className = $blockModel->getClassName();
             $this->blockCache[$name] = new $className($this->application, $this->application->getEventDispatcher());

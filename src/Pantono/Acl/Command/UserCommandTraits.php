@@ -25,6 +25,7 @@ trait UserCommandTraits
      * @return mixed
      */
     abstract public function translate($id, $params = []);
+
     protected function getPassword(InputInterface $input, OutputInterface $output)
     {
         $helper = $this->getHelper('question');

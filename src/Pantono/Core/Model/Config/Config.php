@@ -24,10 +24,10 @@ class Config
             return null;
         }
         if (!$value) {
-            return isset($this->contents[$section])?$this->contents[$section]:$default;
+            return isset($this->contents[$section]) ? $this->contents[$section] : $default;
         }
 
-        return isset($this->contents[$section][$value])?$this->contents[$section][$value]:$default;
+        return isset($this->contents[$section][$value]) ? $this->contents[$section][$value] : $default;
     }
 
     private function parseConfigFiles()
@@ -37,7 +37,7 @@ class Config
         foreach ($this->files as $file) {
             $fileContents = $parser->parse(file_get_contents($file));
             if ($fileContents) {
-                $contents =  array_merge_recursive($contents, $fileContents);
+                $contents = array_merge_recursive($contents, $fileContents);
             }
         }
         $this->contents = $contents;

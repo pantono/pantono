@@ -3,5 +3,6 @@
 interface BlockInterface
 {
     function render(array $arguments = []);
+
     function doRender(array $arguments = []);
 }

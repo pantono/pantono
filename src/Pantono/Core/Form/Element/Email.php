@@ -5,6 +5,7 @@ use Pantono\Core\Form\Element\Traits\Visible;
 class Email extends Element implements ElementInterface
 {
     use Visible;
+
     public function getType()
     {
         return 'email';

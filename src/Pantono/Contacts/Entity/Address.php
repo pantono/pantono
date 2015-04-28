@@ -7,7 +7,8 @@
  * @Entity(repositoryClass="Repository\ContactRepository")
  * @Table(name="address")
  */
-class Address {
+class Address
+{
     /**
      * @Id
      * @GeneratedValue(strategy="AUTO")

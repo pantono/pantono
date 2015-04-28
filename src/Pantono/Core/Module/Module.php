@@ -33,7 +33,7 @@ class Module
 
     public function getConfigFile()
     {
-        return file_exists($this->directory . '/config.yml')?$this->directory . '/config.yml':null;
+        return file_exists($this->directory . '/config.yml') ? $this->directory . '/config.yml' : null;
     }
 
     private function loadConfig()

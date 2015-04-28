@@ -22,7 +22,7 @@ class ProductRepository extends EntityRepository
             ->from('Products\Entity\Product', 'p');
         if ($filter->getName()) {
             $qb->where('p.name like :name')
-                ->setParameter('name', '%'.$filter->getName().'%');
+                ->setParameter('name', '%' . $filter->getName() . '%');
         }
         return $qb->getQuery()->getResult();
     }
