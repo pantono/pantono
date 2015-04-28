@@ -151,7 +151,7 @@ class Module
     /**
      * @param mixed $routes
      */
-    public function setRoutes($routes)
+    public function setRoutes(array $routes)
     {
         $this->routes = $routes;
     }
