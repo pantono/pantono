@@ -2,3 +2,6 @@ checks:
     php:
         code_rating: true
         duplication: true
+tools:
+  php_cpd: true
+  php_sim: false
