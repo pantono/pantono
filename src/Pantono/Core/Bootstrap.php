@@ -42,7 +42,7 @@ class Bootstrap
     {
         $module = new Module($this->application, $namespace);
         $module->load();
-        if ($module->getConfigFile()) {
+        if ($module->getConfigFile() !== null) {
             $this->getConfig()->addFile($module->getConfigFile());
         }
         $this->modules[$namespace] = $module;
