@@ -42,8 +42,8 @@ class Bootstrap
     private function initDefinitions()
     {
         define('BOOTSTRAP_START', microtime(true));
-        define('APPLICATION_BASE', __DIR__ . '/../../../');
-        define('APPLICATION_PUBLIC', APPLICATION_BASE . '/public');
+        define('APPLICATION_BASE', realpath(__DIR__ . '/../../../'));
+        define('APPLICATION_PUBLIC', realpath(APPLICATION_BASE . '/public'));
     }
 
     public function addModule($namespace)
