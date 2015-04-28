@@ -102,7 +102,7 @@ class Bootstrap
         $this->application['defined_routes'] = $routes;
         $app =& $this->application;
         foreach ($routes as $name => $route) {
-            $controllerId = str_replace('\\', '.', $route['controller']);
+
             if (!class_exists($route['controller'])) {
                 throw new Routes('Controller ' . $route['controller'] . ' for route ' . $routes['route'] . ' does not exist');
             }
@@ -111,17 +111,24 @@ class Bootstrap
                 throw new Routes('Action ' . $route['action'] . ' does not exist within controller ' . $route['controller']);
             }
 
-            if (!isset($this->controllers[$controllerId])) {
-                $this->controllers[$controllerId] = true;
-                $app[$controllerId] = $app->share(function () use ($app, $route) {
-                    $controller = $route['controller'];
-                    return new $controller($app, $app->getEventDispatcher(), $route['controller'], $route['action']);
-                });
-            }
+            $controllerId = $this->createController($route);
             if ($route['route']) {
                 $this->loadRoute($controllerId, $name, $route);
             }
         }
+    }
+
+    private function createController($route)
+    {
+        $controllerId = str_replace('\\', '.', $route['controller']);
+        if (!isset($this->controllers[$controllerId])) {
+            $app = $this->application;
+            $app[$controllerId] = $app->share(function () use ($app, $route) {
+                $controller = $route['controller'];
+                return new $controller($app, $app->getEventDispatcher(), $route['controller'], $route['action']);
+            });
+        }
+        return $controllerId;
     }
 
     private function loadRoute($controllerId, $name, array $route)
