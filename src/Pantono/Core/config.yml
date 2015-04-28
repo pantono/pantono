@@ -11,3 +11,8 @@ services:
     class: Pantono\Core\Event\Dispatcher
     arguments:
       - @Application
+  Blocks:
+    class: Pantono\Core\Block\Loader
+    arguments:
+      - @application
+      - @dispatcher

@@ -35,8 +35,11 @@ class Config
         $parser = new Parser();
         $contents = [];
         foreach ($this->files as $file) {
-            $contents += $parser->parse(file_get_contents($file));
+            $fileContents = $parser->parse(file_get_contents($file));
+            if ($fileContents) {
+                $contents =  array_merge_recursive($contents, $fileContents);
+            }
         }
-        $this->contents= $contents;
+        $this->contents = $contents;
     }
 }

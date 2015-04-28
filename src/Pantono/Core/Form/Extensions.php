@@ -5,6 +5,7 @@ namespace Pantono\Core\Form;
 
 use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Dispatcher;
+use Pantono\Core\Model\Config\Config;
 use Symfony\Component\Form\AbstractExtension;
 
 Class Extensions extends AbstractExtension
@@ -13,7 +14,7 @@ Class Extensions extends AbstractExtension
     private $dispatcher;
     private $application;
 
-    public function __construct(array $config, Dispatcher $dispatcher, Application $application)
+    public function __construct(Config $config, Dispatcher $dispatcher, Application $application)
     {
         $this->config = $config;
         $this->dispatcher = $dispatcher;
@@ -23,10 +24,12 @@ Class Extensions extends AbstractExtension
     protected function loadTypes()
     {
         $forms = [];
-        if (!isset($this->config['forms'])) {
+
+        $items = $this->config->getItem('forms');
+        if (!$items) {
             return [];
         }
-        foreach ($this->config['forms'] as $key => $form) {
+        foreach ($items as $key => $form) {
             $formClass = new $form($this->application, $this->dispatcher);
             $formClass->setName($key);
             $forms[] = $formClass;

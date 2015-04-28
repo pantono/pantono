@@ -10,3 +10,20 @@ locales:
     es: locales/es.yml
 admin:
   session_timeout: 1800
+modules:
+  - Pantono\Database
+  - Pantono\Acl
+  - Pantono\Assets
+  - Pantono\Cart
+  - Pantono\Categories
+  - Pantono\Contacts
+  - Pantono\Core
+  - Pantono\Customers
+  - Pantono\Email
+  - Pantono\Orders
+  - Pantono\Pages
+  - Pantono\Payments
+  - Pantono\Products
+  - Pantono\Templates
+  - Pantono\Suppliers
+  - Pantono\Admin

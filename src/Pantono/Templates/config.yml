@@ -1,0 +1,2 @@
+event_subscribers:
+    - 'Pantono\Templates\Event\Subscriber'

@@ -1,0 +1,2 @@
+event_subscribers:
+    - 'Pantono\Database\Event\Subscriber'

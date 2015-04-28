@@ -2,6 +2,8 @@
 
 namespace Pantono\Core\Container;
 
+use Pantono\Core\Block\Loader;
+use Pantono\Core\Bootstrap;
 use Pantono\Core\Event\Dispatcher;
 use Pantono\Core\Event\Manager;
 use Pantono\Core\Exception\Service\NotFound;
@@ -14,6 +16,11 @@ class Application extends \Silex\Application
 {
     private $pantonoServices;
     private $aliases;
+
+    public function getServices()
+    {
+        return $this->pantonoServices;
+    }
 
     /**
      * @param $module - Module name
@@ -51,13 +58,6 @@ class Application extends \Silex\Application
         return $this->getFormBuilder()->createBuilder($name);
     }
 
-    /**
-     * @return \Pantono\Core\Module\Loader
-     */
-    public function getModuleLoader()
-    {
-        return $this['module_loader'];
-    }
 
     /**
      * @return Config
@@ -98,11 +98,27 @@ class Application extends \Silex\Application
     }
 
     /**
+     * @return Loader
+     */
+    public function getBlockLoader()
+    {
+        return $this['pantono.service.blocks'];
+    }
+
+    /**
      * @return Session
      */
     public function getSession()
     {
         return $this['session'];
+    }
+
+    /**
+     * @return Bootstrap
+     */
+    public function getBootstrap()
+    {
+        return $this['bootstrap'];
     }
 
     public function getPantonoService($name)

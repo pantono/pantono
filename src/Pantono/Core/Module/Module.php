@@ -2,19 +2,24 @@
 
 namespace Pantono\Core\Module;
 
+use Pantono\Core\Container\Application;
+use Pantono\Core\Model\Config\Config;
 use Symfony\Component\Yaml\Parser;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Module
 {
     private $namespace;
     private $config;
     private $directory;
-    private $routes;
-    private $entityMappings;
+    private $routes = [];
+    private $application;
+    private $eventListeners;
 
-    public function __construct($namespace)
+    public function __construct(Application $application, $namespace)
     {
         $this->namespace = $namespace;
+        $this->application = $application;
     }
 
     public function load()
@@ -22,14 +27,24 @@ class Module
         $this->directory = APPLICATION_BASE . '/src/' . str_replace('\\', '/', $this->namespace);
         $this->loadConfig();
         $this->loadRoutes();
+        $this->loadServices();
+        $this->loadEventListeners();
+    }
+
+    public function getConfigFile()
+    {
+        return file_exists($this->directory . '/config.yml')?$this->directory . '/config.yml':null;
     }
 
     private function loadConfig()
     {
         if (file_exists($this->directory . '/config.yml')) {
-            $parser = new Parser();
-            $this->config = $parser->parse(file_get_contents($this->directory . '/config.yml'));
+            $config = new Config();
+            $config->addFile($this->directory . '/config.yml');
+            $this->setConfig($config);
+            return true;
         }
+        $this->setConfig(new Config());
     }
 
     private function loadRoutes()
@@ -43,18 +58,42 @@ class Module
 
     public function getEntityMapping()
     {
-        if (file_exists($this->directory.'/Entity')) {
+        if (file_exists($this->directory . '/Entity')) {
             return [
                 'type' => 'annotation',
-                'namespace' => $this->namespace.'\\Entity',
-                'path' => $this->directory.'/Entity'
+                'namespace' => $this->namespace . '\\Entity',
+                'path' => $this->directory . '/Entity'
             ];
         }
         return [];
     }
 
+    private function loadEventListeners()
+    {
+        /**
+         * @var $subscriber EventSubscriberInterface
+         */
+        foreach ($this->getConfig()->getItem('event_subscribers', null, []) as $subscriber) {
+            $this->application->getEventManager()->addSubscriber($subscriber);
+            $events = $subscriber::getSubscribedEvents();
+            $this->eventListeners[] = $events;
+        }
+    }
+
+    private function loadServices()
+    {
+        foreach ($this->getConfig()->getItem('services', null, []) as $name => $service) {
+            $this->application->addPantonoService($name, $service['class'], $service['arguments']);
+        }
+    }
+
+    public function getCommandLineCommands()
+    {
+        return $this->getConfig()->getItem('commands');
+    }
+
     /**
-     * @return mixed
+     * @return Config
      */
     public function getConfig()
     {
@@ -62,9 +101,9 @@ class Module
     }
 
     /**
-     * @param mixed $config
+     * @param Config $config
      */
-    public function setConfig($config)
+    public function setConfig(Config $config)
     {
         $this->config = $config;
     }
@@ -115,21 +154,5 @@ class Module
     public function setRoutes($routes)
     {
         $this->routes = $routes;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEntityMappings()
-    {
-        return $this->entityMappings;
-    }
-
-    /**
-     * @param mixed $entityMappings
-     */
-    public function setEntityMappings($entityMappings)
-    {
-        $this->entityMappings = $entityMappings;
     }
 }

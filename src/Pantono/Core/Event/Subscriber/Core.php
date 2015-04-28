@@ -1,51 +1,51 @@
-<?php
-
-namespace Pantono\Core\Event\Subscriber;
+<?php namespace Pantono\Core\Event\Subscriber;
 
 use Pantono\Core\Event\Events\General;
-use Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
-use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Silex\Provider\ServiceControllerServiceProvider;
-use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
-use Pantono\Core\Form\Extensions;
+use Pantono\Core\Container\Application;
 use Silex\Provider\SessionServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 
 class Core implements EventSubscriberInterface
 {
+    /**
+     * @var Application
+     */
+    private $application;
+
     public static function getSubscribedEvents()
     {
         return [
             'pantono.bootstrap.start' => [
-                ['onBootstrap']
+                ['onBootstrap', 100]
             ]
         ];
     }
 
     public function onBootstrap(General $event)
     {
+        $this->application = $event->getApplication();
+
         $app = $event->getApplication();
-        $moduleLoader = $app->getModuleLoader();
-        $app->register(new DoctrineOrmServiceProvider(), [
-            "orm.proxies_dir" => APPLICATION_BASE . "/proxies",
-            "orm.em.options" => [
-                "mappings" => $moduleLoader->getEntityMappings(),
-            ],
-        ]);
-
+        $app->registerAlias('config', 'config');
+        $app->registerAlias('dispatcher', 'pantono.event.dispatcher');
         $app->register(new ServiceControllerServiceProvider());
-
-        $app->register(new TwigServiceProvider(), array(
-            'twig.path' => APPLICATION_BASE . '/themes/core/templates',
-        ));
-
-
         $app->register(new ValidatorServiceProvider());
         $app->register(new FormServiceProvider());
+        $this->registerTranslationServiceProvider();
+        if (php_sapi_name() !== 'cli') {
+            $this->application->register(new SessionServiceProvider());
+            $this->application->registerAlias('session', 'session');
+        }
+    }
+
+    private function registerTranslationServiceProvider()
+    {
+        $app = $this->application;
         $app->register(new TranslationServiceProvider(), [
             'locale_fallbacks' => ['en']
         ]);
@@ -61,17 +61,5 @@ class Core implements EventSubscriberInterface
             }
             return $translator;
         }));
-        $app['twig']->addExtension(new TranslationExtension($app['translator']));
-        $app['form.extensions'] = $app->share($app->extend('form.extensions', function ($extensions) use ($app) {
-            $extensions[] = new Extensions($app->getModuleLoader()->getConfig(), $app->getEventDispatcher(), $app);
-            return $extensions;
-        }));
-
-        if (php_sapi_name() !== 'cli') {
-            $app->register(new SessionServiceProvider());
-            $app->registerAlias('session', 'session');
-        }
-        $app->registerAlias('config', 'config');
-        $app->getModuleLoader()->loadBlocks();
     }
 }
