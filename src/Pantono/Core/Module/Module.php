@@ -51,7 +51,10 @@ class Module
     {
         if (file_exists($this->directory . '/routes.yml')) {
             $parser = new Parser();
-            $this->routes = $parser->parse(file_get_contents($this->directory . '/routes.yml'));
+            $routesConfig = $parser->parse(file_get_contents($this->directory . '/routes.yml'));
+            if (is_array($routesConfig)) {
+                $this->routes = $routesConfig;
+            }
         }
     }
 
