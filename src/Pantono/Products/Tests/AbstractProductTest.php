@@ -15,19 +15,8 @@ abstract class AbstractProductTest extends \PHPUnit_Framework_TestCase
         $draft = new Draft();
         $variations = [];
         for ($i = 0; $i < $numVariations; $i++) {
-            $variation = new Variation();
+            $variation = $this->getDummyVariation($prices);
             $variation->setDraft($draft);
-            $vatStatus = new VatStatus();
-            $vatStatus->setAmount(20);
-            $vatStatus->setName('UK VAT 20%');
-            $pricingArray = [];
-            for ($x = 0; $x < $prices; $x++) {
-                $pricing = new Pricing();
-                $pricing->setVatStatus($vatStatus);
-                $pricing->setVariation($variation);
-                $pricingArray[] = $pricing;
-            }
-            $variation->setPricing($pricingArray);
             $variations[] = $variation;
         }
         $draft->setVariations($variations);
@@ -36,5 +25,28 @@ abstract class AbstractProductTest extends \PHPUnit_Framework_TestCase
         $status = new Status();
         $product->setStatus($status);
         return $product;
+    }
+
+    protected function getDummyVariation($numPrices)
+    {
+        $variation = new Variation();
+        $vatStatus = $this->getDummyVatStatus();
+        $pricingArray = [];
+        for ($x = 0; $x < $numPrices; $x++) {
+            $pricing = new Pricing();
+            $pricing->setVatStatus($vatStatus);
+            $pricing->setVariation($variation);
+            $pricingArray[] = $pricing;
+        }
+        $variation->setPricing($pricingArray);
+        return $variation;
+    }
+
+    protected function getDummyVatStatus($amount = 20, $status = 'UK VAT 20%')
+    {
+        $vatStatus = new VatStatus();
+        $vatStatus->setAmount($amount);
+        $vatStatus->setName($status);
+        return $vatStatus;
     }
 }
