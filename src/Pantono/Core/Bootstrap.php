@@ -163,7 +163,7 @@ class Bootstrap
     {
         $application = new \Symfony\Component\Console\Application();
         foreach ($this->getModules() as $module)
-            foreach ($module->getConfig()->getItem('commands') as $command) {
+            foreach ($module->getConfig()->getItem('commands', null, []) as $command) {
                 $command = new $command;
                 $command->setContainer($this->application);
                 $application->add($command);
