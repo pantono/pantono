@@ -15,19 +15,31 @@ class Config
         $this->parseConfigFiles();
     }
 
-    public function getItem($section, $value = null, $default = null)
+    public function getItem($key, $subKey = null, $default = null)
     {
         if (!$this->contents) {
             $this->parseConfigFiles();
         }
-        if (!isset($this->contents[$section])) {
+        if ($subKey === null) {
+            return $this->getKeyValue($key, $default);
+        }
+        return $this->getSubKeyValue($key, $subKey, $default);
+    }
+
+    public function getKeyValue($key, $default)
+    {
+        if (!isset($this->contents[$key])) {
             return $default;
         }
-        if (!$value) {
-            return isset($this->contents[$section]) ? $this->contents[$section] : $default;
-        }
+        return $this->contents[$key];
+    }
 
-        return isset($this->contents[$section][$value]) ? $this->contents[$section][$value] : $default;
+    public function getSubKeyValue($key, $subKey, $default)
+    {
+        if (!isset($this->contents[$key][$subKey])) {
+            return $default;
+        }
+        return $this->contents[$key][$subKey];
     }
 
     private function parseConfigFiles()
