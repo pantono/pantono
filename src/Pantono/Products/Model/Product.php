@@ -31,11 +31,15 @@ class Product
         foreach ($variations as $variation) {
             $prices = $variation->getPricing();
             foreach ($prices as $price) {
-                if ($min === 0 || $price->getPrice() <= $min && intval($price->getPrice()) > 0) {
-                    $min = $price->getPrice();
-                }
-                if ($max === 0 || $price->getPrice() > $max && intval($price->getPrice()) > 0) {
-                    $max = $price->getPrice();
+                if ($price->getPrice() > 0) {
+
+                    if ($min === 0 || $price->getPrice() <= $min) {
+                        $min = $price->getPrice();
+                    }
+
+                    if ($max === 0 || $price->getPrice() >= $max) {
+                        $max = $price->getPrice();
+                    }
                 }
             }
         }

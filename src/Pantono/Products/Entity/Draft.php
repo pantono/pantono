@@ -286,7 +286,7 @@ class Draft
     }
 
     /**
-     * @return mixed
+     * @return Variation[]
      */
     public function getVariations()
     {
