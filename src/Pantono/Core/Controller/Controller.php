@@ -43,6 +43,6 @@ abstract class Controller
 
     protected function flashMessenger($message, $type = 'info')
     {
-        $this->getService('session')->set('flash_message');
+        $this->getService('session')->set('FlashMessenger')->addMessage($message, $type);
     }
 }

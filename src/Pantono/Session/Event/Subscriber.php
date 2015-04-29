@@ -10,8 +10,6 @@ use Pantono\Core\Form\Extensions;
 
 class Subscriber implements EventSubscriberInterface
 {
-    private $application;
-
     public static function getSubscribedEvents()
     {
         return [
