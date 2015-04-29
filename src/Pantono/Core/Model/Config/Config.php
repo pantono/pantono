@@ -6,7 +6,7 @@ use Symfony\Component\Yaml\Parser;
 
 class Config
 {
-    private $files;
+    private $files = [];
     private $contents;
 
     public function addFile($filename)
