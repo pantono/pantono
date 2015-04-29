@@ -176,21 +176,27 @@ abstract class Element
         return $options;
     }
 
-    public function setData(array $data) {
+    public function setData(array $data)
+    {
         foreach ($data as $key => $value) {
             if ($key === 'constraints') {
-                foreach ($value as $constraint) {
-                    $this->addConstraint($this->generateConstraint($constraint));
-                }
+                $this->addConstraints($value);
                 continue;
             }
             if (property_exists($this, $key)) {
                 $key = str_replace('_', ' ', $key);
                 $key = ucwords($key);
                 $key = str_replace(' ', '', $key);
-                $setter = 'set'.$key;
+                $setter = 'set' . $key;
                 $this->{$setter}($value);
             }
+        }
+    }
+
+    public function addConstraints(array $constraints)
+    {
+        foreach ($constraints as $constraint) {
+            $this->addConstraint($this->generateConstraint($constraint));
         }
     }
 
