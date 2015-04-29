@@ -77,10 +77,10 @@ class Product
             $min = $max = 0;
             $prices = $variation->getPricing();
             foreach ($prices as $price) {
-                if ($min === 0 || $price->getPrice() < $min) {
+                if ($price->getPrice() < $min) {
                     $min = $price->getPrice();
                 }
-                if ($max === 0 || $price->getPrice() > $max) {
+                if ($price->getPrice() > $max) {
                     $max = $price->getPrice();
                 }
             }
