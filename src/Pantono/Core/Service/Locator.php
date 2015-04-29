@@ -2,6 +2,7 @@
 
 use Pantono\Core\Container\Application;
 use Pantono\Core\Exception\Service\NotFound;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 class Locator
 {
@@ -52,9 +53,7 @@ class Locator
     private function generateParameter($param)
     {
         if (is_array($param)) {
-            if ($param[0] === 'Repository') {
-                return $this->application->getEntityManager()->getRepository($param[1]);
-            }
+            return $this->generateArrayParameter($param);
         }
 
         if (substr($param, 0, 1) === '@') {
@@ -65,6 +64,14 @@ class Locator
             return new $class;
         }
         return $param;
+    }
+
+    private function generateArrayParameter(array $param)
+    {
+        if ($param[0] === 'Repository') {
+            return $this->application->getEntityManager()->getRepository($param[1]);
+        }
+        throw new ServiceNotFoundException('Service ' . $param[0] . ' not found');
     }
 
     public function isServiceRegistered($name)
