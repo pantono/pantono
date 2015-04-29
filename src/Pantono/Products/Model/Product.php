@@ -58,6 +58,22 @@ class Product
         return $prices;
     }
 
+    public function getAllPricesByVariation()
+    {
+        $prices = [];
+        foreach ($this->product->getDraft()->getVariations() as $variation) {
+            foreach ($variation->getPricing() as $price) {
+                if ($price->getPrice() > 0) {
+                    $prices[$variation->getId()] = $price->getPrice();
+                }
+            }
+        }
+        uasort($prices, function ($a, $b) {
+            return $a > $b;
+        });
+        return $prices;
+    }
+
     /**
      * Gets the minimum and maximum price for each variation
      *
@@ -68,17 +84,7 @@ class Product
         $priceArray = [];
         $variations = $this->product->getDraft()->getVariations();
         foreach ($variations as $variation) {
-            $min = $max = 0;
-            $prices = $variation->getPricing();
-            foreach ($prices as $price) {
-                if ($price->getPrice() < $min) {
-                    $min = $price->getPrice();
-                }
-                if ($price->getPrice() > $max) {
-                    $max = $price->getPrice();
-                }
-            }
-            $priceArray[$variation->getId()] = ['min' => $min, 'max' => $max];
+            $priceArray[$variation->getId()] = ['min' => $variation->getMinPrice(), 'max' => $variation->getMaxPrice()];
         }
         return $priceArray;
     }

@@ -41,4 +41,40 @@ class ProductTest extends AbstractProductTest
         $product = new Product($productEntity);
         $this->assertEquals(10, $product->getVariationCount());
     }
+
+    public function testGetAllPrices()
+    {
+        $productEntity = $this->getDummyProduct(3);
+        $productEntity->getDraft()->getVariations()[0]->getPricing()[0]->setPrice(10);
+        $productEntity->getDraft()->getVariations()[1]->getPricing()[0]->setPrice(20);
+        $productEntity->getDraft()->getVariations()[2]->getPricing()[0]->setPrice(15);
+        $product = new Product($productEntity);
+        $this->assertEquals([10,15,20], $product->getAllPrices());
+    }
+
+    public function testGetAllPricesByVariation()
+    {
+        $productEntity = $this->getDummyProduct(3);
+        $productEntity->getDraft()->getVariations()[0]->setId(1);
+        $productEntity->getDraft()->getVariations()[1]->setId(2);
+        $productEntity->getDraft()->getVariations()[2]->setId(3);
+        $productEntity->getDraft()->getVariations()[0]->getPricing()[0]->setPrice(10);
+        $productEntity->getDraft()->getVariations()[1]->getPricing()[0]->setPrice(20);
+        $productEntity->getDraft()->getVariations()[2]->getPricing()[0]->setPrice(15);
+        $product = new Product($productEntity);
+        $this->assertEquals([1 => 10, 3 => 15, 2 => 20], $product->getAllPricesByVariation());
+    }
+
+    public function testVariationGetMinMax()
+    {
+        $productEntity = $this->getDummyProduct(2,3);
+        $productEntity->getDraft()->getVariations()[0]->setId(1);
+        $productEntity->getDraft()->getVariations()[1]->setId(2);
+        $productEntity->getDraft()->getVariations()[0]->getPricing()[0]->setPrice(10);
+        $productEntity->getDraft()->getVariations()[0]->getPricing()[1]->setPrice(5);
+        $productEntity->getDraft()->getVariations()[1]->getPricing()[0]->setPrice(20);
+        $productEntity->getDraft()->getVariations()[1]->getPricing()[1]->setPrice(50);
+        $product = new Product($productEntity);
+        $this->assertEquals([1 => ['min' => 5, 'max' => 10], 2 => ['min' => 20, 'max' => 50]], $product->getVariationMinMax());
+    }
 }
