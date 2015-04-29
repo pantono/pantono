@@ -26,24 +26,42 @@ class Product
      */
     public function getPriceMinMax()
     {
-        $min = $max = 0;
+        return ['min' => $this->getPriceMin(), 'max' => $this->getPriceMax()];
+    }
+
+    public function getPriceMin()
+    {
+        $min = 0;
         $variations = $this->product->getDraft()->getVariations();
         foreach ($variations as $variation) {
             $prices = $variation->getPricing();
             foreach ($prices as $price) {
                 if ($price->getPrice() > 0) {
-
-                    if ($min === 0 || $price->getPrice() <= $min) {
+                    if ($price->getPrice() <= $min) {
                         $min = $price->getPrice();
                     }
+                }
+            }
+        }
+        return $min;
+    }
 
-                    if ($max === 0 || $price->getPrice() >= $max) {
+
+    public function getPriceMax()
+    {
+        $max = 0;
+        $variations = $this->product->getDraft()->getVariations();
+        foreach ($variations as $variation) {
+            $prices = $variation->getPricing();
+            foreach ($prices as $price) {
+                if ($price->getPrice() > 0) {
+                    if ($price->getPrice() >= $max) {
                         $max = $price->getPrice();
                     }
                 }
             }
         }
-        return ['min' => $min, 'max' => $max];
+        return $max;
     }
 
     /**
