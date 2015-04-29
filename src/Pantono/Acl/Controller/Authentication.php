@@ -23,6 +23,7 @@ class Authentication extends Controller
             if ($form->isValid()) {
                 $user = $this->performLoginCheck($form['username']->getData(), $form['password']->getData());
                 if ($user) {
+                    $this->getApplication()->getSession()->set('userid', $user->getId());
                     return new RedirectResponse('/admin');
                 }
                 $form->addError(new FormError($this->getApplication()->getTranslator()->trans('user_not_found')));
@@ -34,8 +35,7 @@ class Authentication extends Controller
     private function performLoginCheck($username, $password)
     {
         $user = $this->getAuthenticationModel()->authenticateAdminUser($username, $password);
-        if ($user) {
-            $this->getApplication()->getSession()->set('userid', $user->getId());
+        if (!$user) {
             return false;
         }
         return $user;

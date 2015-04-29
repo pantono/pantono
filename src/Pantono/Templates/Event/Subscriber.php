@@ -48,7 +48,7 @@ class Subscriber implements EventSubscriberInterface
      */
     public function registerPantonoBlockHelper($app)
     {
-        $app->addFunction(new \Twig_SimpleFunction('pantono_block', function ($block) use ($app) {
+        $app['twig']->addFunction(new \Twig_SimpleFunction('pantono_block', function ($block) use ($app) {
             $args = func_get_args();
             array_shift($args);
             $content = $app->getServiceLocator()->getService('Blocks')->renderBlock($block, $args);
