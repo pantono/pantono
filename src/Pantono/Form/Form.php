@@ -1,10 +1,11 @@
 <?php
 
-namespace Pantono\Core\Form;
+namespace Pantono\Form;
 
 use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Dispatcher;
-use Pantono\Core\Form\Element\ElementInterface;
+use Pantono\Form\Element\ElementInterface;
+use Pantono\Form\Exception\ElementHandlerNotRegistered;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -70,6 +71,15 @@ abstract class Form extends AbstractType
     }
 
     abstract public function buildFormFields();
+
+    protected function getHandlerForType($type)
+    {
+        if (!isset($this->application['form_element_handlers'][$type])) {
+            throw new ElementHandlerNotRegistered('No handler for element '.$type.' is registered');
+        }
+        $handler = $this->application['form_element_handlers'][$type];
+        return new $handler;
+    }
 
     /**
      * @return FormBuilderInterface

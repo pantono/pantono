@@ -1,14 +1,14 @@
-<?php namespace Pantono\Core\Form\Element;
+<?php namespace Pantono\Form\Element;
 
-use Pantono\Core\Form\Element\Traits\Visible;
+use Pantono\Form\Element\Traits\Visible;
 
-class Checkbox extends Element implements ElementInterface
+class Email extends Element implements ElementInterface
 {
     use Visible;
 
     public function getType()
     {
-        return 'checkbox';
+        return 'email';
     }
 
     public function getOptions()

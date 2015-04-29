@@ -1,10 +1,10 @@
 <?php namespace Pantono\Categories\Form;
 
-use Pantono\Core\Form\Element\File;
-use Pantono\Core\Form\Element\Select;
-use Pantono\Core\Form\Element\Text;
-use Pantono\Core\Form\Element\Textarea;
-use Pantono\Core\Form\Form;
+use Pantono\Form\Element\File;
+use Pantono\Form\Element\Select;
+use Pantono\Form\Element\Text;
+use Pantono\Form\Element\Textarea;
+use Pantono\Form\Form;
 
 class Category extends Form
 {

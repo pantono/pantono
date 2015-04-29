@@ -1,4 +1,6 @@
-<?php namespace Pantono\Core\Form\Element;
+<?php namespace Pantono\Form\Element;
+
+use Pantono\Form\Exception\ConstraintNotRegistered;
 
 abstract class Element
 {
@@ -172,5 +174,43 @@ abstract class Element
             $options['required'] = $this->isRequired();
         }
         return $options;
+    }
+
+    public function setData(array $data) {
+        foreach ($data as $key => $value) {
+            if ($key === 'constraints') {
+                foreach ($value as $constraint) {
+                    $this->addConstraint($this->generateConstraint($constraint));
+                }
+                continue;
+            }
+            if (property_exists($this, $key)) {
+                $key = str_replace('_', ' ', $key);
+                $key = ucwords($key);
+                $key = str_replace(' ', '', $key);
+                $setter = 'set'.$key;
+                $this->{$setter}($value);
+            }
+        }
+    }
+
+    /**
+     * @param $constraint
+     * @return array
+     * @throws ConstraintNotRegistered
+     */
+    public function generateConstraint($constraint)
+    {
+        $class = $constraint;
+        $arguments = [];
+        if (is_array($constraint)) {
+            $keys = array_keys($constraint);
+            $class = $keys[0];
+            $arguments = $constraint[$class];
+        }
+        if (!class_exists($class)) {
+            throw new ConstraintNotRegistered('Constraint ' . $constraint . ' is not registered');
+        }
+        return new $class($arguments);
     }
 }

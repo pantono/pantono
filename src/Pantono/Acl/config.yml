@@ -8,9 +8,42 @@ services:
 
 services:
     AuthTest: 'Pantono\Acl\Test'
-forms:
-    login: 'Pantono\Acl\Form\Login'
 
 commands:
   - Pantono\Acl\Command\CreateUser
   - Pantono\Acl\Command\ChangePassword
+
+forms:
+  login:
+    attributes:
+      role: form
+      class: form-signin
+    fields:
+      username:
+        type: email
+        placeholder: Username
+        class: form-control
+        label:
+        weight: 10
+        required: true
+        constraints:
+          - Symfony\Component\Validator\Constraints\NotBlank
+          - Symfony\Component\Validator\Constraints\Email
+
+      password:
+        type: password
+        placeholder: Password
+        label:
+        weight: 20
+        class: form-control
+        required: true
+        constraints:
+          - Symfony\Component\Validator\Constraints\NotBlank
+          - Symfony\Component\Validator\Constraints\Length:
+              min: 4
+              max: 20
+
+      remember_me:
+        type: checkbox
+        label: Remember Me
+        required: false

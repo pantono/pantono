@@ -1,4 +1,4 @@
-<?php namespace Pantono\Core\Form\Element\Traits;
+<?php namespace Pantono\Form\Element\Traits;
 
 trait Visible
 {

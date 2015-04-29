@@ -14,6 +14,9 @@ class General extends Event
         $this->application = $app;
     }
 
+    /**
+     * @return Application
+     */
     public function getApplication()
     {
         return $this->application;

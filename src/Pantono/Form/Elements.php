@@ -1,4 +1,4 @@
-<?php namespace Pantono\Core\Form;
+<?php namespace Pantono\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
 

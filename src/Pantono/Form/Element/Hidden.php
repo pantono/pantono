@@ -1,4 +1,4 @@
-<?php namespace Pantono\Core\Form\Element;
+<?php namespace Pantono\Form\Element;
 
 class Hidden extends Element implements ElementInterface
 {

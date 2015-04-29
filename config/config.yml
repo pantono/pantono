@@ -19,6 +19,7 @@ modules:
   - Pantono\Contacts
   - Pantono\Core
   - Pantono\Customers
+  - Pantono\Form
   - Pantono\Email
   - Pantono\Orders
   - Pantono\Session

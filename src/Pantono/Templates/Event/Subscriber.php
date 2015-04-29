@@ -28,10 +28,6 @@ class Subscriber implements EventSubscriberInterface
             'twig.path' => APPLICATION_BASE . '/themes/core/templates',
         ));
         $app['twig']->addExtension(new TranslationExtension($app['translator']));
-        $app['form.extensions'] = $app->share($app->extend('form.extensions', function ($extensions) use ($app) {
-            $extensions[] = new Extensions($app->getConfig(), $app->getEventDispatcher(), $app);
-            return $extensions;
-        }));
         $app = $this->application;
         foreach ($app->getBootstrap()->getModules() as $module) {
             $blocks = $module->getConfig()->getItem('blocks', null, []);

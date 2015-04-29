@@ -2,11 +2,11 @@
 
 namespace Pantono\Acl\Form;
 
-use Pantono\Core\Form\Element\Checkbox;
-use Pantono\Core\Form\Element\Email;
-use Pantono\Core\Form\Element\Password;
-use Pantono\Core\Form\Element\Text;
-use Pantono\Core\Form\Form;
+use Pantono\Form\Element\Checkbox;
+use Pantono\Form\Element\Email;
+use Pantono\Form\Element\Password;
+use Pantono\Form\Element\Text;
+use Pantono\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
 use Symfony\Component\Validator\Constraints\Length;

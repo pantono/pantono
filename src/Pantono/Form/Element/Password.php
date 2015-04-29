@@ -1,6 +1,6 @@
-<?php namespace Pantono\Core\Form\Element;
+<?php namespace Pantono\Form\Element;
 
-use Pantono\Core\Form\Element\Traits\Visible;
+use Pantono\Form\Element\Traits\Visible;
 
 class Password extends Element implements ElementInterface
 {

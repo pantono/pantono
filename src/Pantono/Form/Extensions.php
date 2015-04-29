@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Pantono\Core\Form;
+namespace Pantono\Form;
 
 use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Dispatcher;
@@ -24,15 +24,19 @@ Class Extensions extends AbstractExtension
     protected function loadTypes()
     {
         $forms = [];
-
-        $items = $this->config->getItem('forms');
-        if (!$items) {
-            return [];
-        }
+        $items = $this->config->getItem('forms', null, []);
         foreach ($items as $key => $form) {
-            $formClass = new $form($this->application, $this->dispatcher);
-            $formClass->setName($key);
-            $forms[] = $formClass;
+            if (is_string($form)) {
+                $formClass = new $form($this->application, $this->dispatcher);
+                $formClass->setName($key);
+                $forms[] = $formClass;
+            }
+            if (is_array($form)) {
+                $formClass = new Builder($this->application, $this->dispatcher);
+                $formClass->setConfig($form);
+                $formClass->setName($key);
+                $forms[] = $formClass;
+            }
         }
         return $forms;
     }

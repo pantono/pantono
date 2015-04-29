@@ -1,0 +1,11 @@
+event_subscribers:
+    - 'Pantono\Form\Event\Subscriber'
+form_elements:
+    text: Pantono\Form\Element\Text
+    checkbox: Pantono\Form\Element\Checkbox
+    email: Pantono\Form\Element\Email
+    file: Pantono\Form\Element\File
+    hidden: Pantono\Form\Element\Hidden
+    password: Pantono\Form\Element\Password
+    select: Pantono\Form\Element\Select
+    textarea: Pantono\Form\Element\TextArea
