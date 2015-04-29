@@ -17,24 +17,11 @@ class Database
 
     public function setData(array $data)
     {
-        if (isset($data['database_name'])) {
-            $this->setDatabaseName($data['database_name']);
-        }
-
-        if (isset($data['driver'])) {
-            $this->setDriver($data['driver']);
-        }
-
-        if (isset($data['username'])) {
-            $this->setUsername($data['username']);
-        }
-
-        if (isset($data['password'])) {
-            $this->setPassword($data['password']);
-        }
-
-        if (isset($data['host'])) {
-            $this->setHost($data['host']);
+        foreach ($data as $key => $value) {
+            $setter = str_replace('_', ' ', $key);
+            $setter = ucwords($setter);
+            $setter = 'set'.str_replace(' ', '', $setter);
+            $this->{$setter}($value);
         }
     }
 
