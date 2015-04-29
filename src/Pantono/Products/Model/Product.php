@@ -53,7 +53,6 @@ class Product
             }
         }
         usort($prices, function ($a, $b) {
-            if ($a == $b) return 0;
             return $a > $b;
         });
         return $prices;
