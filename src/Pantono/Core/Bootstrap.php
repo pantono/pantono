@@ -110,15 +110,6 @@ class Bootstrap
         $this->application['defined_routes'] = $routes;
         $app =& $this->application;
         foreach ($routes as $name => $route) {
-
-            if (!class_exists($route['controller'])) {
-                throw new Routes('Controller ' . $route['controller'] . ' for route ' . $routes['route'] . ' does not exist');
-            }
-
-            if (!method_exists($route['controller'], $route['action'])) {
-                throw new Routes('Action ' . $route['action'] . ' does not exist within controller ' . $route['controller']);
-            }
-
             $controllerId = $this->createController($route);
             if ($route['route']) {
                 $this->loadRoute($controllerId, $name, $route);
@@ -128,6 +119,13 @@ class Bootstrap
 
     private function createController($route)
     {
+        if (!class_exists($route['controller'])) {
+            throw new Routes('Controller ' . $route['controller'] . ' for route ' . $route['route'] . ' does not exist');
+        }
+
+        if (!method_exists($route['controller'], $route['action'])) {
+            throw new Routes('Action ' . $route['action'] . ' does not exist within controller ' . $route['controller']);
+        }
         $controllerId = str_replace('\\', '.', $route['controller']);
         if (!isset($this->controllers[$controllerId])) {
             $app = $this->application;
