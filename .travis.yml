@@ -21,6 +21,6 @@ env:
 before_install:
     - composer self-update
 
-before_script: composer instal --dev
+before_script: composer install --dev
 
 script: phpunit
