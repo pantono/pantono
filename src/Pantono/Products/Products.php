@@ -2,7 +2,7 @@
 
 use Pantono\Core\Event\Manager;
 use Pantono\Products\Entity\Repository\ProductRepository;
-use Pantono\Products\Filter\ProductListingFilter;
+use Pantono\Products\Model\Filter\ProductListingFilter;
 use Pantono\Products\Model\Product;
 
 class Products

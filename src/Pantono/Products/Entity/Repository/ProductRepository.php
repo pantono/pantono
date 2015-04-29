@@ -2,7 +2,7 @@
 
 use Pantono\Products\Entity\Product;
 use Doctrine\ORM\EntityRepository;
-use Pantono\Products\Filter\ProductListingFilter;
+use Pantono\Products\Model\Filter\ProductListingFilter;
 
 class ProductRepository extends EntityRepository
 {

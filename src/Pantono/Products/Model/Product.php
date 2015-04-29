@@ -37,6 +37,9 @@ class Product
             $prices = $variation->getPricing();
             foreach ($prices as $price) {
                 if ($price->getPrice() > 0) {
+                    if ($min === 0) {
+                        $min = $price->getPrice();
+                    }
                     if ($price->getPrice() <= $min) {
                         $min = $price->getPrice();
                     }
@@ -55,6 +58,9 @@ class Product
             $prices = $variation->getPricing();
             foreach ($prices as $price) {
                 if ($price->getPrice() > 0) {
+                    if ($max === 0) {
+                        $max = $price->getPrice();
+                    }
                     if ($price->getPrice() >= $max) {
                         $max = $price->getPrice();
                     }

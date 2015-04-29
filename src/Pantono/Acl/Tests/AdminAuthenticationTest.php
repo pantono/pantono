@@ -162,17 +162,17 @@ class AdminAuthentication extends \PHPUnit_Framework_TestCase
     public function testFindSingleUserByEmail()
     {
         $this->authRepository->expects($this->once())
-            ->method('findBy')
-            ->with(['username' => 'test@test.com'])
-            ->willReturn(true);;
+            ->method('getUserByUsername')
+            ->with('test@test.com')
+            ->willReturn(true);
         $this->assertEquals(true, $this->adminAuthentication->userExists('test@test.com'));
     }
 
     public function testFindSingleUserByEmailNot()
     {
         $this->authRepository->expects($this->once())
-            ->method('findBy')
-            ->with(['username' => 'test@test.com'])
+            ->method('getUserByUsername')
+            ->with('test@test.com')
             ->willReturn(false);
         $this->assertEquals(false, $this->adminAuthentication->userExists('test@test.com'));
     }
