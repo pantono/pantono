@@ -86,7 +86,9 @@ class Module
     private function loadServices()
     {
         foreach ($this->getConfig()->getItem('services', null, []) as $name => $service) {
-            $this->application->getServiceLocator()->registerService($name, $service['class'], $service['arguments']);
+            $class = isset($service['class'])?$service['class']:null;
+            $arguments = isset($service['arguments'])?$service['arguments']:null;
+            $this->application->getServiceLocator()->registerService($name, $class, $arguments);
         }
     }
 
