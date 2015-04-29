@@ -31,43 +31,32 @@ class Product
 
     public function getPriceMin()
     {
-        $min = 0;
-        $variations = $this->product->getDraft()->getVariations();
-        foreach ($variations as $variation) {
-            $prices = $variation->getPricing();
-            foreach ($prices as $price) {
-                if ($price->getPrice() > 0) {
-                    if ($min === 0) {
-                        $min = $price->getPrice();
-                    }
-                    if ($price->getPrice() <= $min) {
-                        $min = $price->getPrice();
-                    }
-                }
-            }
-        }
-        return $min;
+        $prices = $this->getAllPrices();
+        return array_shift($prices);
     }
 
 
     public function getPriceMax()
     {
-        $max = 0;
-        $variations = $this->product->getDraft()->getVariations();
-        foreach ($variations as $variation) {
-            $prices = $variation->getPricing();
-            foreach ($prices as $price) {
+        $prices = $this->getAllPrices();
+        return array_pop($prices);
+    }
+
+    public function getAllPrices()
+    {
+        $prices = [];
+        foreach ($this->product->getDraft()->getVariations() as $variation) {
+            foreach ($variation->getPricing() as $price) {
                 if ($price->getPrice() > 0) {
-                    if ($max === 0) {
-                        $max = $price->getPrice();
-                    }
-                    if ($price->getPrice() >= $max) {
-                        $max = $price->getPrice();
-                    }
+                    $prices[] = $price->getPrice();
                 }
             }
         }
-        return $max;
+        usort($prices, function ($a, $b) {
+            if ($a == $b) return 0;
+            return $a > $b;
+        });
+        return $prices;
     }
 
     /**
