@@ -1,14 +1,17 @@
 <?php namespace Pantono\Templates\Event;
 
+use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Events\General;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Silex\Provider\TwigServiceProvider;
 use Pantono\Core\Model\Block;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
-use Pantono\Core\Form\Extensions;
 
 class Subscriber implements EventSubscriberInterface
 {
+    /**
+     * @var Application
+     */
     private $application;
 
     public static function getSubscribedEvents()
@@ -37,13 +40,22 @@ class Subscriber implements EventSubscriberInterface
             }
         }
 
-        $this->application['twig']->addFunction(new \Twig_SimpleFunction('pantono_block', function ($block) use ($app) {
+        $this->registerPantonoBlockHelper($app);
+    }
+
+    /**
+     * @param $app
+     */
+    public function registerPantonoBlockHelper($app)
+    {
+        $app->addFunction(new \Twig_SimpleFunction('pantono_block', function ($block) use ($app) {
             $args = func_get_args();
             array_shift($args);
             $content = $app->getServiceLocator()->getService('Blocks')->renderBlock($block, $args);
             return $content;
         }, ['is_safe' => ['html']]));
     }
+
 
     /**
      * @param $blockId
