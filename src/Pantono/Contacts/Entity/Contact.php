@@ -50,11 +50,6 @@ class Contact
      */
     protected $dateCreated;
 
-    public function __construct()
-    {
-        $this->setDateCreated(new \DateTime);
-    }
-
     /**
      * @return mixed
      */
