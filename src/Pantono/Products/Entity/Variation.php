@@ -110,10 +110,8 @@ class Variation
     {
         $min = 0;
         foreach ($this->getPricing() as $price) {
-            if ($price->getPrice() > 0) {
-                if ($min === 0 || $price->getPrice() <= $min) {
-                    $min = $price->getPrice();
-                }
+            if ($min === 0 || $price->getPrice() <= $min) {
+                $min = $price->getPrice();
             }
         }
         return $min;
@@ -123,10 +121,8 @@ class Variation
     {
         $max = 0;
         foreach ($this->getPricing() as $price) {
-            if ($price->getPrice() > 0) {
-                if ($max === 0 || $price->getPrice() >= $max) {
-                    $max = $price->getPrice();
-                }
+            if ($max === 0 || $price->getPrice() >= $max) {
+                $max = $price->getPrice();
             }
         }
         return $max;

@@ -67,7 +67,7 @@ class ProductTest extends AbstractProductTest
 
     public function testVariationGetMinMax()
     {
-        $productEntity = $this->getDummyProduct(2,3);
+        $productEntity = $this->getDummyProduct(2,2);
         $productEntity->getDraft()->getVariations()[0]->setId(1);
         $productEntity->getDraft()->getVariations()[1]->setId(2);
         $productEntity->getDraft()->getVariations()[0]->getPricing()[0]->setPrice(10);
