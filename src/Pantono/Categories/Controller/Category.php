@@ -12,15 +12,30 @@ class Category extends Controller
     public function addAction(Request $request)
     {
         $form = $this->getCategoryForm();
-        $postData = $request->request->all();
-        return $this->renderTemplate('admin/categories/add.twig', ['form' => $form->createView(), 'postData' => $postData]);
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                if ($this->getCategoryService()->addCategory($form->getData())) {
+
+                }
+            }
+        }
+        return $this->renderTemplate('admin/categories/add.twig', ['form' => $form->createView()]);
     }
 
     /**
-     * @return \Pantono\Categories\Form\Category
+     * @return \Symfony\Component\Form\Form
      */
     private function getCategoryForm()
     {
         return $this->getApplication()->getForm('category')->getForm();
+    }
+
+    /**
+     * @return \Pantono\Categories\Category
+     */
+    private function getCategoryService()
+    {
+        return $this->getApplication()->getPantonoService('Category');
     }
 }

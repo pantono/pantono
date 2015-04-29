@@ -21,6 +21,7 @@ modules:
   - Pantono\Customers
   - Pantono\Email
   - Pantono\Orders
+  - Pantono\Session
   - Pantono\Pages
   - Pantono\Payments
   - Pantono\Products

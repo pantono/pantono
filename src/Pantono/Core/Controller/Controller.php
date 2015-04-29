@@ -40,4 +40,9 @@ abstract class Controller
     {
         return $this->application->getPantonoService($name);
     }
+
+    protected function flashMessenger($message, $type = 'info')
+    {
+        $this->getService('session')->set('flash_message');
+    }
 }

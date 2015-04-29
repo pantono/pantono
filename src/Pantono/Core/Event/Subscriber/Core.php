@@ -37,10 +37,6 @@ class Core implements EventSubscriberInterface
         $app->register(new ValidatorServiceProvider());
         $app->register(new FormServiceProvider());
         $this->registerTranslationServiceProvider();
-        if (php_sapi_name() !== 'cli') {
-            $this->application->register(new SessionServiceProvider());
-            $this->application->getServiceLocator()->registerAlias('session', 'session');
-        }
     }
 
     private function registerTranslationServiceProvider()

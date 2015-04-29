@@ -1,0 +1,11 @@
+{% for type,messages in groupedMessages %}
+    <div class="alert alert-{{ type }}" role="alert">
+        {% for message in messages %}
+            {% if message.icon is defined %}
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+            {% endif %}
+            {{ message.message }}
+        {% endfor %}
+    </div>
+{% endfor %}

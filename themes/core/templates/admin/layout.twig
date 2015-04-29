@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css">
     <!-- Bootstrap theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-
+    <link rel="stylesheet" href="/themes/core/admin/stylesheets/screen.css" />
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -91,7 +91,8 @@
     </div>
 </nav>
 
-<div class="container" role="main">
+<div class="container main-content" role="main">
+    {{  pantono_block('admin.flash-messenger') }}
     {% block content %}
     {% endblock %}
 </div>

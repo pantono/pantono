@@ -1,0 +1,13 @@
+event_subscribers:
+    - 'Pantono\Session\Event\Subscriber'
+services:
+    FlashMessenger:
+      class: 'Pantono\Session\FlashMessenger'
+      arguments:
+        - @session
+blocks:
+  admin.flash-messenger:
+    className: 'Pantono\Session\Block\FlashMessenger'
+    cache: false
+    cacheLength: 0
+    template: 'admin/blocks/flash-messenger.twig'

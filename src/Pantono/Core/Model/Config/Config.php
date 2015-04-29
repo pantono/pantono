@@ -21,7 +21,7 @@ class Config
             $this->parseConfigFiles();
         }
         if (!isset($this->contents[$section])) {
-            return null;
+            return $default;
         }
         if (!$value) {
             return isset($this->contents[$section]) ? $this->contents[$section] : $default;
