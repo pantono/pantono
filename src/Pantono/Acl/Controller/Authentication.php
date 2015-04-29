@@ -21,17 +21,25 @@ class Authentication extends Controller
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $user = $this->getAuthenticationModel()->authenticateAdminUser($form['username']->getData(), $form['password']->getData());
+                $user = $this->performLoginCheck($form['username']->getData(), $form['password']->getData());
                 if ($user) {
-                    $this->getApplication()->getSession()->set('userid', $user->getId());
                     return new RedirectResponse('/admin');
                 }
-                if (!$user) {
-                    $form->addError(new FormError($this->getApplication()->getTranslator()->trans('user_not_found')));
-                }
+                $form->addError(new FormError($this->getApplication()->getTranslator()->trans('user_not_found')));
             }
         }
         return $this->renderTemplate('admin/login/login.twig', ['form' => $form->createView()]);
+    }
+
+    private function performLoginCheck($username, $password)
+    {
+        $user = $this->getAuthenticationModel()->authenticateAdminUser($username, $password);
+        if ($user) {
+            $this->getApplication()->getSession()->set('userid', $user->getId());
+            return false;
+        }
+        return $user;
+
     }
 
     /**
