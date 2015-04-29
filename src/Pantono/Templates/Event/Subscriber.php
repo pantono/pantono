@@ -32,17 +32,7 @@ class Subscriber implements EventSubscriberInterface
         foreach ($app->getBootstrap()->getModules() as $module) {
             $blocks = $module->getConfig()->getItem('blocks', null, []);
             foreach ($blocks as $blockId => $options) {
-                $block = new Block();
-                $block->setName($blockId);
-                if (!is_array($options)) {
-                    $block->setClassName($options);
-                }
-
-                if (is_array($options)) {
-                    $block->setClassName($options['className']);
-                    $block->setCacheable($options['cache']);
-                    $block->setCacheLength($options['cacheLength']);
-                }
+                $block = $this->generateBlock($blockId, $options);
                 $app->getPantonoService('Blocks')->addBlock($block);
             }
         }
@@ -53,5 +43,26 @@ class Subscriber implements EventSubscriberInterface
             $content = $app->getServiceLocator()->getService('Blocks')->renderBlock($block, $args);
             return $content;
         }, ['is_safe' => ['html']]));
+    }
+
+    /**
+     * @param $blockId
+     * @param $options
+     * @return Block
+     */
+    private function generateBlock($blockId, $options)
+    {
+        $block = new Block();
+        $block->setName($blockId);
+        if (!is_array($options)) {
+            $block->setClassName($options);
+        }
+
+        if (is_array($options)) {
+            $block->setClassName($options['className']);
+            $block->setCacheable($options['cache']);
+            $block->setCacheLength($options['cacheLength']);
+        }
+        return $block;
     }
 }
