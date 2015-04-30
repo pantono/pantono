@@ -30,15 +30,13 @@ Class Extensions extends AbstractExtension
             $formClass = null;
             if (is_string($form)) {
                 $formClass = new $form($this->application, $this->dispatcher);
-                $formClass->setName($key);
-                $forms[] = $formClass;
             }
             if (is_array($form)) {
                 $formClass = new Builder($this->application, $this->dispatcher);
                 $formClass->setConfig($form);
-                $formClass->setName($key);
-                $forms[] = $formClass;
             }
+            $formClass->setName($key);
+            $forms[] = $formClass;
             $this->dispatcher->dispatchFormEvent(FormEvent::POST_BUILD, $key, $formClass);
         }
         return $forms;
