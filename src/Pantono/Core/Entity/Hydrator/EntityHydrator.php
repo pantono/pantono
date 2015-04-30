@@ -23,11 +23,7 @@ class EntityHydrator
     {
         $this->currentMetaData = $this->entityManager->getClassMetadata($entityClass);
         $this->currentEntity = new $entityClass;
-        $reflectionClass = new \ReflectionClass($entityClass);
-        $properties = [];
-        foreach ($reflectionClass->getProperties() as $property) {
-            $properties[$property->getName()] = true;
-        }
+        $properties = $this->getPropertiesForEntity($entityClass);
         foreach ($data as $key => $value) {
             if (isset($properties[$key]) && $value !== null) {
                 $setter = sprintf('set%s', ucfirst(Inflector::camelize($key)));
@@ -38,6 +34,15 @@ class EntityHydrator
             }
         }
         return $this->currentEntity;
+    }
+
+    private function getPropertiesForEntity($entityClass) {
+        $reflectionClass = new \ReflectionClass($entityClass);
+        $properties = [];
+        foreach ($reflectionClass->getProperties() as $property) {
+            $properties[$property->getName()] = true;
+        }
+        return $properties;
     }
 
     private function mapField($key, $value)
