@@ -22,7 +22,6 @@ class EntityHydrator
     public function hydrate($entityClass, $data)
     {
         $this->currentMetaData = $this->entityManager->getClassMetadata($entityClass);
-        //var_dump($this->currentMetaData);
         $this->currentEntity = new $entityClass;
         $reflectionClass = new \ReflectionClass($entityClass);
         foreach ($reflectionClass->getProperties() as $property) {
