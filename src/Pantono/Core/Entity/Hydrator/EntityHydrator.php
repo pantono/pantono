@@ -24,6 +24,7 @@ class EntityHydrator
         $this->currentMetaData = $this->entityManager->getClassMetadata($entityClass);
         $this->currentEntity = new $entityClass;
         $reflectionClass = new \ReflectionClass($entityClass);
+        $properties = [];
         foreach ($reflectionClass->getProperties() as $property) {
             $properties[$property->getName()] = true;
         }
