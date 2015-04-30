@@ -16,3 +16,7 @@ services:
     arguments:
       - @application
       - @dispatcher
+  EntityHydrator:
+    class: Pantono\Core\Entity\Hydrator\EntityHydrator
+    arguments:
+      - @EntityManager

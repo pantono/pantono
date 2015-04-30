@@ -6,9 +6,6 @@ services:
         - @session
         - @config
 
-services:
-    AuthTest: 'Pantono\Acl\Test'
-
 commands:
   - Pantono\Acl\Command\CreateUser
   - Pantono\Acl\Command\ChangePassword

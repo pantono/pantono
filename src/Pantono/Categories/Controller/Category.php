@@ -16,7 +16,8 @@ class Category extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 if ($this->getCategoryService()->addCategory($form->getData())) {
-
+                    $this->flashMessenger($this->translate('Category has been added'), 'success');
+                    return new RedirectResponse('/admin/categories');
                 }
             }
         }

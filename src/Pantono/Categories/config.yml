@@ -1,2 +1,24 @@
+services:
+  Category:
+    class: Pantono\Categories\Category
+    arguments:
+      - ['Repository', 'Pantono\Categories\Entity\Category']
+      - @dispatcher
+      - @EntityHydrator
+
 forms:
-    category: 'Pantono\Categories\Form\Category'
+    category:
+      attributes:
+        role: form
+        class: category-form
+      fields:
+        title:
+          type: text
+        parent:
+          type: select
+          choice_populator: Category::getCategoryListTree
+        urlKey:
+          type: text
+          readonly: true
+        image:
+          type: file

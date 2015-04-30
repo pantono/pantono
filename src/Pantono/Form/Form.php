@@ -9,6 +9,7 @@ use Pantono\Form\Exception\ElementHandlerNotRegistered;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
+use \Pantono\Core\Event\Events\Form as FormEvent;
 
 abstract class Form extends AbstractType
 {
@@ -55,7 +56,7 @@ abstract class Form extends AbstractType
     {
         $this->setBuilder($builder);
         $this->setOptions($options);
-        $this->dispatcher->dispatchFormEvent('pantono.form.prebuild', $this->getName(), $builder);
+        $this->dispatcher->dispatchFormEvent(FormEvent::PRE_BUILD, $this->getName(), $builder);
         $this->buildFormFields();
         foreach ($this->getAttributes() as $name => $value) {
             $builder->setAttribute($name, $value);
@@ -67,7 +68,7 @@ abstract class Form extends AbstractType
                 $element->getOptions()
             );
         }
-        $this->dispatcher->dispatchFormEvent('pantono.form.postbuild', $this->getName(), $builder);
+        $this->dispatcher->dispatchFormEvent(FormEvent::POST_BUILD, $this->getName(), $builder);
     }
 
     abstract public function buildFormFields();
@@ -77,8 +78,9 @@ abstract class Form extends AbstractType
         if (!isset($this->application['form_element_handlers'][$type])) {
             throw new ElementHandlerNotRegistered('No handler for element '.$type.' is registered');
         }
-        $handler = $this->application['form_element_handlers'][$type];
-        return new $handler;
+        $handlerClass = $this->application['form_element_handlers'][$type];
+        $handler = new $handlerClass($this->application);
+        return $handler;
     }
 
     /**
@@ -164,5 +166,21 @@ abstract class Form extends AbstractType
     public function setMethod($method)
     {
         $this->method = $method;
+    }
+
+    /**
+     * @return Application
+     */
+    public function getApplication()
+    {
+        return $this->application;
+    }
+
+    /**
+     * @return Dispatcher
+     */
+    public function getDispatcher()
+    {
+        return $this->dispatcher;
     }
 }

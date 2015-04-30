@@ -36,6 +36,7 @@ class Subscriber implements EventSubscriberInterface
             ]
         );
         $this->application->getEntityManager()->getConfiguration()->setNamingStrategy(new \Doctrine\ORM\Mapping\UnderscoreNamingStrategy());
+        $this->application->getServiceLocator()->registerAlias('EntityManager', 'orm.em');
     }
 
 

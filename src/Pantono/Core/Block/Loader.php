@@ -3,6 +3,7 @@
 use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Dispatcher;
 use Pantono\Core\Model\Block;
+use \Pantono\Core\Event\Events\Block as BlockEvent;
 
 class Loader
 {
@@ -19,15 +20,17 @@ class Loader
 
     public function addBlock(Block $block)
     {
+        $this->eventDispatcher->dispatchBlockEvent(BlockEvent::PRE_LOAD, null, $block);
         $this->blocks[$block->getName()] = $block;
+        $this->eventDispatcher->dispatchBlockEvent(BlockEvent::POST_LOAD, null, $block);
     }
 
     public function renderBlock($name, $arguments)
     {
         $block = $this->getBlockClass($name);
-        $this->eventDispatcher->dispatchBlockEvent('pantono.block.prerender', $block);
+        $this->eventDispatcher->dispatchBlockEvent(BlockEvent::PRE_RENDER, $block, $this->blocks[$name]);
         $contents = $block->doRender($arguments);
-        $this->eventDispatcher->dispatchBlockEvent('pantono.block.postrender', $block);
+        $this->eventDispatcher->dispatchBlockEvent(BlockEvent::PRE_RENDER, $block,  $this->blocks[$name]);
         return $contents;
     }
 

@@ -11,6 +11,9 @@ class Template extends Event
     private $action;
     private $templateFile;
 
+    const PRE_RENDER = 'pantono.template.prerender';
+    const POST_RENDER = 'pantono.template.postrender';
+
     /**
      * @return string
      */

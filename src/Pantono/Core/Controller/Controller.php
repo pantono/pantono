@@ -4,6 +4,7 @@ namespace Pantono\Core\Controller;
 
 use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Dispatcher;
+use Pantono\Core\Event\Events\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class Controller
@@ -30,10 +31,15 @@ abstract class Controller
     protected function renderTemplate($templatePath, $variables = [])
     {
         $renderedContent = '';
-        $this->eventDispatcher->dispatchTemplateEvent('pantono.template.prerender', $templatePath, $renderedContent, $this->controller, $this->action);
+        $this->eventDispatcher->dispatchTemplateEvent(Template::PRE_RENDER, $templatePath, $renderedContent, $this->controller, $this->action);
         $renderedContent = $this->getApplication()['twig']->render($templatePath, $variables);
-        $this->eventDispatcher->dispatchTemplateEvent('pantono.template.postrender', $templatePath, $renderedContent, $this->controller, $this->action);
+        $this->eventDispatcher->dispatchTemplateEvent(Template::PRE_RENDER, $templatePath, $renderedContent, $this->controller, $this->action);
         return $renderedContent;
+    }
+
+    protected function translate($string, $options = [])
+    {
+        return $this->application->getTranslator()->trans($string, $options);
     }
 
     protected function getService($name)
@@ -43,6 +49,6 @@ abstract class Controller
 
     protected function flashMessenger($message, $type = 'info')
     {
-        $this->getService('session')->set('FlashMessenger')->addMessage($message, $type);
+        return $this->getService('FlashMessenger')->addMessage($message, $type);
     }
 }

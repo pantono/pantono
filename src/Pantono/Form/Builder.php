@@ -8,10 +8,20 @@ class Builder extends Form
     {
         if (isset($this->config['fields'])) {
             foreach ($this->config['fields'] as $name => $fieldData) {
+                $this->getDispatcher()->dispatchFormFieldEvent('pantono.formfield.prebuild', $this->getName(), $name, $fieldData);
                 $field = $this->getHandlerForType($fieldData['type']);
                 $field->setName($name);
                 $field->setData($fieldData);
+
+                $app = $this->getApplication();
+                if (isset($fieldData['choice_populator'])) {
+                    $populator = $fieldData['choice_populator'];
+                    list($service, $method) = explode('::', $populator);
+                    $field->setChoices($app->getPantonoService($service)->$method());
+                }
+                $this->getDispatcher()->dispatchFormFieldEvent('pantono.formfield.postbuild', $this->getName(), $name, $fieldData, $field);
                 $this->addElement($field);
+
             }
         }
     }

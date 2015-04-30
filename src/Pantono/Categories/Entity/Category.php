@@ -6,7 +6,7 @@ namespace Pantono\Categories\Entity;
  * Class Category
  *
  * @package Pantono\Contacts\Entity
- * @Entity
+ * @Entity(repositoryClass="Pantono\Categories\Entity\Repository\CategoryRepository")
  * @Table(name="category")
  */
 class Category
@@ -18,15 +18,15 @@ class Category
      */
     protected $id;
     /**
-     * @ManyToOne(targetEntity="Pantono\Categories\Entity\Category")
+     * @ManyToOne(targetEntity="Category")
      */
     protected $parent;
     /**
-     * @Column(type="integer")
+     * @ManyToOne(targetEntity="CategoryStatus")
      */
     protected $status;
     /**
-     * @Column(type="text")
+     * @Column(type="text", nullable=true)
      */
     protected $description;
     /**
@@ -45,6 +45,16 @@ class Category
      * @OneToOne(targetEntity="Pantono\Core\Entity\Metadata")
      */
     protected $metadata;
+
+    /**
+     * @Column(type="boolean")
+     */
+    protected $active;
+
+    public function __construct()
+    {
+        $this->active = false;
+    }
 
     /**
      * @return mixed
@@ -126,6 +136,17 @@ class Category
         $this->title = $title;
     }
 
+    public function getBreadcrumb()
+    {
+        $items = [$this->getTitle()];
+        $parent = $this->getParent();
+        while ($parent) {
+            $items[] = $parent->getTitle();
+            $parent = $parent->getParent();
+        }
+        return implode(' -> ', $items);
+    }
+
     /**
      * @return mixed
      */
@@ -172,5 +193,21 @@ class Category
     public function setMetadata($metadata)
     {
         $this->metadata = $metadata;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param mixed $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
     }
 }
