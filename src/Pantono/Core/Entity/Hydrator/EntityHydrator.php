@@ -28,10 +28,7 @@ class EntityHydrator
             if (isset($properties[$key]) && $value !== null) {
                 $setterName = ucfirst(Inflector::camelize($key));
                 $setter = sprintf('set%s', $setterName);
-                $value = $this->mapField($key, $value);
-                if ($value) {
-                    $this->currentEntity->{$setter}($value);
-                }
+                $this->mapField($key, $value, $setter);
             }
         }
         return $this->currentEntity;
@@ -70,7 +67,7 @@ class EntityHydrator
         return $properties;
     }
 
-    private function mapField($key, $value)
+    private function mapField($key, $value, $setter)
     {
         if ($this->currentMetaData->hasAssociation($key)) {
             $mapping = $this->currentMetaData->getAssociationMapping($key);
@@ -80,7 +77,9 @@ class EntityHydrator
         if ($key == 'id') {
             $value = intval($value);
         }
-        return $value;
+        if ($value) {
+            $this->currentEntity->{$setter}($value);
+        }
     }
 
     private function getReference($entityClass, $value)
