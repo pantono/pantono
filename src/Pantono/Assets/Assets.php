@@ -50,7 +50,7 @@ class Assets
     public function uploadAsset(UploadedFile $file)
     {
         $filename = uniqid().'_'.$file->getClientOriginalName();
-        if (!$this->filesystem->write($filename, fopen($file->getRealPath(), 'r'))) {
+        if (!$this->filesystem->writeStream($filename, fopen($file->getRealPath(), 'r'))) {
             throw new AssetUploadFailed('Asset failed to upload');
         }
         $mimeType = $this->filesystem->getMimetype($filename);

@@ -64,11 +64,9 @@ class Category
 
     public function getUniqueUrlKey($title, $index = 0)
     {
+        $url = \URLify::filter($title);
         if ($index > 0) {
             $url = \URLify::filter($title . '-' . $index);
-        }
-        if ($index == 0) {
-            $url = \URLify::filter($title);
         }
         if ($this->repository->getCategoryByUrlKey($url)) {
             return $this->getUniqueUrlKey($title, ($index + 1));
