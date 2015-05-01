@@ -18,7 +18,7 @@ class Cart
      */
     protected $id;
     /**
-     * @OneToOne(targetEntity="Pantono\Core\Entity\Session")
+     * @OneToOne(targetEntity="Pantono\Session\Entity\Session")
      */
     protected $session;
     /**

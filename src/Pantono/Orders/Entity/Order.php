@@ -57,7 +57,7 @@ class Order
      */
     protected $status;
     /**
-     * @ManyToOne(targetEntity="Pantono\Core\Entity\Session")
+     * @ManyToOne(targetEntity="Pantono\Session\Entity\Session")
      */
     protected $session;
     /**

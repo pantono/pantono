@@ -1,11 +1,11 @@
 <?php
 
-namespace Pantono\Core\Entity;
+namespace Pantono\Metadata\Entity;
 
 /**
  * Class Metadata
  *
- * @package Pantono\Suppliers\Entity
+ * @package Pantono\Metadata\Entity
  * @Entity
  * @Table(name="metadata")
  */

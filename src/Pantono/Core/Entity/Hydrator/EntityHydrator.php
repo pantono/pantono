@@ -8,7 +8,6 @@ use Doctrine\Common\Util\Inflector;
 class EntityHydrator
 {
     private $entityManager;
-    private $currentEntity;
     /**
      * @var \Doctrine\ORM\Mapping\ClassMetadata
      */
@@ -22,24 +21,25 @@ class EntityHydrator
     public function hydrate($entityClass, $data, $existingClass = null)
     {
         $this->currentMetaData = $this->entityManager->getClassMetadata($entityClass);
-        $this->setCurrentEntity($entityClass, $existingClass);
+        $entity = $this->setCurrentEntity($entityClass, $existingClass);
         $properties = $this->getPropertiesForEntity($entityClass);
         foreach ($data as $key => $value) {
             if (isset($properties[$key]) && $value !== null) {
                 $setterName = ucfirst(Inflector::camelize($key));
                 $setter = sprintf('set%s', $setterName);
-                $this->mapField($key, $value, $setter);
+                $this->mapField($key, $value, $entity, $setter);
             }
         }
-        return $this->currentEntity;
+        return $entity;
     }
 
     private function setCurrentEntity($entityClass, $existingClass)
     {
-        $this->currentEntity = $existingClass;
-        if ($existingClass == null) {
-            $this->currentEntity = new $entityClass;
+        $entity = $existingClass;
+        if ($existingClass === null) {
+            $entity = new $entityClass;
         }
+        return $entity;
     }
 
     public function deHydrate($entity)
@@ -67,7 +67,7 @@ class EntityHydrator
         return $properties;
     }
 
-    private function mapField($key, $value, $setter)
+    private function mapField($key, $value, $entity, $setter)
     {
         if ($this->currentMetaData->hasAssociation($key)) {
             $mapping = $this->currentMetaData->getAssociationMapping($key);
@@ -78,7 +78,7 @@ class EntityHydrator
             $value = intval($value);
         }
         if ($value) {
-            $this->currentEntity->{$setter}($value);
+            $entity->{$setter}($value);
         }
     }
 

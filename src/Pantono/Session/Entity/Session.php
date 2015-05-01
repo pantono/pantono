@@ -1,11 +1,11 @@
 <?php
 
-namespace Pantono\Core\Entity;
+namespace Pantono\Session\Entity;
 
 /**
  * Class Session
  *
- * @package Pantono\Core\Entity
+ * @package Pantono\Session\Entity
  * @Entity
  * @Table(name="session")
  */

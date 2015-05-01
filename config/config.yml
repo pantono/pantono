@@ -31,6 +31,7 @@ modules:
   - Pantono\Form
   - Pantono\Email
   - Pantono\Orders
+  - Pantono\Metadata
   - Pantono\Session
   - Pantono\Pages
   - Pantono\Payments

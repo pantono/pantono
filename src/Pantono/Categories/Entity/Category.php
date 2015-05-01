@@ -42,7 +42,7 @@ class Category
      */
     protected $urlKey;
     /**
-     * @OneToOne(targetEntity="Pantono\Core\Entity\Metadata")
+     * @OneToOne(targetEntity="Pantono\Metadata\Entity\Metadata")
      */
     protected $metadata;
 

@@ -10,6 +10,8 @@ use Pantono\Core\Event\Events\Block;
 use Pantono\Core\Event\Events\Form;
 use Pantono\Core\Event\Events\FormField;
 use Pantono\Core\Event\Events\General;
+use Pantono\Core\Event\Events\Metadata;
+use Pantono\Metadata\Entity\Metadata as MetadataEntity;
 use Pantono\Core\Event\Events\Template;
 use Pantono\Form\Element\ElementInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -80,5 +82,12 @@ class Dispatcher
         $assetEvent = new \Pantono\Core\Event\Events\Asset($this->application);
         $assetEvent->setAsset($asset);
         $this->application['dispatcher']->dispatch($event, $assetEvent);
+    }
+
+    public function dispatchMetadataEvent($event, MetadataEntity $entity)
+    {
+        $metadataEvent = new Metadata($this->application);
+        $metadataEvent->setMetadata($entity);
+        $this->application['dispatcher']->dispatch($event, $metadataEvent);
     }
 }
