@@ -155,6 +155,12 @@ class Bootstrap
             })
             ->bind($name);
 
+        $this->addRouteDefaults($routeObject, $route);
+
+    }
+
+    private function addRouteDefaults($routeObject, $route)
+    {
         if (isset($route['defaults'])) {
             foreach ($route['defaults'] as $name => $value) {
                 $routeObject->value($name, $value);

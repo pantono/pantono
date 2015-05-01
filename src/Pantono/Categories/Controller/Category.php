@@ -31,11 +31,13 @@ class Category extends Controller
         $filter = new CategoryListFilter();
         $form = $this->getCategoryForm();
         $actionText = 'added';
+        $title = 'Add New Category';
         if ($id !== null) {
             $category = $this->getCategoryService()->getCategoryById($id, true);
             $category['image'] = null;
             $form->setData($category);
             $actionText = 'updated';
+            $title = 'Edit Category '.$id;
         }
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
@@ -47,7 +49,7 @@ class Category extends Controller
             }
         }
         $categories = $this->getCategoryService()->getCategoryList($filter);
-        return $this->renderTemplate('admin/categories/list.twig', ['categories' => $categories, 'form' => $form->createView()]);
+        return $this->renderTemplate('admin/categories/list.twig', ['categories' => $categories, 'form' => $form->createView(), 'title' => $title]);
     }
 
 

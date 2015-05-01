@@ -37,13 +37,19 @@ class Category
         return $category;
     }
 
+    public function uploadImage($data)
+    {
+        if ($data instanceof UploadedFile) {
+            $asset = $this->assets->uploadAsset($data['image']);
+            return $asset->getId();
+        }
+        return null;
+    }
+
     public function saveCategory($data)
     {
         $this->dispatcher->dispatchCategoryEvent(CategoryEvent::PRE_HYDRATE, $data);
-        if ($data['image'] instanceof UploadedFile) {
-            $asset = $this->assets->uploadAsset($data['image']);
-            $data['image'] = $asset->getId();
-        }
+        $data['image'] = $this->uploadImage($data['image']);
         $currentEntity = null;
         if (isset($data['id'])) {
             $currentEntity = $this->getCategoryById($data['id']);
