@@ -22,10 +22,7 @@ class EntityHydrator
     public function hydrate($entityClass, $data, $existingClass = null)
     {
         $this->currentMetaData = $this->entityManager->getClassMetadata($entityClass);
-        $this->currentEntity = $existingClass;
-        if ($existingClass == null) {
-            $this->currentEntity = new $entityClass;
-        }
+        $this->setCurrentEntity($entityClass, $existingClass);
         $properties = $this->getPropertiesForEntity($entityClass);
         foreach ($data as $key => $value) {
             if (isset($properties[$key]) && $value !== null) {
@@ -38,6 +35,14 @@ class EntityHydrator
             }
         }
         return $this->currentEntity;
+    }
+
+    private function setCurrentEntity($entityClass, $existingClass)
+    {
+        $this->currentEntity = $existingClass;
+        if ($existingClass == null) {
+            $this->currentEntity = new $entityClass;
+        }
     }
 
     public function deHydrate($entity)

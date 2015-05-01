@@ -5,6 +5,7 @@ use Pantono\Core\Exception\Bootstrap\Routes;
 use Pantono\Core\Model\Config\Config;
 use Pantono\Core\Model\Route;
 use Pantono\Core\Module\Module;
+use Silex\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -12,6 +13,9 @@ class Bootstrap
 {
     private $configFile;
     private $config;
+    /**
+     * @var Application
+     */
     private $application;
     private $modules;
     private $controllers;
@@ -139,13 +143,9 @@ class Bootstrap
     private function loadRoute($controllerId, $name, array $route)
     {
         $app = $this->application;
+        $routeModel = $this->getRouteModel($route);
         $routeObject = $app->match($route['route'], $controllerId . ':' . $route['action'])
-            ->before(function (Request $request, Application $app) use ($route) {
-                $routeModel = new Route();
-                $routeModel->setController($route['controller']);
-                $routeModel->setAction($route['action']);
-                $routeModel->setPath($route['route']);
-                $routeModel->setRequiresAdminAuth(isset($route['admin']) ? $route['admin'] : false);
+            ->before(function (Request $request, Application $app) use ($route, $routeModel) {
                 $request->attributes->add(['pantono_route' => $routeModel]);
                 if ($route['admin']) {
                     if (!$app->getPantonoService('AdminAuthentication')->isCurrentUserAuthenticated()) {
@@ -154,12 +154,20 @@ class Bootstrap
                 }
             })
             ->bind($name);
-
         $this->addRouteDefaults($routeObject, $route);
-
     }
 
-    private function addRouteDefaults($routeObject, $route)
+    private function getRouteModel($route)
+    {
+        $routeModel = new Route();
+        $routeModel->setController($route['controller']);
+        $routeModel->setAction($route['action']);
+        $routeModel->setPath($route['route']);
+        $routeModel->setRequiresAdminAuth(isset($route['admin']) ? $route['admin'] : false);
+        return $routeModel;
+    }
+
+    private function addRouteDefaults(Controller $routeObject, $route)
     {
         if (isset($route['defaults'])) {
             foreach ($route['defaults'] as $name => $value) {
