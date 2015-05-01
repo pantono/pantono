@@ -30,26 +30,34 @@ class Category extends Controller
         $id = $request->get('id', null);
         $filter = new CategoryListFilter();
         $form = $this->getCategoryForm();
-        $actionText = 'added';
         $title = 'Add New Category';
         if ($id !== null) {
             $category = $this->getCategoryService()->getCategoryById($id, true);
             $category['image'] = null;
             $form->setData($category);
-            $actionText = 'updated';
             $title = 'Edit Category '.$id;
         }
+        $result = $this->handleCategoryRequest($request, $form);
+        if ($result !== null)
+        {
+            return $result;
+        }
+        $categories = $this->getCategoryService()->getCategoryList($filter);
+        return $this->renderTemplate('admin/categories/list.twig', ['categories' => $categories, 'form' => $form->createView(), 'title' => $title]);
+    }
+
+    private function handleCategoryRequest(Request $request, \Symfony\Component\Form\Form $form)
+    {
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 if ($this->getCategoryService()->saveCategory($form->getData())) {
-                    $this->flashMessenger($this->translate('Category has been ' . $actionText), 'success');
+                    $this->flashMessenger($this->translate('Category has been updated'), 'success');
                     return new RedirectResponse('/admin/categories');
                 }
             }
         }
-        $categories = $this->getCategoryService()->getCategoryList($filter);
-        return $this->renderTemplate('admin/categories/list.twig', ['categories' => $categories, 'form' => $form->createView(), 'title' => $title]);
+        return null;
     }
 
 
