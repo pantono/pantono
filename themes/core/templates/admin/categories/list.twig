@@ -1,0 +1,24 @@
+{% extends 'admin/layout.twig' %}
+{% block content %}
+    <div class="row">
+        <div class="page-header">
+            <h1>{{ app.translator.trans('Categories') }}</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="cat-tree col-md-4">
+            <ul>
+                {% for category in categories %}
+                    <li><a href="/admin/categories/{{ category.id }}">{{ category.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-8">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit" class="btn btn-default">Add Category</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

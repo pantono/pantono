@@ -5,6 +5,8 @@ class CategoryListFilter
     private $search;
     private $active;
     private $parentId;
+    private $perPage = 20;
+    private $offset = 0;
 
     /**
      * @return mixed
@@ -52,5 +54,37 @@ class CategoryListFilter
     public function setParentId($parentId)
     {
         $this->parentId = $parentId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPerPage()
+    {
+        return $this->perPage;
+    }
+
+    /**
+     * @param mixed $perPage
+     */
+    public function setPerPage($perPage)
+    {
+        $this->perPage = $perPage;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOffset()
+    {
+        return $this->offset;
+    }
+
+    /**
+     * @param mixed $offset
+     */
+    public function setOffset($offset)
+    {
+        $this->offset = $offset;
     }
 }

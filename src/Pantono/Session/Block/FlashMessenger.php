@@ -8,7 +8,6 @@ class FlashMessenger extends AbstractBlock implements BlockInterface
 {
     public function render(array $arguments = [])
     {
-        $this->getFlashMessengerService()->addMessage('test 123', 'warning');
         $messages = $this->getFlashMessengerService()->getGroupedMessages();
         $this->getFlashMessengerService()->deleteAllMessages();
         return $this->getApplication()['twig']->render('admin/blocks/flash-messenger.twig', ['groupedMessages' => $messages]);

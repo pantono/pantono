@@ -5,13 +5,15 @@ services:
       - ['Repository', 'Pantono\Categories\Entity\Category']
       - @dispatcher
       - @EntityHydrator
-
+      - @Assets
 forms:
     category:
       attributes:
         role: form
         class: category-form
       fields:
+        id:
+          type: hidden
         title:
           type: text
         parent:
@@ -20,5 +22,7 @@ forms:
         urlKey:
           type: text
           readonly: true
+        active:
+          type: checkbox
         image:
           type: file

@@ -2,6 +2,7 @@
 
 namespace Pantono\Core\Event;
 
+use Pantono\Assets\Entity\Asset;
 use Pantono\Categories\Entity\Category;
 use Pantono\Core\Block\BlockInterface;
 use Pantono\Core\Container\Application;
@@ -72,5 +73,12 @@ class Dispatcher
         $catEvent->setCategoryEntity($category);
         $catEvent->setData($data);
         $this->application['dispatcher']->dispatch($event, $catEvent);
+    }
+
+    public function dispatchAssetEvent($event, Asset $asset)
+    {
+        $assetEvent = new \Pantono\Core\Event\Events\Asset($this->application);
+        $assetEvent->setAsset($asset);
+        $this->application['dispatcher']->dispatch($event, $assetEvent);
     }
 }

@@ -1,4 +1,7 @@
-add_category:
-    route: '/admin/categories/add'
+list_categories:
+    route: '/admin/categories/{id}'
     controller: 'Pantono\Categories\Controller\Category'
-    action: 'addAction'
+    action: 'listAction'
+    admin: true
+    defaults:
+      id: null

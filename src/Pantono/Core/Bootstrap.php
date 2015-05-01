@@ -108,7 +108,6 @@ class Bootstrap
             $routes = array_merge_recursive($routes, $module->getRoutes());
         }
         $this->application['defined_routes'] = $routes;
-        $app =& $this->application;
         foreach ($routes as $name => $route) {
             $controllerId = $this->createController($route);
             if ($route['route']) {
@@ -140,7 +139,7 @@ class Bootstrap
     private function loadRoute($controllerId, $name, array $route)
     {
         $app = $this->application;
-        $app->match($route['route'], $controllerId . ':' . $route['action'])
+        $routeObject = $app->match($route['route'], $controllerId . ':' . $route['action'])
             ->before(function (Request $request, Application $app) use ($route) {
                 $routeModel = new Route();
                 $routeModel->setController($route['controller']);
@@ -155,6 +154,12 @@ class Bootstrap
                 }
             })
             ->bind($name);
+
+        if (isset($route['defaults'])) {
+            foreach ($route['defaults'] as $name => $value) {
+                $routeObject->value($name, $value);
+            }
+        }
     }
 
     public function getCommandLineRunner()

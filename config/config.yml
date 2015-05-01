@@ -10,6 +10,15 @@ locales:
     es: locales/es.yml
 admin:
   session_timeout: 1800
+filesystems:
+  private:
+    adapter: 'League\Flysystem\Adapter\Local'
+    args:
+      - '../data'
+  assets:
+    adapter: 'League\Flysystem\Adapter\Local'
+    args:
+      - '../data/assets/'
 modules:
   - Pantono\Database
   - Pantono\Acl

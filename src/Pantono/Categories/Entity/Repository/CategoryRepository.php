@@ -29,6 +29,8 @@ class CategoryRepository extends AbstractRepository
             $qb->andWhere('c.parent = :parent')
                 ->setParameter('parent', $this->getCategoryReference($filter->getParentId()));
         }
+        $qb->setMaxResults($filter->getPerPage());
+        $qb->setFirstResult($filter->getOffset());
 
         return $qb->getQuery()->getResult();
     }

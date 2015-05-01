@@ -52,8 +52,8 @@ class Product
                 }
             }
         }
-        usort($prices, function ($a, $b) {
-            return $a > $b;
+        usort($prices, function ($productA, $productB) {
+            return $productA > $productB;
         });
         return $prices;
     }
@@ -68,8 +68,8 @@ class Product
                 }
             }
         }
-        uasort($prices, function ($a, $b) {
-            return $a > $b;
+        uasort($prices, function ($productA, $productB) {
+            return $productA > $productB;
         });
         return $prices;
     }

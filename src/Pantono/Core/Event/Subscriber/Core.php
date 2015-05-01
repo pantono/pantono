@@ -7,7 +7,6 @@ use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Pantono\Core\Container\Application;
-use Silex\Provider\SessionServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 
 class Core implements EventSubscriberInterface

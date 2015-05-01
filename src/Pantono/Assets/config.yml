@@ -1,0 +1,9 @@
+event_subscribers:
+    - 'Pantono\Assets\Event\Subscriber'
+services:
+  Assets:
+    class: Pantono\Assets\Assets
+    arguments:
+      - @public_files
+      - ['Repository', 'Pantono\Assets\Entity\Asset']
+      - @dispatcher

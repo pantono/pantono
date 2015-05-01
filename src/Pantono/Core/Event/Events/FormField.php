@@ -1,6 +1,5 @@
 <?php namespace Pantono\Core\Event\Events;
 
-use Symfony\Component\Form\FormBuilderInterface;
 
 class FormField extends General
 {
@@ -52,7 +51,7 @@ class FormField extends General
     /**
      * @param mixed $fieldData
      */
-    public function setFieldData(&$fieldData)
+    public function setFieldData($fieldData)
     {
         $this->fieldData = $fieldData;
     }
