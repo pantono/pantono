@@ -50,14 +50,12 @@ class Hydrator
      * @param $entity
      * @param $value
      * @param $mapping
-     * @return Object
      * @throws \Exception
      */
     private function mapField($entity, $value, $mapping)
     {
         $mappingParts = explode('.', $mapping);
         $field = array_pop($mappingParts);
-        $setter = 'set' . $this->camelize($field);
         if (sizeof($mappingParts) === 2) {
             $subEntity = $this->getEntityFromId($mappingParts[1]);
             if ($subEntity) {
@@ -65,20 +63,25 @@ class Hydrator
             }
             if (!$subEntity) {
                 $subEntity = $this->getEntityFromId($mappingParts[0].'.'.$mappingParts[1]);
-                $value = $this->mapValueToEntityValue(get_class($subEntity), $field, $value);
             }
-            $subEntity->$setter($value);
-            $subEntitySetter = 'set' . $this->camelize($mappingParts[1]);
-            $entity->$subEntitySetter($subEntity);
-            return $entity;
+            $this->applyValueToEntity($subEntity, $field, $value);
+            $this->applyValueToEntity($entity, $mappingParts[1], $subEntity);
+            return;
         }
-        if (sizeof($mappingParts) > 1) {
+        if (sizeof($mappingParts) > 2) {
             throw new \Exception("Can't currently map higher than one level in entity hydrator, sorry!");
         }
+        $this->applyValueToEntity($entity, $field, $value);
+    }
+
+    private function applyValueToEntity($entity, $field, $value)
+    {
+        echo get_class($entity).'::'.$field.'<br />';
+        $value = $this->mapValueToEntityValue(get_class($entity), $field, $value);
+        $setter = 'set' . $this->camelize($field);
         if (!method_exists($entity, $setter)) {
             throw new \Exception('Setter '.get_class($entity).'::'.$setter.' does not exist');
         }
-        $value = $this->mapValueToEntityValue(get_class($entity), $field, $value);
         $entity->$setter($value);
     }
 
@@ -124,7 +127,11 @@ class Hydrator
     {
         $entities = $this->getMappedEntities();
         $keys = array_keys($entities);
-        return $this->getEntityFromId($keys[0]);
+        $entity = $this->getEntityFromId($keys[0]);
+        if ($entity === false) {
+            throw new \Exception('Base entity not found');
+        }
+        return $entity;
     }
 
     /**
@@ -137,6 +144,11 @@ class Hydrator
         $mappings  = isset($config['entityMapping']) ? $config['entityMapping'] : [];
         foreach ($mappings as $name => $class) {
             $mappings = array_merge($mappings, $this->getAssociationMappings($name, $class));
+        }
+        foreach ($mappings as $class) {
+            if (!class_exists($class)) {
+                throw new EntityNotExists('Entity ' . $class . ' does not exist');
+            }
         }
         return $mappings;
     }
