@@ -31,11 +31,6 @@ class Hydrator
         if (empty($entities)) {
             return null;
         }
-        foreach ($entities as $name => $class) {
-            if (!class_exists($class)) {
-                throw new EntityNotExists('Entity ' . $class . ' does not exist');
-            }
-        }
         $mappings = $this->getMappings();
 
         $entity = $this->getBaseEntity();
@@ -67,9 +62,6 @@ class Hydrator
             $this->applyValueToEntity($subEntity, $field, $value);
             $this->applyValueToEntity($entity, $mappingParts[1], $subEntity);
             return;
-        }
-        if (sizeof($mappingParts) > 2) {
-            throw new \Exception("Can't currently map higher than one level in entity hydrator, sorry!");
         }
         $this->applyValueToEntity($entity, $field, $value);
     }
@@ -110,9 +102,6 @@ class Hydrator
             if (!isset($entities[$id])) {
                 return false;
             }
-            if (!class_exists($entities[$id])) {
-                throw new \Exception('Class ' . $id . ' does not exist');
-            }
             $this->entities[$id] = new $entities[$id];
         }
         return $this->entities[$id];
@@ -144,12 +133,17 @@ class Hydrator
         foreach ($mappings as $name => $class) {
             $mappings = array_merge($mappings, $this->getAssociationMappings($name, $class));
         }
+        $this->checkMappingClasses($mappings);
+        return $mappings;
+    }
+
+    private function checkMappingClasses($mappings)
+    {
         foreach ($mappings as $class) {
             if (!class_exists($class)) {
                 throw new EntityNotExists('Entity ' . $class . ' does not exist');
             }
         }
-        return $mappings;
     }
 
     /**
