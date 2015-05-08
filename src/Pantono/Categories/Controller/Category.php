@@ -34,9 +34,10 @@ class Category extends Controller
         $form = $formWrapper->getForm();
         $title = 'Add New Category';
         if ($id !== null) {
-            $category = $this->getCategoryService()->getCategoryById($id, true);
-            $category['image'] = null;
-            $form->setData($category);
+            $category = $this->getCategoryService()->getCategoryById($id);
+            $data = $this->getHydrator()->flattenEntity($category);
+            $data['image'] = null;
+            $form->setData($data);
             $title = 'Edit Category '.$id;
         }
         $result = $this->handleCategoryRequest($request, $formWrapper);

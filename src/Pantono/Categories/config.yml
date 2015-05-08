@@ -35,16 +35,16 @@ forms:
         metadata_id:
           type: hidden
           mapping: category.metadata.id
-        meta_title:
+        metadata_pageTitle:
           type: textarea
           mapping: category.metadata.pageTitle
-        meta_description:
+        metadata_metaDescription:
           type: textarea
           mapping: category.metadata.metaDescription
-        meta_keywords:
+        metadata_metaDescription:
           type: text
           mapping: category.metadata.metaKeywords
-        meta_robots:
+        metadata_metaRobots:
           type: select
           mapping: category.metadata.metaRobots
         image:

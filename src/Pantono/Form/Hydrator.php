@@ -11,9 +11,38 @@ class Hydrator
     private $managerRegistry;
     private $entities;
 
+    /**
+     * @param ManagerRegistry $managerRegistry
+     */
     public function __construct(ManagerRegistry $managerRegistry)
     {
         $this->managerRegistry = $managerRegistry;
+    }
+
+    public function flattenEntity($entity, $fieldPrefix = '')
+    {
+        $ignoreFields = [
+            '__initializer__',
+            '__cloner__',
+            '__isInitialized__',
+            'lazyPropertiesDefaults'
+        ];
+        $class = new \ReflectionClass($entity);
+        $data = [];
+        foreach ($class->getProperties() as $property) {
+            if (in_array($property->getName(), $ignoreFields)) {
+                continue;
+            }
+            $field = lcfirst($this->camelize($property->getName()));
+            $getter = 'get' . $field;
+            $value = $entity->$getter();
+            if (is_object($value)) {
+                $data = array_merge($data, $this->flattenEntity($value, $field . '_'));
+                continue;
+            }
+            $data[$fieldPrefix . $field] = $value;
+        }
+        return $data;
     }
 
     /**
@@ -38,7 +67,7 @@ class Hydrator
             $value = isset($data[$field]) ? $data[$field] : null;
             $this->mapField($entity, $value, $mapping);
         }
-        return $this->getEntityManager()->merge($entity);
+        return $entity;
     }
 
     /**
@@ -57,7 +86,7 @@ class Hydrator
                 $value = $this->mapValueToEntityValue(get_class($subEntity), $field, $value);
             }
             if (!$subEntity) {
-                $subEntity = $this->getEntityFromId($mappingParts[0].'.'.$mappingParts[1]);
+                $subEntity = $this->getEntityFromId($mappingParts[0] . '.' . $mappingParts[1]);
             }
             $this->applyValueToEntity($subEntity, $field, $value);
             $this->applyValueToEntity($entity, $mappingParts[1], $subEntity);
@@ -66,16 +95,30 @@ class Hydrator
         $this->applyValueToEntity($entity, $field, $value);
     }
 
+    /**
+     * @param $entity
+     * @param $field
+     * @param $value
+     * @throws \Exception
+     */
     private function applyValueToEntity($entity, $field, $value)
     {
         $value = $this->mapValueToEntityValue(get_class($entity), $field, $value);
         $setter = 'set' . $this->camelize($field);
         if (!method_exists($entity, $setter)) {
-            throw new \Exception('Setter '.get_class($entity).'::'.$setter.' does not exist');
+            throw new \Exception('Setter ' . get_class($entity) . '::' . $setter . ' does not exist');
         }
         $entity->$setter($value);
     }
 
+    /**
+     * @param $class
+     * @param $field
+     * @param $value
+     * @return bool|\Doctrine\Common\Proxy\Proxy|null|object
+     * @throws \Doctrine\ORM\Mapping\MappingException
+     * @throws \Doctrine\ORM\ORMException
+     */
     private function mapValueToEntityValue($class, $field, $value)
     {
         $metaData = $this->getEntityManager()->getClassMetadata($class);
@@ -129,7 +172,7 @@ class Hydrator
     private function getMappedEntities()
     {
         $config = $this->getFormBuilder()->getConfig();
-        $mappings  = isset($config['entityMapping']) ? $config['entityMapping'] : [];
+        $mappings = isset($config['entityMapping']) ? $config['entityMapping'] : [];
         foreach ($mappings as $name => $class) {
             $mappings = array_merge($mappings, $this->getAssociationMappings($name, $class));
         }
@@ -137,6 +180,10 @@ class Hydrator
         return $mappings;
     }
 
+    /**
+     * @param $mappings
+     * @throws EntityNotExists
+     */
     private function checkMappingClasses($mappings)
     {
         foreach ($mappings as $class) {
@@ -151,11 +198,12 @@ class Hydrator
      * @param $class
      * @return array
      */
-    private function getAssociationMappings($id, $class) {
+    private function getAssociationMappings($id, $class)
+    {
         $metaData = $this->getEntityManager()->getClassMetadata($class);
         $mappings = [];
         foreach ($metaData->getAssociationMappings() as $field => $mapping) {
-            $mappings[$id.'.'.$field] = $mapping['targetEntity'];
+            $mappings[$id . '.' . $field] = $mapping['targetEntity'];
         }
         return $mappings;
     }

@@ -9,6 +9,11 @@ abstract class AbstractRepository extends EntityRepository
         $this->_em->persist($entity);
     }
 
+    public function merge($entity)
+    {
+        $this->_em->merge($entity);
+    }
+
     public function flush()
     {
         $this->_em->flush();

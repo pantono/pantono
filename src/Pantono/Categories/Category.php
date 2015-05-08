@@ -72,13 +72,13 @@ class Category
 
     public function saveCategoryEntity(\Pantono\Categories\Entity\Category $category)
     {
-        $entity = $this->metadata->saveMetadata($category->getMetadata());
-        $category->setMetadata($entity);
+        $metadata = $this->metadata->saveMetadata($category->getMetadata());
+        $category->setMetadata($metadata);
         if (!$category->getUrlKey()) {
             $category->setUrlKey($this->getUniqueUrlKey($category->getTitle()));
         }
         $this->dispatcher->dispatchCategoryEvent(CategoryEvent::PRE_SAVE, [], $category);
-        $this->repository->save($category);
+        $this->repository->merge($category);
         $this->repository->flush();
         $this->dispatcher->dispatchCategoryEvent(CategoryEvent::POST_SAVE, [], $category);
         return $category;
