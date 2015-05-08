@@ -5,7 +5,3 @@ services:
     class: 'Pantono\Database\Doctrine\ManagerRegistry'
     arguments:
       - @application
-  EntityHydrator:
-    class: Pantono\Database\Entity\Hydrator\EntityHydrator
-    arguments:
-      - @ManagerRegistry

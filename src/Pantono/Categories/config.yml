@@ -6,6 +6,7 @@ services:
       - @dispatcher
       - @Assets
       - @Metadata
+      - @Hydrator
 forms:
     category:
       entityMapping:

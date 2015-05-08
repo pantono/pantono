@@ -7,6 +7,7 @@ use Pantono\Categories\Model\Filter\CategoryListFilter;
 use Pantono\Database\Entity\Hydrator\EntityHydrator;
 use Pantono\Core\Event\Dispatcher;
 use \Pantono\Core\Event\Events\Category as CategoryEvent;
+use Pantono\Form\Hydrator;
 use Pantono\Metadata\Metadata;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -16,13 +17,15 @@ class Category
     private $dispatcher;
     private $assets;
     private $metadata;
+    private $hydrator;
 
-    public function __construct(CategoryRepository $repository, Dispatcher $eventDispatcher, Assets $assets, Metadata $metadata)
+    public function __construct(CategoryRepository $repository, Dispatcher $eventDispatcher, Assets $assets, Metadata $metadata, Hydrator $hydrator)
     {
         $this->repository = $repository;
         $this->dispatcher = $eventDispatcher;
         $this->assets = $assets;
         $this->metadata = $metadata;
+        $this->hydrator = $hydrator;
     }
 
     public function getCategoryById($id)
@@ -41,28 +44,6 @@ class Category
             return $asset->getId();
         }
         return null;
-    }
-
-    public function saveCategory($data)
-    {
-        $this->dispatcher->dispatchCategoryEvent(CategoryEvent::PRE_HYDRATE, $data);
-        $data['image'] = $this->uploadImage($data['image']);
-        $currentEntity = null;
-        if (isset($data['id'])) {
-            $currentEntity = $this->getCategoryById($data['id']);
-        }
-        /**
-         * @var $category \Pantono\Categories\Entity\Category
-         */
-        $category = $this->hydrator->hydrate('Pantono\Categories\Entity\Category', $data, $currentEntity);
-        if (!$category->getUrlKey()) {
-            $category->setUrlKey($this->getUniqueUrlKey($category->getTitle()));
-        }
-        $this->dispatcher->dispatchCategoryEvent(CategoryEvent::PRE_SAVE, $data, $category);
-        $this->repository->save($category);
-        $this->repository->flush();
-        $this->dispatcher->dispatchCategoryEvent(CategoryEvent::POST_SAVE, $data, $category);
-        return $category;
     }
 
     public function saveCategoryEntity(\Pantono\Categories\Entity\Category $category)
