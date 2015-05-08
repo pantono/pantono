@@ -4,6 +4,7 @@ namespace Pantono\Categories\Controller;
 
 use Pantono\Categories\Model\Filter\CategoryListFilter;
 use Pantono\Core\Controller\Controller;
+use Pantono\Form\Hydrator;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +30,8 @@ class Category extends Controller
     {
         $id = $request->get('id', null);
         $filter = new CategoryListFilter();
-        $form = $this->getCategoryForm();
+        $formWrapper = $this->getCategoryForm();
+        $form = $formWrapper->getForm();
         $title = 'Add New Category';
         if ($id !== null) {
             $category = $this->getCategoryService()->getCategoryById($id, true);
@@ -37,7 +39,7 @@ class Category extends Controller
             $form->setData($category);
             $title = 'Edit Category '.$id;
         }
-        $result = $this->handleCategoryRequest($request, $form);
+        $result = $this->handleCategoryRequest($request, $formWrapper);
         if ($result !== null)
         {
             return $result;
@@ -46,12 +48,15 @@ class Category extends Controller
         return $this->renderTemplate('admin/categories/list.twig', ['categories' => $categories, 'form' => $form->createView(), 'title' => $title]);
     }
 
-    private function handleCategoryRequest(Request $request, \Symfony\Component\Form\Form $form)
+    private function handleCategoryRequest(Request $request, $formWrapper)
     {
+        $form = $formWrapper->getForm();
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                if ($this->getCategoryService()->saveCategory($form->getData())) {
+                $data = $form->getData();
+                $entity = $this->getHydrator()->getHydratedEntity($formWrapper, $data);
+                if ($this->getCategoryService()->saveCategoryEntity($entity)) {
                     $this->flashMessenger($this->translate('Category has been updated'), 'success');
                     return new RedirectResponse('/admin/categories');
                 }
@@ -60,13 +65,21 @@ class Category extends Controller
         return null;
     }
 
+    /**
+     * @return mixed|Hydrator
+     */
+    private function getHydrator()
+    {
+        return $this->getApplication()->getPantonoService('Hydrator');
+    }
+
 
     /**
      * @return \Symfony\Component\Form\Form
      */
     private function getCategoryForm()
     {
-        return $this->getApplication()->getForm('category')->getForm();
+        return $this->getApplication()->getForm('category');
     }
 
     /**

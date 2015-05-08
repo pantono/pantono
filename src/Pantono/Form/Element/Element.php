@@ -12,6 +12,7 @@ abstract class Element
     protected $defaultValue;
     protected $required = false;
     protected $constraints;
+    protected $mapping;
 
     /**
      * @return mixed
@@ -161,6 +162,22 @@ abstract class Element
     {
         $this->constraints[] = $constraint;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMapping()
+    {
+        return $this->mapping;
+    }
+
+    /**
+     * @param mixed $mapping
+     */
+    public function setMapping($mapping)
+    {
+        $this->mapping = $mapping;
     }
 
     public function getElementOptions()

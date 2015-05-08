@@ -6,23 +6,47 @@ services:
       - @dispatcher
       - @EntityHydrator
       - @Assets
+      - @Metadata
 forms:
     category:
+      entityMapping:
+        category: 'Pantono\Categories\Entity\Category'
       attributes:
         role: form
         class: category-form
       fields:
         id:
           type: hidden
+          mapping: category.id
         title:
           type: text
+          mapping: category.title
         parent:
           type: select
+          mapping: category.parent
           choice_populator: Category::getCategoryListTree
         urlKey:
           type: text
+          mapping: category.urlKey
           readonly: true
         active:
+          mapping: category.active
           type: checkbox
+        metadata_id:
+          type: hidden
+          mapping: category.metadata.id
+        meta_title:
+          type: textarea
+          mapping: category.metadata.pageTitle
+        meta_description:
+          type: textarea
+          mapping: category.metadata.metaDescription
+        meta_keywords:
+          type: text
+          mapping: category.metadata.metaKeywords
+        meta_robots:
+          type: select
+          mapping: category.metadata.metaRobots
         image:
+          mapping: category.image
           type: file

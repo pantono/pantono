@@ -1,2 +1,11 @@
 event_subscribers:
-    - 'Pantono\Database\Event\Subscriber'
+  - 'Pantono\Database\Event\Subscriber'
+services:
+  ManagerRegistry:
+    class: 'Pantono\Database\Doctrine\ManagerRegistry'
+    arguments:
+      - @application
+  EntityHydrator:
+    class: Pantono\Database\Entity\Hydrator\EntityHydrator
+    arguments:
+      - @ManagerRegistry

@@ -10,6 +10,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 use \Pantono\Core\Event\Events\Form as FormEvent;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 abstract class Form extends AbstractType
 {
@@ -22,6 +24,7 @@ abstract class Form extends AbstractType
     private $action;
     private $attributes;
     private $method;
+    private $entityClassName;
 
     public function __construct(Application $application, Dispatcher $dispatcher)
     {
@@ -69,6 +72,13 @@ abstract class Form extends AbstractType
             );
         }
         $this->dispatcher->dispatchFormEvent(FormEvent::POST_BUILD, $this->getName(), $builder);
+        $this->dispatcher->dispatchFormEvent(FormEvent::PRE_HYDRATE, $this->getName(), $builder);
+        //$this->hydrateEntity();
+        $this->dispatcher->dispatchFormEvent(FormEvent::POST_HYDRATE, $this->getName(), $builder);
+    }
+
+    public function hydrateEntity()
+    {
     }
 
     abstract public function buildFormFields();
@@ -76,7 +86,7 @@ abstract class Form extends AbstractType
     protected function getHandlerForType($type)
     {
         if (!isset($this->application['form_element_handlers'][$type])) {
-            throw new ElementHandlerNotRegistered('No handler for element '.$type.' is registered');
+            throw new ElementHandlerNotRegistered('No handler for element ' . $type . ' is registered');
         }
         $handlerClass = $this->application['form_element_handlers'][$type];
         $handler = new $handlerClass($this->application);
@@ -182,5 +192,21 @@ abstract class Form extends AbstractType
     public function getDispatcher()
     {
         return $this->dispatcher;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEntityClassName()
+    {
+        return $this->entityClassName;
+    }
+
+    /**
+     * @param mixed $entityClassName
+     */
+    public function setEntityClassName($entityClassName)
+    {
+        $this->entityClassName = $entityClassName;
     }
 }

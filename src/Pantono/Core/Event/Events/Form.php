@@ -12,6 +12,8 @@ class Form extends General
     const POST_LOAD = 'pantono.form.post-load';
     const PRE_BUILD = 'pantono.form.pre-build';
     const POST_BUILD = 'pantono.form.post-build';
+    const PRE_HYDRATE = 'pantono.form.pre-populate';
+    const POST_HYDRATE = 'pantono.form.post-populate';
 
     /**
      * @return mixed

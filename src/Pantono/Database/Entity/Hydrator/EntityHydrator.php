@@ -1,26 +1,26 @@
-<?php namespace Pantono\Core\Entity\Hydrator;
+<?php namespace Pantono\Database\Entity\Hydrator;
 
 use Doctrine\ORM\EntityManager;
-use ReflectionObject;
-use Doctrine\Common\Annotations\AnnotationReader;
+use Pantono\Database\Doctrine\ManagerRegistry;
 use Doctrine\Common\Util\Inflector;
 
 class EntityHydrator
 {
     private $entityManager;
+    private $managerRegistry;
     /**
      * @var \Doctrine\ORM\Mapping\ClassMetadata
      */
     private $currentMetaData;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        $this->entityManager = $entityManager;
+        $this->managerRegistry = $managerRegistry;
     }
 
     public function hydrate($entityClass, $data, $existingClass = null)
     {
-        $this->currentMetaData = $this->entityManager->getClassMetadata($entityClass);
+        $this->currentMetaData = $this->getEntityManager()->getClassMetadata($entityClass);
         $entity = $this->setCurrentEntity($entityClass, $existingClass);
         $properties = $this->getPropertiesForEntity($entityClass);
         foreach ($data as $key => $value) {
@@ -93,6 +93,11 @@ class EntityHydrator
             return $values;
         }
 
-        return $this->entityManager->getReference($entityClass, $value);
+        return $this->getEntityManager()->getReference($entityClass, $value);
+    }
+
+    private function getEntityManager()
+    {
+        return $this->managerRegistry->getManager('default');
     }
 }

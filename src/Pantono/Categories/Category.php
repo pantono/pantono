@@ -4,10 +4,10 @@ use Pantono\Assets\Assets;
 use Pantono\Categories\Entity\Repository\CategoryRepository;
 use Pantono\Categories\Exception\CategoryNotFound;
 use Pantono\Categories\Model\Filter\CategoryListFilter;
-use Pantono\Core\Entity\Hydrator\EntityHydrator;
+use Pantono\Database\Entity\Hydrator\EntityHydrator;
 use Pantono\Core\Event\Dispatcher;
-use Pantono\Categories\Entity\Category as CategoryEntity;
 use \Pantono\Core\Event\Events\Category as CategoryEvent;
+use Pantono\Metadata\Metadata;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Category
@@ -16,13 +16,15 @@ class Category
     private $dispatcher;
     private $hydrator;
     private $assets;
+    private $metadata;
 
-    public function __construct(CategoryRepository $repository, Dispatcher $eventDispatcher, EntityHydrator $hydrator, Assets $assets)
+    public function __construct(CategoryRepository $repository, Dispatcher $eventDispatcher, EntityHydrator $hydrator, Assets $assets, Metadata $metadata)
     {
         $this->repository = $repository;
         $this->dispatcher = $eventDispatcher;
         $this->hydrator = $hydrator;
         $this->assets = $assets;
+        $this->metadata = $metadata;
     }
 
     public function getCategoryById($id, $flat = false)
@@ -65,6 +67,20 @@ class Category
         $this->repository->save($category);
         $this->repository->flush();
         $this->dispatcher->dispatchCategoryEvent(CategoryEvent::POST_SAVE, $data, $category);
+        return $category;
+    }
+
+    public function saveCategoryEntity(\Pantono\Categories\Entity\Category $category)
+    {
+        $entity = $this->metadata->saveMetadata($category->getMetadata());
+        $category->setMetadata($entity);
+        if (!$category->getUrlKey()) {
+            $category->setUrlKey($this->getUniqueUrlKey($category->getTitle()));
+        }
+        $this->dispatcher->dispatchCategoryEvent(CategoryEvent::PRE_SAVE, [], $category);
+        $this->repository->save($category);
+        $this->repository->flush();
+        $this->dispatcher->dispatchCategoryEvent(CategoryEvent::POST_SAVE, [], $category);
         return $category;
     }
 

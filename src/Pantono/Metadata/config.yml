@@ -1,0 +1,6 @@
+services:
+  Metadata:
+    class: 'Pantono\Metadata\Metadata'
+    arguments:
+      - ['Repository', 'Pantono\Metadata\Entity\Metadata']
+      - @dispatcher

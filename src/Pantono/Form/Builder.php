@@ -6,23 +6,37 @@ class Builder extends Form
 
     public function buildFormFields()
     {
-        if (isset($this->config['fields'])) {
-            foreach ($this->config['fields'] as $name => $fieldData) {
-                $this->getDispatcher()->dispatchFormFieldEvent('pantono.formfield.prebuild', $this->getName(), $name, $fieldData);
-                $field = $this->getHandlerForType($fieldData['type']);
-                $field->setName($name);
-                $field->setData($fieldData);
+        $this->setEntity();
+        foreach ($this->getFields() as $name => $fieldData) {
+            $this->getDispatcher()->dispatchFormFieldEvent('pantono.formfield.prebuild', $this->getName(), $name, $fieldData);
+            $field = $this->getHandlerForType($fieldData['type']);
+            $field->setName($name);
+            $field->setData($fieldData);
 
-                $app = $this->getApplication();
-                if (isset($fieldData['choice_populator'])) {
-                    $populator = $fieldData['choice_populator'];
-                    list($service, $method) = explode('::', $populator);
-                    $field->setChoices($app->getPantonoService($service)->$method());
-                }
-                $this->getDispatcher()->dispatchFormFieldEvent('pantono.formfield.postbuild', $this->getName(), $name, $fieldData, $field);
-                $this->addElement($field);
-
+            $app = $this->getApplication();
+            if (isset($fieldData['choice_populator'])) {
+                $populator = $fieldData['choice_populator'];
+                list($service, $method) = explode('::', $populator);
+                $field->setChoices($app->getPantonoService($service)->$method());
             }
+            $this->getDispatcher()->dispatchFormFieldEvent('pantono.formfield.postbuild', $this->getName(), $name, $fieldData, $field);
+            $this->addElement($field);
+
+        }
+    }
+
+    public function getFields()
+    {
+        if (!isset($this->config['fields'])) {
+            return [];
+        }
+        return $this->config['fields'];
+    }
+
+    private function setEntity()
+    {
+        if (isset($this->getConfig()['entity'])) {
+            $this->setEntityClassName($this->getConfig()['entity']);
         }
     }
 

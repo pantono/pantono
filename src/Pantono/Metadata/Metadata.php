@@ -1,6 +1,6 @@
 <?php namespace Pantono\Metadata;
 
-use Pantono\Core\Entity\Hydrator\EntityHydrator;
+use Pantono\Metadata\Entity\Metadata as MetadataEntity;
 use Pantono\Core\Event\Dispatcher;
 use Pantono\Metadata\Entity\Repository\MetadataRepository;
 
@@ -8,25 +8,19 @@ class Metadata
 {
     private $repository;
     private $dispatcher;
-    private $hydrator;
 
-    public function __construct(MetadataRepository $repository, Dispatcher $dispatcher, EntityHydrator $hydrator)
+    public function __construct(MetadataRepository $repository, Dispatcher $dispatcher)
     {
         $this->repository = $repository;
         $this->dispatcher = $dispatcher;
-        $this->hydrator = $hydrator;
     }
 
-    public function saveMetadata(array $data)
+    public function saveMetadata(MetadataEntity $entity)
     {
-        $entity = null;
-        if (isset($data['id'])) {
-            $entity = $this->repository->find($data['id']);
-        }
-        $hydratedEntity = $this->hydrator->hydrate('Pantono\Metadata\Entity\Metadata', $data, $entity);
-        $this->dispatcher->dispatchMetadataEvent(\Pantono\Core\Event\Events\Metadata::PRE_SAVE, $hydratedEntity);
-        $this->repository->save($hydratedEntity);
+        $this->dispatcher->dispatchMetadataEvent(\Pantono\Core\Event\Events\Metadata::PRE_SAVE, $entity);
+        $this->repository->save($entity);
         $this->repository->flush();
-        $this->dispatcher->dispatchMetadataEvent(\Pantono\Core\Event\Events\Metadata::POST_SAVE, $hydratedEntity);
+        $this->dispatcher->dispatchMetadataEvent(\Pantono\Core\Event\Events\Metadata::POST_SAVE, $entity);
+        return $entity;
     }
 }
