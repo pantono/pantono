@@ -19,22 +19,40 @@
             <div role="tabpanel">
 
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation">
-                        <a href="#" data-toggle="tab" role="tab">Basic Information</a>
+                    <li role="presentation" class="active">
+                        <a href="#information" data-toggle="tab" role="tab" aria-controls="information">Basic Information</a>
                     </li>
-                    <li role="presentation"><a href="#">Profile</a></li>
-                    <li role="presentation"><a href="#">Messages</a></li>
+                    <li role="presentation">
+                        <a data-toggle="tab" role="tab" href="#metadata" aria-controls="metadata">Metadata</a>
+                    </li>
+                    <li role="presentation"></li>
                 </ul>
+                {{ form_start(form) }}
+                {{ form_row(form.id) }}
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="basic">
-
+                    <div role="tabpanel" class="tab-pane active" id="information">
+                        {{ form_row(form.title) }}
+                        {{ form_row(form.parent) }}
+                        {{ form_row(form.urlKey) }}
+                        {{ form_row(form.active) }}
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="metadata">
+                        {{ form_widget(form) }}
                     </div>
                 </div>
-                {{ form_start(form) }}
-                {{ form_widget(form) }}
                 <button type="submit" class="btn btn-default">Add Category</button>
             {{ form_end(form) }}
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascript %}
+    <script type="text/javascript">
+        $(function() {
+            $('.nav-tabs a').on('click', function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+        });
+    </script>
 {% endblock %}
