@@ -10,6 +10,12 @@ class Hydrator
     private $formBuilder;
     private $managerRegistry;
     private $entities;
+    private $ignoreFields = [
+        '__initializer__',
+        '__cloner__',
+        '__isInitialized__',
+        'lazyPropertiesDefaults'
+    ];
 
     /**
      * @param ManagerRegistry $managerRegistry
@@ -21,16 +27,10 @@ class Hydrator
 
     public function flattenEntity($entity, $fieldPrefix = '')
     {
-        $ignoreFields = [
-            '__initializer__',
-            '__cloner__',
-            '__isInitialized__',
-            'lazyPropertiesDefaults'
-        ];
         $class = new \ReflectionClass($entity);
         $data = [];
         foreach ($class->getProperties() as $property) {
-            if (in_array($property->getName(), $ignoreFields)) {
+            if (in_array($property->getName(), $this->ignoreFields)) {
                 continue;
             }
             $field = lcfirst($this->camelize($property->getName()));
