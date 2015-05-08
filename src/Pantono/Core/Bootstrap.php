@@ -132,7 +132,7 @@ class Bootstrap
         $controllerId = str_replace('\\', '.', $route['controller']);
         if (!isset($this->controllers[$controllerId])) {
             $app = $this->application;
-            $app[$controllerId] = $app->share(function () use ($app, $route) {
+            $app[$controllerId] = $app->share(function() use ($app, $route) {
                 $controller = $route['controller'];
                 return new $controller($app, $app->getEventDispatcher(), $route['controller'], $route['action']);
             });
@@ -145,7 +145,7 @@ class Bootstrap
         $app = $this->application;
         $routeModel = $this->getRouteModel($route);
         $routeObject = $app->match($route['route'], $controllerId . ':' . $route['action'])
-            ->before(function (Request $request, Application $app) use ($route, $routeModel) {
+            ->before(function(Request $request, Application $app) use ($route, $routeModel) {
                 $request->attributes->add(['pantono_route' => $routeModel]);
                 if ($route['admin']) {
                     if (!$app->getPantonoService('AdminAuthentication')->isCurrentUserAuthenticated()) {
@@ -179,12 +179,13 @@ class Bootstrap
     public function getCommandLineRunner()
     {
         $application = new \Symfony\Component\Console\Application();
-        foreach ($this->getModules() as $module)
+        foreach ($this->getModules() as $module) {
             foreach ($module->getConfig()->getItem('commands', null, []) as $command) {
                 $command = new $command;
                 $command->setContainer($this->application);
                 $application->add($command);
             }
+        }
         return $application;
     }
 }

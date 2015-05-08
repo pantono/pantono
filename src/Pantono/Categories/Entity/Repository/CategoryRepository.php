@@ -22,7 +22,7 @@ class CategoryRepository extends AbstractRepository
 
         if ($filter->getSearch()) {
             $qb->andWhere('c.name like :search')
-                ->setParameter('name', '%'.$filter->getSearch().'%');
+                ->setParameter('name', '%' . $filter->getSearch() . '%');
         }
 
         if ($filter->getParentId()) {
@@ -35,7 +35,8 @@ class CategoryRepository extends AbstractRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getCategoryByUrlKey($urlKey) {
+    public function getCategoryByUrlKey($urlKey)
+    {
         return $this->_em->getRepository('Pantono\Categories\Entity\Category')->findOneBy(['urlKey' => $urlKey]);
     }
 

@@ -49,7 +49,7 @@ class Assets
 
     public function uploadAsset(UploadedFile $file)
     {
-        $filename = uniqid().'_'.$file->getClientOriginalName();
+        $filename = uniqid() . '_' . $file->getClientOriginalName();
         if (!$this->filesystem->writeStream($filename, fopen($file->getRealPath(), 'r'))) {
             throw new AssetUploadFailed('Asset failed to upload');
         }
@@ -74,6 +74,6 @@ class Assets
 
     public function getTypeFromMimeType($mimeType)
     {
-        return isset($this->typeMap[$mimeType])?$this->typeMap[$mimeType]:null;
+        return isset($this->typeMap[$mimeType]) ? $this->typeMap[$mimeType] : null;
     }
 }

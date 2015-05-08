@@ -6,7 +6,6 @@ use Pantono\Categories\Model\Filter\CategoryListFilter;
 use Pantono\Core\Controller\Controller;
 use Pantono\Form\Hydrator;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -39,11 +38,10 @@ class Category extends Controller
             $data = $this->getHydrator()->flattenEntity($category);
             $data['image'] = null;
             $form->setData($data);
-            $title = 'Edit Category '.$id;
+            $title = 'Edit Category ' . $id;
         }
         $result = $this->handleCategoryRequest($request, $formWrapper);
-        if ($result !== null)
-        {
+        if ($result !== null) {
             return $result;
         }
         $categories = $this->getCategoryService()->getCategoryList($filter);
@@ -77,7 +75,7 @@ class Category extends Controller
 
 
     /**
-     * @return \Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\FormBuilderInterface
      */
     private function getCategoryForm()
     {

@@ -30,7 +30,7 @@ class Loader
         $block = $this->getBlockClass($name);
         $this->eventDispatcher->dispatchBlockEvent(BlockEvent::PRE_RENDER, $block, $this->blocks[$name]);
         $contents = $block->doRender($arguments);
-        $this->eventDispatcher->dispatchBlockEvent(BlockEvent::PRE_RENDER, $block,  $this->blocks[$name]);
+        $this->eventDispatcher->dispatchBlockEvent(BlockEvent::PRE_RENDER, $block, $this->blocks[$name]);
         return $contents;
     }
 
