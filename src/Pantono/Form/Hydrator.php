@@ -76,7 +76,6 @@ class Hydrator
 
     private function applyValueToEntity($entity, $field, $value)
     {
-        echo get_class($entity).'::'.$field.'<br />';
         $value = $this->mapValueToEntityValue(get_class($entity), $field, $value);
         $setter = 'set' . $this->camelize($field);
         if (!method_exists($entity, $setter)) {
