@@ -11,21 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Category extends Controller
 {
-    public function addAction(Request $request)
-    {
-        $form = $this->getCategoryForm();
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                if ($this->getCategoryService()->saveCategory($form->getData())) {
-                    $this->flashMessenger($this->translate('Category has been added'), 'success');
-                    return new RedirectResponse('/admin/categories');
-                }
-            }
-        }
-        return $this->renderTemplate('admin/categories/add.twig', ['form' => $form->createView()]);
-    }
-
     public function listAction(Request $request)
     {
         $id = $request->get('id', null);
