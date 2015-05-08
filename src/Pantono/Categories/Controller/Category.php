@@ -5,6 +5,7 @@ namespace Pantono\Categories\Controller;
 use Pantono\Categories\Model\Filter\CategoryListFilter;
 use Pantono\Core\Controller\Controller;
 use Pantono\Form\Hydrator;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,7 +50,7 @@ class Category extends Controller
         return $this->renderTemplate('admin/categories/list.twig', ['categories' => $categories, 'form' => $form->createView(), 'title' => $title]);
     }
 
-    private function handleCategoryRequest(Request $request, $formWrapper)
+    private function handleCategoryRequest(Request $request, FormBuilder $formWrapper)
     {
         $form = $formWrapper->getForm();
         if ($request->getMethod() == 'POST') {

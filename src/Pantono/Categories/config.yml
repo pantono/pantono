@@ -4,7 +4,6 @@ services:
     arguments:
       - ['Repository', 'Pantono\Categories\Entity\Category']
       - @dispatcher
-      - @EntityHydrator
       - @Assets
       - @Metadata
 forms:

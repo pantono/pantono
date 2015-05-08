@@ -14,27 +14,22 @@ class Category
 {
     private $repository;
     private $dispatcher;
-    private $hydrator;
     private $assets;
     private $metadata;
 
-    public function __construct(CategoryRepository $repository, Dispatcher $eventDispatcher, EntityHydrator $hydrator, Assets $assets, Metadata $metadata)
+    public function __construct(CategoryRepository $repository, Dispatcher $eventDispatcher, Assets $assets, Metadata $metadata)
     {
         $this->repository = $repository;
         $this->dispatcher = $eventDispatcher;
-        $this->hydrator = $hydrator;
         $this->assets = $assets;
         $this->metadata = $metadata;
     }
 
-    public function getCategoryById($id, $flat = false)
+    public function getCategoryById($id)
     {
         $category = $this->repository->find($id);
         if ($category === null) {
             throw new CategoryNotFound('Category with id ' . $id . ' cannot be found');
-        }
-        if ($flat) {
-            return $this->hydrator->deHydrate($category);
         }
         return $category;
     }
