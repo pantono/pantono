@@ -73,12 +73,7 @@ abstract class Form extends AbstractType
         }
         $this->dispatcher->dispatchFormEvent(FormEvent::POST_BUILD, $this->getName(), $builder);
         $this->dispatcher->dispatchFormEvent(FormEvent::PRE_HYDRATE, $this->getName(), $builder);
-        //$this->hydrateEntity();
         $this->dispatcher->dispatchFormEvent(FormEvent::POST_HYDRATE, $this->getName(), $builder);
-    }
-
-    public function hydrateEntity()
-    {
     }
 
     abstract public function buildFormFields();
