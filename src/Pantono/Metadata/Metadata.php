@@ -18,7 +18,7 @@ class Metadata
     public function saveMetadata(MetadataEntity $entity)
     {
         $this->dispatcher->dispatchMetadataEvent(\Pantono\Core\Event\Events\Metadata::PRE_SAVE, $entity);
-        $this->repository->merge($entity);
+        $this->repository->save($entity);
         $this->repository->flush();
         $this->dispatcher->dispatchMetadataEvent(\Pantono\Core\Event\Events\Metadata::POST_SAVE, $entity);
         return $entity;

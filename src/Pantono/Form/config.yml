@@ -9,8 +9,3 @@ form_elements:
     password: Pantono\Form\Element\Password
     select: Pantono\Form\Element\Select
     textarea: Pantono\Form\Element\TextArea
-services:
-    Hydrator:
-      class: 'Pantono\Form\Hydrator'
-      arguments:
-        - @ManagerRegistry

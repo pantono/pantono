@@ -1,7 +1,19 @@
 event_subscribers:
   - 'Pantono\Database\Event\Subscriber'
 services:
+  EntityMapper:
+    class: 'Pantono\Database\EntityMapper'
+    arguments:
+      - @ManagerRegistry
   ManagerRegistry:
     class: 'Pantono\Database\Doctrine\ManagerRegistry'
     arguments:
       - @application
+  EntityHydrator:
+    class: Pantono\Database\Entity\Hydrator
+    arguments:
+      - @ManagerRegistry
+  EntityDehydrator:
+    class: Pantono\Database\Entity\Dehydrator
+    arguments:
+      - @ManagerRegistry

@@ -1,5 +1,6 @@
 <?php namespace Pantono\Form\Event;
 
+use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Events\General;
 use Pantono\Form\Extensions;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

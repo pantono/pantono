@@ -6,7 +6,7 @@ use Pantono\Categories\Exception\CategoryNotFound;
 use Pantono\Categories\Model\Filter\CategoryListFilter;
 use Pantono\Core\Event\Dispatcher;
 use \Pantono\Core\Event\Events\Category as CategoryEvent;
-use Pantono\Form\Hydrator;
+use Pantono\Database\Hydrator;
 use Pantono\Metadata\Metadata;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -16,15 +16,13 @@ class Category
     private $dispatcher;
     private $assets;
     private $metadata;
-    private $hydrator;
 
-    public function __construct(CategoryRepository $repository, Dispatcher $eventDispatcher, Assets $assets, Metadata $metadata, Hydrator $hydrator)
+    public function __construct(CategoryRepository $repository, Dispatcher $eventDispatcher, Assets $assets, Metadata $metadata)
     {
         $this->repository = $repository;
         $this->dispatcher = $eventDispatcher;
         $this->assets = $assets;
         $this->metadata = $metadata;
-        $this->hydrator = $hydrator;
     }
 
     public function getCategoryById($id)
@@ -47,13 +45,18 @@ class Category
 
     public function saveCategoryEntity(\Pantono\Categories\Entity\Category $category)
     {
-        $metadata = $this->metadata->saveMetadata($category->getMetadata());
-        $category->setMetadata($metadata);
+        if ($category->getMetadata()) {
+            $metadata = $this->metadata->saveMetadata($category->getMetadata());
+            $category->setMetadata($metadata);
+        }
+        if (!$category->getMetadata()) {
+            $category->setMetadata(new \Pantono\Metadata\Entity\Metadata());
+        }
         if (!$category->getUrlKey()) {
             $category->setUrlKey($this->getUniqueUrlKey($category->getTitle()));
         }
         $this->dispatcher->dispatchCategoryEvent(CategoryEvent::PRE_SAVE, [], $category);
-        $this->repository->merge($category);
+        $this->repository->save($category);
         $this->repository->flush();
         $this->dispatcher->dispatchCategoryEvent(CategoryEvent::POST_SAVE, [], $category);
         return $category;

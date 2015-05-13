@@ -6,47 +6,58 @@ services:
       - @dispatcher
       - @Assets
       - @Metadata
-      - @Hydrator
 forms:
     category:
-      entityMapping:
-        category: 'Pantono\Categories\Entity\Category'
       attributes:
         role: form
         class: category-form
       fields:
         id:
           type: hidden
-          mapping: category.id
         title:
           type: text
-          mapping: category.title
         parent:
           type: select
-          mapping: category.parent
           choice_populator: Category::getCategoryListTree
         urlKey:
           type: text
-          mapping: category.urlKey
           readonly: true
         active:
-          mapping: category.active
           type: checkbox
         metadata_id:
           type: hidden
-          mapping: category.metadata.id
         metadata_pageTitle:
           type: textarea
-          mapping: category.metadata.pageTitle
         metadata_metaDescription:
           type: textarea
-          mapping: category.metadata.metaDescription
         metadata_metaDescription:
           type: text
-          mapping: category.metadata.metaKeywords
         metadata_metaRobots:
           type: select
-          mapping: category.metadata.metaRobots
         image:
-          mapping: category.image
           type: file
+entity_mapping:
+  category_add:
+    entities:
+      category: 'Pantono\Categories\Entity\Category'
+    mapping:
+      id:
+        mapping: category.id
+      title:
+        mapping: category.title
+      parent:
+        mapping: category.parent.id
+      urlKey:
+        mapping: category.urlKey
+      active:
+        mapping: category.active
+      metadata_id:
+        mapping: category.metadata.id
+      metadata_pageTitle:
+        mapping: category.metadata.pageTitle
+      metadata_metaDescription:
+        mapping: category.metadata.metaDescription
+      metadata_metaRobots:
+        mapping: category.metadata.metaRobots
+      image:
+        mapping: category.image

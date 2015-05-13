@@ -4,7 +4,6 @@ namespace Pantono\Categories\Controller;
 
 use Pantono\Categories\Model\Filter\CategoryListFilter;
 use Pantono\Core\Controller\Controller;
-use Pantono\Form\Hydrator;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,9 +17,19 @@ class Category extends Controller
         $formWrapper = $this->getCategoryForm();
         $form = $formWrapper->getForm();
         $title = 'Add New Category';
+        $data = [
+            'id' => 3,
+            'title' => 'test',
+            'urlKey' => 'test123',
+            'metadata_pageTitle' => 'Test',
+        ];
+
         if ($id !== null) {
             $category = $this->getCategoryService()->getCategoryById($id);
-            $data = $this->getHydrator()->flattenEntity($category);
+            $data = $this->getApplication()->getPantonoService('EntityDehydrator')->dehydrateEntity(
+                $this->getFormMapping('category_add'),
+                $category
+            );
             $data['image'] = null;
             $form->setData($data);
             $title = 'Edit Category ' . $id;
@@ -40,7 +49,7 @@ class Category extends Controller
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $entity = $this->getHydrator()->getHydratedEntity($formWrapper, $data);
+                $entity = $this->getApplication()->getPantonoService('EntityHydrator')->hydrateEntity($this->getFormMapping('category_add'), $data);
                 if ($this->getCategoryService()->saveCategoryEntity($entity)) {
                     $this->flashMessenger($this->translate('Category has been updated'), 'success');
                     return new RedirectResponse('/admin/categories');
@@ -49,15 +58,6 @@ class Category extends Controller
         }
         return null;
     }
-
-    /**
-     * @return mixed|Hydrator
-     */
-    private function getHydrator()
-    {
-        return $this->getApplication()->getPantonoService('Hydrator');
-    }
-
 
     /**
      * @return \Symfony\Component\Form\FormBuilderInterface
