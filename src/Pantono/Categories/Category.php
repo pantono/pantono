@@ -45,11 +45,11 @@ class Category
 
     public function saveCategoryEntity(\Pantono\Categories\Entity\Category $category)
     {
-        if ($category->getMetadata()) {
+        if ($category->getMetadata() !== null) {
             $metadata = $this->metadata->saveMetadata($category->getMetadata());
             $category->setMetadata($metadata);
         }
-        if (!$category->getMetadata()) {
+        if (!$category->getMetadata() === null) {
             $category->setMetadata(new \Pantono\Metadata\Entity\Metadata());
         }
         if (!$category->getUrlKey()) {

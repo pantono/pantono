@@ -36,12 +36,4 @@ class EntityMapper
     {
         $this->mappings[$mapping->getName()] = $mapping;
     }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    private function getEntityManager()
-    {
-        return $this->managerRegistry->getManager('default');
-    }
 }

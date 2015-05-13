@@ -5,6 +5,7 @@ namespace Pantono\Categories\Controller;
 use Pantono\Categories\Model\Filter\CategoryListFilter;
 use Pantono\Core\Controller\Controller;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,12 +18,6 @@ class Category extends Controller
         $formWrapper = $this->getCategoryForm();
         $form = $formWrapper->getForm();
         $title = 'Add New Category';
-        $data = [
-            'id' => 3,
-            'title' => 'test',
-            'urlKey' => 'test123',
-            'metadata_pageTitle' => 'Test',
-        ];
 
         if ($id !== null) {
             $category = $this->getCategoryService()->getCategoryById($id);
@@ -42,7 +37,7 @@ class Category extends Controller
         return $this->renderTemplate('admin/categories/list.twig', ['categories' => $categories, 'form' => $form->createView(), 'title' => $title]);
     }
 
-    private function handleCategoryRequest(Request $request, FormBuilder $formWrapper)
+    private function handleCategoryRequest(Request $request, FormBuilderInterface $formWrapper)
     {
         $form = $formWrapper->getForm();
         if ($request->getMethod() == 'POST') {
