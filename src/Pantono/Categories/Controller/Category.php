@@ -4,7 +4,6 @@ namespace Pantono\Categories\Controller;
 
 use Pantono\Categories\Model\Filter\CategoryListFilter;
 use Pantono\Core\Controller\Controller;
-use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,25 +15,30 @@ class Category extends Controller
         $id = $request->get('id', null);
         $filter = new CategoryListFilter();
         $formWrapper = $this->getCategoryForm();
-        $form = $formWrapper->getForm();
         $title = 'Add New Category';
 
         if ($id !== null) {
-            $category = $this->getCategoryService()->getCategoryById($id);
-            $data = $this->getApplication()->getPantonoService('EntityDehydrator')->dehydrateEntity(
-                $this->getFormMapping('category_add'),
-                $category
-            );
+            $data = $this->getFlatCategoryData($id);
             $data['image'] = null;
-            $form->setData($data);
+            $formWrapper->getForm()->setData($data);
             $title = 'Edit Category ' . $id;
         }
+
         $result = $this->handleCategoryRequest($request, $formWrapper);
         if ($result !== null) {
             return $result;
         }
         $categories = $this->getCategoryService()->getCategoryList($filter);
-        return $this->renderTemplate('admin/categories/list.twig', ['categories' => $categories, 'form' => $form->createView(), 'title' => $title]);
+        return $this->renderTemplate('admin/categories/list.twig', ['categories' => $categories, 'form' => $formWrapper->getForm()->createView(), 'title' => $title]);
+    }
+
+    private function getFlatCategoryData($id)
+    {
+        $data = $this->getApplication()->getPantonoService('EntityDehydrator')->dehydrateEntity(
+            $this->getFormMapping('category_add'),
+            $this->getCategoryService()->getCategoryById($id)
+        );
+        return $data;
     }
 
     private function handleCategoryRequest(Request $request, FormBuilderInterface $formWrapper)
