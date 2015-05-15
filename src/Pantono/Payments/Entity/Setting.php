@@ -30,5 +30,4 @@ class Setting
      * @ORM\Column(type="string")
      */
     protected $value;
-
 }
