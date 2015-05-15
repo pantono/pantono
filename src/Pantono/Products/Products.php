@@ -39,4 +39,12 @@ class Products
         $products = $this->repository->getProducts($filter);
         return $products;
     }
+
+    /**
+     * @return Manager
+     */
+    public function getEventManager()
+    {
+        return $this->eventManager;
+    }
 }
