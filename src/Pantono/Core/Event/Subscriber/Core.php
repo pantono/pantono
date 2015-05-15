@@ -40,7 +40,7 @@ class Core implements EventSubscriberInterface
 
     private function registerTranslationServiceProvider()
     {
-        $app = $this->application;
+        $app = $this->getApplication();
         $app->register(new TranslationServiceProvider(), [
             'locale_fallbacks' => ['en']
         ]);
@@ -56,5 +56,13 @@ class Core implements EventSubscriberInterface
             }
             return $translator;
         }));
+    }
+
+    /**
+     * @return Application
+     */
+    private function getApplication()
+    {
+        return $this->application;
     }
 }
