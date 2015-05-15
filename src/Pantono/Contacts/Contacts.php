@@ -10,4 +10,17 @@ class Contacts
     {
         $this->contactRepository = $contactRepository;
     }
+
+    public function getSingleContact($id)
+    {
+        return $this->getContactRepository()->find($id);
+    }
+
+    /**
+     * @return ContactRepository
+     */
+    private function getContactRepository()
+    {
+        return $this->contactRepository;
+    }
 }
