@@ -1,6 +1,7 @@
 <?php namespace Pantono\Core\Event\Subscriber;
 
 use Pantono\Core\Event\Events\General;
+use Silex\Translator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
@@ -44,7 +45,8 @@ class Core implements EventSubscriberInterface
         $app->register(new TranslationServiceProvider(), [
             'locale_fallbacks' => ['en']
         ]);
-        $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
+
+        $app['translator'] = $app->share($app->extend('translator', function(Translator $translator, Application $app) {
             $translator->addLoader('yaml', new YamlFileLoader());
             $locales = $app->getConfig()->getItem('locales');
             if (empty($locales)) {
