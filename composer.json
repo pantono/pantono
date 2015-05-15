@@ -1,6 +1,7 @@
 {
     "name": "pantono/ecommerce",
     "description": "Simple Ecommerce Framework built on Silex",
+    "license":     "MIT",
     "require": {
         "silex/silex": "~1.2",
         "twig/twig": "1.18.1",
