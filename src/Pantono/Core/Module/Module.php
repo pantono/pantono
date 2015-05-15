@@ -84,6 +84,14 @@ class Module
         }
     }
 
+    public function getEventListeners()
+    {
+        if (empty($this->eventListeners)) {
+            $this->loadEventListeners();
+        }
+        return $this->eventListeners;
+    }
+
     private function loadServices()
     {
         foreach ($this->getConfig()->getItem('services', null, []) as $name => $service) {
