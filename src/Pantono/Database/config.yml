@@ -3,8 +3,6 @@ event_subscribers:
 services:
   EntityMapper:
     class: 'Pantono\Database\EntityMapper'
-    arguments:
-      - @ManagerRegistry
   ManagerRegistry:
     class: 'Pantono\Database\Doctrine\ManagerRegistry'
     arguments:

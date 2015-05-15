@@ -7,12 +7,6 @@ use Pantono\Database\Model\EntityMapping;
 class EntityMapper
 {
     private $mappings;
-    private $managerRegistry;
-
-    public function __construct(ManagerRegistry $managerRegistry)
-    {
-        $this->managerRegistry = $managerRegistry;
-    }
 
     /**
      * Get mapping by it's name (id)
