@@ -1,41 +1,41 @@
-<?php
+<?php namespace Pantono\Session\Entity;
 
-namespace Pantono\Session\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Session
  *
  * @package Pantono\Session\Entity
- * @Entity
- * @Table(name="session")
+ * @ORM\Entity
+ * @ORM\Table(name="session")
  */
 class Session
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $sessionId;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $userAgent;
     /**
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     protected $lastAction;
     /**
-     * @ManyToOne(targetEntity="Pantono\Customers\Entity\Customer")
+     * @ORM\ManyToOne(targetEntity="Pantono\Customers\Entity\Customer")
      */
     protected $customer;
 
     /**
-     * @ManyToOne(targetEntity="Pantono\Acl\Entity\AdminUser")
+     * @ORM\ManyToOne(targetEntity="Pantono\Acl\Entity\AdminUser")
      */
     protected $adminUser;
 }

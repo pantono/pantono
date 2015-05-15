@@ -1,53 +1,53 @@
-<?php
+<?php namespace Pantono\Categories\Entity;
 
-namespace Pantono\Categories\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Category
  *
  * @package Pantono\Contacts\Entity
- * @Entity(repositoryClass="Pantono\Categories\Entity\Repository\CategoryRepository")
- * @Table(name="category")
+ * @ORM\Entity(repositoryClass="Pantono\Categories\Entity\Repository\CategoryRepository")
+ * @ORM\Table(name="category")
  */
 class Category
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @ManyToOne(targetEntity="Category")
+     * @ORM\ManyToOne(targetEntity="Category")
      */
     protected $parent;
     /**
-     * @ManyToOne(targetEntity="CategoryStatus")
+     * @ORM\ManyToOne(targetEntity="CategoryStatus")
      */
     protected $status;
     /**
-     * @Column(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $description;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $title;
     /**
-     * @OneToOne(targetEntity="Pantono\Assets\Entity\Asset")
+     * @ORM\OneToOne(targetEntity="Pantono\Assets\Entity\Asset")
      */
     protected $image;
     /**
-     * @Column(type="string", length=50, unique=true)
+     * @ORM\Column(type="string", length=50, unique=true)
      */
     protected $urlKey;
     /**
-     * @OneToOne(targetEntity="Pantono\Metadata\Entity\Metadata")
+     * @ORM\OneToOne(targetEntity="Pantono\Metadata\Entity\Metadata")
      */
     protected $metadata;
 
     /**
-     * @Column(type="boolean")
+     * @ORM\Column(type="boolean")
      */
     protected $active;
 

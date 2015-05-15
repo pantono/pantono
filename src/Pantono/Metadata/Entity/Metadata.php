@@ -1,44 +1,44 @@
-<?php
+<?php namespace Pantono\Metadata\Entity;
 
-namespace Pantono\Metadata\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Metadata
  *
  * @package Pantono\Metadata\Entity
- * @Entity(repositoryClass="Pantono\Metadata\Entity\Repository\MetadataRepository")
- * @Table(name="metadata")
+ * @ORM\Entity(repositoryClass="Pantono\Metadata\Entity\Repository\MetadataRepository")
+ * @ORM\Table(name="metadata")
  */
 class Metadata
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $pageTitle;
     /**
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $metaDescription;
     /**
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $metaKeywords;
     /**
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $metaRobots;
     /**
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $metaCanonical;
     /**
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $navigationTitle;
 

@@ -1,32 +1,32 @@
-<?php
+<?php namespace Pantono\Products\Entity;
 
-namespace Pantono\Products\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Search
  *
  * @package Pantono\Products\Entity
- * @Entity
- * @Table(name="product_search")
+ * @ORM\Entity
+ * @ORM\Table(name="product_search")
  */
 class Search
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $name;
     /**
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     protected $dateCreated;
     /**
-     * @OneToMany(targetEntity="Pantono\Products\Entity\SearchItem", mappedBy="search")
+     * @ORM\OneToMany(targetEntity="Pantono\Products\Entity\SearchItem", mappedBy="search")
      */
     protected $items;
 }

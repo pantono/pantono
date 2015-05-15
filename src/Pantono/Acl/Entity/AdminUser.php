@@ -1,44 +1,44 @@
-<?php
+<?php namespace Pantono\Acl\Entity;
 
-namespace Pantono\Acl\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class AdminUser
  *
  * @package Pantono\Acl\Entity
- * @Entity(repositoryClass="Pantono\Acl\Entity\Repository\AdminUserRepository")
- * @Table(name="admin_user")
+ * @ORM\Entity(repositoryClass="Pantono\Acl\Entity\Repository\AdminUserRepository")
+ * @ORM\Table(name="admin_user")
  */
 class AdminUser
 {
     /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @OneToOne(targetEntity="Pantono\Contacts\Entity\Contact", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Pantono\Contacts\Entity\Contact", cascade={"persist"})
      */
     protected $contact;
     /**
-     * @OneToOne(targetEntity="Pantono\Acl\Entity\AdminRole")
+     * @ORM\OneToOne(targetEntity="Pantono\Acl\Entity\AdminRole")
      */
     protected $role;
     /**
-     * @OneToOne(targetEntity="Pantono\Suppliers\Entity\Supplier")
+     * @ORM\OneToOne(targetEntity="Pantono\Suppliers\Entity\Supplier")
      */
     protected $supplier;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $username;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $password;
     /**
-     * @Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     protected $lastLogin;
 

@@ -1,32 +1,32 @@
-<?php
+<?php namespace Pantono\Products\Entity;
 
-namespace Pantono\Products\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Gallery
  *
  * @package Pantono\Products
- * @Entity
- * @Table(name="product_gallery")
+ * @ORM\Entity
+ * @ORM\Table(name="product_gallery")
  */
 class Gallery
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @ManyToOne(targetEntity="Pantono\Products\Entity\Draft")
+     * @ORM\ManyToOne(targetEntity="Pantono\Products\Entity\Draft")
      */
     protected $productDraft;
     /**
-     * @OneToOne(targetEntity="Pantono\Assets\Entity\Asset")
+     * @ORM\OneToOne(targetEntity="Pantono\Assets\Entity\Asset")
      */
     protected $asset;
     /**
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     protected $displayOrder;
 

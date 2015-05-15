@@ -1,36 +1,36 @@
-<?php
+<?php namespace Pantono\Cart\Entity;
 
-namespace Pantono\Cart\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Cart
  *
  * @package Pantono\Cart\Entity
- * @Entity
- * @Table(name="cart")
+ * @ORM\Entity
+ * @ORM\Table(name="cart")
  */
 class Cart
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @OneToOne(targetEntity="Pantono\Session\Entity\Session")
+     * @ORM\OneToOne(targetEntity="Pantono\Session\Entity\Session")
      */
     protected $session;
     /**
-     * @ManyToOne(targetEntity="Pantono\Customers\Entity\Customer")
+     * @ORM\ManyToOne(targetEntity="Pantono\Customers\Entity\Customer")
      */
     protected $customer;
     /**
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     protected $dateCreated;
     /**
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     protected $dateUpdated;
 }

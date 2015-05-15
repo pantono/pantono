@@ -1,36 +1,36 @@
-<?php
+<?php namespace Pantono\Products\Entity;
 
-namespace Pantono\Products\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Variation
  *
  * @package Pantono\Products\Entity
- * @Entity
- * @Table(name="product_variation")
+ * @ORM\Entity
+ * @ORM\Table(name="product_variation")
  */
 class Variation
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @ManyToOne(targetEntity="Pantono\Products\Entity\Draft")
+     * @ORM\ManyToOne(targetEntity="Pantono\Products\Entity\Draft")
      */
     protected $draft;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $title;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $sku;
     /**
-     * @OneToMany(targetEntity="Pricing", mappedBy="variation")
+     * @ORM\OneToMany(targetEntity="Pricing", mappedBy="variation")
      */
     protected $pricing;
 

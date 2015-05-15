@@ -1,32 +1,32 @@
-<?php
+<?php namespace Pantono\Suppliers\Entity;
 
-namespace Pantono\Suppliers\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Supplier
  *
  * @package Pantono\Suppliers\Entity
- * @Entity
- * @Table(name="supplier")
+ * @ORM\Entity
+ * @ORM\Table(name="supplier")
  */
 class Supplier
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $companyName;
     /**
-     * @Column(type="integer", length=1)
+     * @ORM\Column(type="integer", length=1)
      */
     protected $active;
     /**
-     * @OneToMany(targetEntity="Pantono\Suppliers\Entity\Contact", mappedBy="supplier")
+     * @ORM\OneToMany(targetEntity="Pantono\Suppliers\Entity\Contact", mappedBy="supplier")
      */
     protected $contacts;
 }

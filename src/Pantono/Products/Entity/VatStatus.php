@@ -1,28 +1,28 @@
-<?php
+<?php namespace Pantono\Products\Entity;
 
-namespace Pantono\Products\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Draft
  *
  * @package Pantono\Products\Entity
- * @Entity
- * @Table(name="product_vat_status")
+ * @ORM\Entity
+ * @ORM\Table(name="product_vat_status")
  */
 class VatStatus
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $name;
     /**
-     * @Column(type="decimal", scale=2, precision=10)
+     * @ORM\Column(type="decimal", scale=2, precision=10)
      */
     protected $amount;
 

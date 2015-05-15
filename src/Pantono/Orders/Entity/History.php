@@ -1,39 +1,39 @@
-<?php
+<?php namespace Pantono\Orders\Entity;
 
-namespace Pantono\Orders\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class History
  * @package Pantono\Orders\Entity
- * @Entity
- * @Table(name="order_history")
+ * @ORM\Entity
+ * @ORM\Table(name="order_history")
  */
 class History
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @ManyToOne(targetEntity="Pantono\Orders\Entity\Order")
+     * @ORM\ManyToOne(targetEntity="Pantono\Orders\Entity\Order")
      */
     protected $order;
     /**
-     * @OneToOne(targetEntity="Pantono\Orders\Entity\Status")
+     * @ORM\OneToOne(targetEntity="Pantono\Orders\Entity\Status")
      */
     protected $status;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $comment;
     /**
-     * @OneToOne(targetEntity="Pantono\Acl\Entity\AdminUser")
+     * @ORM\OneToOne(targetEntity="Pantono\Acl\Entity\AdminUser")
      */
     protected $adminUser;
     /**
-     * @OneToOne(targetEntity="Pantono\Email\Entity\Message")
+     * @ORM\OneToOne(targetEntity="Pantono\Email\Entity\Message")
      */
     protected $email;
 }

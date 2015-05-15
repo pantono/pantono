@@ -1,40 +1,39 @@
-<?php
+<?php namespace Pantono\Assets\Entity;
 
-namespace Pantono\Assets\Entity;
-
+use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Asset
  *
  * @package Pantono\Assets\Entity
- * @Entity(repositoryClass="Pantono\Assets\Entity\Repository\AssetsRepository")
- * @Table(name="asset")
+ * @ORM\Entity(repositoryClass="Pantono\Assets\Entity\Repository\AssetsRepository")
+ * @ORM\Table(name="asset")
  */
 class Asset
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @ManyToOne(targetEntity="Pantono\Assets\Entity\Type")
+     * @ORM\ManyToOne(targetEntity="Pantono\Assets\Entity\Type")
      */
     protected $type;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $filename;
     /**
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     protected $filesize;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $mimeType;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $publicUrl;
 

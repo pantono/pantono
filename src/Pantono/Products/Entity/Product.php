@@ -1,27 +1,28 @@
-<?php
-namespace Pantono\Products\Entity;
+<?php namespace Pantono\Products\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Product
  *
  * @package Pantono\Products\Entity
- * @Entity(repositoryClass="Pantono\Products\Entity\Repository\ProductRepository")
- * @Table(name="products")
+ * @ORM\Entity(repositoryClass="Pantono\Products\Entity\Repository\ProductRepository")
+ * @ORM\Table(name="products")
  */
 class Product
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @OneToOne(targetEntity="Pantono\Products\Entity\Draft")
+     * @ORM\OneToOne(targetEntity="Pantono\Products\Entity\Draft")
      */
     protected $draft;
     /**
-     * @OneToOne(targetEntity="Pantono\Products\Entity\Status")
+     * @ORM\OneToOne(targetEntity="Pantono\Products\Entity\Status")
      */
     protected $status;
 

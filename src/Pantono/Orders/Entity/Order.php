@@ -1,67 +1,67 @@
-<?php
+<?php namespace Pantono\Orders\Entity;
 
-namespace Pantono\Orders\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Order
  * @package Pantono\Orders\Entity
- * @Entity
- * @Table(name="order")
+ * @ORM\Entity
+ * @ORM\Table(name="order")
  */
 class Order
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @OneToOne(targetEntity="Pantono\Customers\Entity\Customer")
+     * @ORM\OneToOne(targetEntity="Pantono\Customers\Entity\Customer")
      */
     protected $customer;
     /**
-     * @OneToOne(targetEntity="Pantono\Customers\Entity\Customer")
+     * @ORM\OneToOne(targetEntity="Pantono\Customers\Entity\Customer")
      */
     protected $billingContact;
     /**
-     * @OneToOne(targetEntity="Pantono\Customers\Entity\Customer")
+     * @ORM\OneToOne(targetEntity="Pantono\Customers\Entity\Customer")
      */
     protected $shippingContact;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $reference;
     /**
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     protected $date;
     /**
-     * @Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="decimal", precision=10, scale=2)
      */
     protected $total;
     /**
-     * @Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="decimal", precision=10, scale=2)
      */
     protected $vat;
     /**
-     * @Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="decimal", precision=10, scale=2)
      */
     protected $delivery;
     /**
-     * @Column(type="decimal", precision=10, scale=2)
+     * @ORM\Column(type="decimal", precision=10, scale=2)
      */
     protected $discount;
     /**
-     * @ManyToOne(targetEntity="Pantono\Orders\Entity\Status")
+     * @ORM\ManyToOne(targetEntity="Pantono\Orders\Entity\Status")
      */
     protected $status;
     /**
-     * @ManyToOne(targetEntity="Pantono\Session\Entity\Session")
+     * @ORM\ManyToOne(targetEntity="Pantono\Session\Entity\Session")
      */
     protected $session;
     /**
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     protected $paid;
 

@@ -1,45 +1,47 @@
 <?php namespace Pantono\Products\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Class Pricing
  * @package Pantono\Products\Entity
- * @Entity
- * @Table(name="product_pricing")
+ * @ORM\Entity
+ * @ORM\Table(name="product_pricing")
  */
 class Pricing
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @ManyToOne(targetEntity="Variation")
+     * @ORM\ManyToOne(targetEntity="Variation")
      */
     protected $variation;
     /**
-     * @OneToMany(targetEntity="VatStatus", mappedBy="id")
+     * @ORM\OneToMany(targetEntity="VatStatus", mappedBy="id")
      */
     protected $vatStatus;
     /**
-     * @Column(type="decimal", scale=2, precision=10)
+     * @ORM\Column(type="decimal", scale=2, precision=10)
      */
     protected $price;
     /**
-     * @Column(type="decimal", scale=2, precision=10)
+     * @ORM\Column(type="decimal", scale=2, precision=10)
      */
     protected $deliveryAmount;
     /**
-     * @Column(type="decimal", scale=2, precision=10)
+     * @ORM\Column(type="decimal", scale=2, precision=10)
      */
     protected $rrp;
     /**
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     protected $minQty;
     /**
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     protected $maxQty;
 

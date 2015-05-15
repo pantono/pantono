@@ -1,44 +1,44 @@
-<?php
+<?php namespace Pantono\Cart\Entity;
 
-namespace Pantono\Cart\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Products
  *
  * @package Pantono\Products\Entity
- * @Entity
- * @Table(name="cart_products")
+ * @ORM\Entity
+ * @ORM\Table(name="cart_products")
  */
 class Products
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @ManyToOne(targetEntity="Pantono\Products\Entity\Product")
+     * @ORM\ManyToOne(targetEntity="Pantono\Products\Entity\Product")
      */
     protected $product;
     /**
-     * @ManyToOne(targetEntity="Pantono\Products\Entity\Variation")
+     * @ORM\ManyToOne(targetEntity="Pantono\Products\Entity\Variation")
      */
     protected $variant;
     /**
-     * @ManyToOne(targetEntity="Pantono\Cart\Entity\Cart")
+     * @ORM\ManyToOne(targetEntity="Pantono\Cart\Entity\Cart")
      */
     protected $cart;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $quantity;
     /**
-     * @Column(type="decimal", scale=2, precision=10)
+     * @ORM\Column(type="decimal", scale=2, precision=10)
      */
     protected $price;
     /**
-     * @Column(type="decimal", scale=2, precision=10)
+     * @ORM\Column(type="decimal", scale=2, precision=10)
      */
     protected $vat;
 }

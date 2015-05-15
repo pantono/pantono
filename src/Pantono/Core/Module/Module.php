@@ -65,7 +65,8 @@ class Module
             return [
                 'type' => 'annotation',
                 'namespace' => $this->namespace . '\\Entity',
-                'path' => $this->directory . '/Entity'
+                'path' => $this->directory . '/Entity',
+                'use_simple_annotation_reader' => false
             ];
         }
         return [];

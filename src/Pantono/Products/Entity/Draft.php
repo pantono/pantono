@@ -1,79 +1,78 @@
-<?php
+<?php namespace Pantono\Products\Entity;
 
-namespace Pantono\Products\Entity;
-
+use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Draft
  *
  * @package Pantono\Products\Entity
- * @Entity
- * @Table(name="product_draft")
+ * @ORM\Entity
+ * @ORM\Table(name="product_draft")
  */
 class Draft
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @OneToMany(targetEntity="Product", mappedBy="id")
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="id")
      */
     protected $product;
     /**
-     * @OneToMany(targetEntity="Pantono\Suppliers\Entity\Supplier", mappedBy="id")
+     * @ORM\OneToMany(targetEntity="Pantono\Suppliers\Entity\Supplier", mappedBy="id")
      */
     protected $supplier;
     /**
-     * @OneToMany(targetEntity="Condition", mappedBy="id")
+     * @ORM\OneToMany(targetEntity="Condition", mappedBy="id")
      */
     protected $condition;
     /**
-     * @OneToMany(targetEntity="Brand", mappedBy="id")
+     * @ORM\OneToMany(targetEntity="Brand", mappedBy="id")
      */
     protected $brand;
     /**
-     * @OneToMany(targetEntity="Pantono\Acl\Entity\AdminUser", mappedBy="id")
+     * @ORM\OneToMany(targetEntity="Pantono\Acl\Entity\AdminUser", mappedBy="id")
      */
     protected $adminUser;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $urlKey;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $title;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $sku;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $ean;
     /**
-     * @Column(type="text")
+     * @ORM\Column(type="text")
      */
     protected $description;
     /**
-     * @OneToMany(targetEntity="Gallery", mappedBy="product_draft")
+     * @ORM\OneToMany(targetEntity="Gallery", mappedBy="product_draft")
      */
     protected $gallery;
     /**
-     * @OneToMany(targetEntity="File", mappedBy="product_draft")
+     * @ORM\OneToMany(targetEntity="File", mappedBy="product_draft")
      */
     protected $files;
 
 
     /**
-     * @OneToMany(targetEntity="Variation", mappedBy="draft")
+     * @ORM\OneToMany(targetEntity="Variation", mappedBy="draft")
      */
     protected $variations;
 
     /**
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     protected $dateCreated;
 

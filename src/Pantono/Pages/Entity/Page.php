@@ -1,28 +1,28 @@
-<?php
+<?php namespace Pantono\Pages\Entity;
 
-namespace Pantono\Pages\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Page
  *
  * @package Pantono\Pages\Entity
- * @Entity
- * @Table(name="page")
+ * @ORM\Entity
+ * @ORM\Table(name="page")
  */
 class Page
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @OneToMany(targetEntity="Pantono\Pages\Entity\Page", mappedBy="id")
+     * @ORM\OneToMany(targetEntity="Pantono\Pages\Entity\Page", mappedBy="id")
      */
     protected $draft;
     /**
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     protected $status;
 }

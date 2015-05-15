@@ -1,36 +1,36 @@
-<?php
+<?php namespace Pantono\Assets\Entity;
 
-namespace Pantono\Assets\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Resized
  *
  * @package Pantono\Assets\Entity
- * @Entity
- * @Table(name="asset_resized")
+ * @ORM\Entity
+ * @ORM\Table(name="asset_resized")
  */
 class Resized
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @ManyToOne(targetEntity="Pantono\Assets\Entity\Asset")
+     * @ORM\ManyToOne(targetEntity="Pantono\Assets\Entity\Asset")
      */
     protected $asset;
     /**
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     protected $width;
     /**
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     protected $height;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $publicUrl;
 }

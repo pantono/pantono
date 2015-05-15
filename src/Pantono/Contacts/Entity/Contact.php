@@ -1,52 +1,52 @@
-<?php
+<?php namespace Pantono\Contacts\Entity;
 
-namespace Pantono\Contacts\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Contact
  *
  * @package Pantono\Contacts\Entity
- * @Entity(repositoryClass="Repository\ContactRepository")
- * @Table(name="contact")
+ * @ORM\Entity(repositoryClass="Repository\ContactRepository")
+ * @ORM\Table(name="contact")
  */
 class Contact
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @ManyToOne(targetEntity="Contact")
+     * @ORM\ManyToOne(targetEntity="Contact")
      */
     protected $title;
     /**
-     * @ManyToOne(targetEntity="Pantono\Customers\Entity\Customer")
+     * @ORM\ManyToOne(targetEntity="Pantono\Customers\Entity\Customer")
      */
     protected $customer;
     /**
-     * @OneToOne(targetEntity="Address")
+     * @ORM\OneToOne(targetEntity="Address")
      */
     protected $address;
     /**
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $firstName;
     /**
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $lastName;
     /**
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $phoneLandline;
     /**
-     * @Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $phoneMobile;
     /**
-     * @Column(type="datetime", nullable=false)
+     * @ORM\Column(type="datetime", nullable=false)
      */
     protected $dateCreated;
 

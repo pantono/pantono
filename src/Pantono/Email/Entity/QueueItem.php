@@ -1,44 +1,44 @@
-<?php
+<?php namespace Pantono\Email\Entity;
 
-namespace Pantono\Email\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class QueueItem
  *
  * @package Pantono\Email\Entity
- * @Entity
- * @Table(name="email_queue_item")
+ * @ORM\Entity
+ * @ORM\Table(name="email_queue_item")
  */
 class QueueItem
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @ManyToOne(targetEntity="Pantono\Email\Entity\Message")
+     * @ORM\ManyToOne(targetEntity="Pantono\Email\Entity\Message")
      */
     protected $message;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $toEmail;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $toName;
     /**
-     * @Column(type="integer", length=1)
+     * @ORM\Column(type="integer", length=1)
      */
     protected $processed = false;
     /**
-     * @Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     protected $dateProcessed;
     /**
-     * @Column(type="integer", length=1)
+     * @ORM\Column(type="integer", length=1)
      */
     protected $success = false;
 }

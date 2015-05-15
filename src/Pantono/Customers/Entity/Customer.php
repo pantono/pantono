@@ -1,43 +1,43 @@
-<?php
+<?php namespace Pantono\Customers\Entity;
 
-namespace Pantono\Customers\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Customer
  *
  * @package Pantono\Customers\Entity
- * @Entity
- * @Table(name="customer")
+ * @ORM\Entity
+ * @ORM\Table(name="customer")
  */
 class Customer
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $name;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $companyName;
 
     /**
-     * @OneToMany(targetEntity="Pantono\Customers\Entity\Contact", mappedBy="customer")
+     * @ORM\OneToMany(targetEntity="Pantono\Customers\Entity\Contact", mappedBy="customer")
      */
     protected $contacts;
 
     /**
-     * @Column(type="string", unique=true)
+     * @ORM\Column(type="string", unique=true)
      */
     protected $email;
 
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $password;
 }

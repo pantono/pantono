@@ -1,27 +1,27 @@
-<?php
+<?php namespace Pantono\Orders\Entity;
 
-namespace Pantono\Orders\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Status
  * @package Pantono\Orders\Entity
- * @Entity
- * @Table(name="order_status")
+ * @ORM\Entity
+ * @ORM\Table(name="order_status")
  */
 class Status
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $name;
     /**
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     protected $displayOrder;
 }

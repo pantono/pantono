@@ -1,46 +1,47 @@
 <?php namespace Pantono\Contacts\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Address
  * @package Pantono\Contacts\Entity
- * @Entity(repositoryClass="Repository\ContactRepository")
- * @Table(name="address")
+ * @ORM\Entity(repositoryClass="Repository\ContactRepository")
+ * @ORM\Table(name="address")
  */
 class Address
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $addressLine1;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $addressLine2;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $addressLine3;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $town;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $county;
     /**
-     * @Column(type="string", length=10)
+     * @ORM\Column(type="string", length=10)
      */
     protected $postcode;
     /**
-     * @ManyToOne(targetEntity="Country")
+     * @ORM\ManyToOne(targetEntity="Country")
      */
     protected $country;
 

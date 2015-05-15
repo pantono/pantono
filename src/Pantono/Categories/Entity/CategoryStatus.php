@@ -1,21 +1,23 @@
 <?php namespace Pantono\Categories\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Class CategoryStatus
  * @package Pantono\Categories\Entity
- * @Entity(repositoryClass="Pantono\Categories\Entity\Repository\CategoryRepository")
- * @Table(name="category_status")
+ * @ORM\Entity(repositoryClass="Pantono\Categories\Entity\Repository\CategoryRepository")
+ * @ORM\Table(name="category_status")
  */
 class CategoryStatus
 {
     /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
     /**
-     * @Column(type="text")
+     * @ORM\Column(type="text")
      */
     protected $name;
 

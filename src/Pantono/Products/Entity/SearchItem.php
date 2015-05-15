@@ -1,46 +1,46 @@
-<?php
+<?php namespace Pantono\Products\Entity;
 
-namespace Pantono\Products\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class SearchItem
  *
  * @package Pantono\Products\Entity
- * @Entity
- * @Table(name="product_search_item")
+ * @ORM\Entity
+ * @ORM\Table(name="product_search_item")
  */
 class SearchItem
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @ManyToOne(targetEntity="Pantono\Products\Entity\Search")
+     * @ORM\ManyToOne(targetEntity="Pantono\Products\Entity\Search")
      */
     protected $search;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $brands;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $sku;
     /**
      * @var int
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     protected $minPrice = 0;
     /**
      * @var int
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     protected $maxPrice = 0;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $categories;
 }

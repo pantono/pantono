@@ -1,29 +1,28 @@
-<?php
+<?php namespace Pantono\Acl\Entity;
 
-namespace Pantono\Acl\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class AdminRole
  *
  * @package Pantono\Acl\Entity
- * @Entity
- * @Table(name="admin_role")
- * @Repository("Repository\AdminRole")
+ * @ORM\Entity(repositoryClass="Repository\AdminRole")
+ * @ORM\Table(name="admin_role")
  */
 class AdminRole
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $name;
     /**
-     * @ManyToOne(targetEntity="Pantono\Acl\Entity\AdminRole")
+     * @ORM\ManyToOne(targetEntity="Pantono\Acl\Entity\AdminRole")
      */
     protected $parent;
 }

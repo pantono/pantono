@@ -1,36 +1,36 @@
-<?php
+<?php namespace Pantono\Acl\Entity;
 
-namespace Pantono\Acl\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class AdminPrivilege
  *
  * @package Pantono\Acl\Entity
- * @Entity
- * @table(name="admin_privilege")
+ * @ORM\Entity
+ * @ORM\table(name="admin_privilege")
  */
 class AdminPrivilege
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $resource;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $name;
     /**
-     * @OneToOne(targetEntity="Pantono\Acl\Entity\AdminRole")
+     * @ORM\OneToOne(targetEntity="Pantono\Acl\Entity\AdminRole")
      */
     protected $role;
     /**
-     * @Column(type="integer")
+     * @ORM\Column(type="integer")
      */
     protected $allowed;
 }

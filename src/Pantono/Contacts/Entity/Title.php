@@ -1,21 +1,23 @@
 <?php namespace Pantono\Contacts\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Class Title
  * @package Pantono\Contacts\Entity
- * @Entity(repositoryClass="Repository\ContactRepository")
- * @Table(name="title")
+ * @ORM\Entity(repositoryClass="Repository\ContactRepository")
+ * @ORM\Table(name="title")
  */
 class Title
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @Column(type="string")
+     * @ORM\Column(type="string")
      */
     protected $name;
 

@@ -1,48 +1,48 @@
-<?php
+<?php namespace Pantono\Orders\Entity;
 
-namespace Pantono\Orders\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Item
  * @package Pantono\Orders\Entity
- * @Entity
- * @Table(name="order_item")
+ * @ORM\Entity
+ * @ORM\Table(name="order_item")
  */
 class Item
 {
     /**
-     * @Id
-     * @GeneratedValue(strategy="AUTO")
-     * @Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
      */
     protected $id;
     /**
-     * @ManyToOne(targetEntity="Pantono\Orders\Entity\Order")
+     * @ORM\ManyToOne(targetEntity="Pantono\Orders\Entity\Order")
      */
     protected $order;
     /**
-     * @OneToOne(targetEntity="Pantono\Products\Entity\Product")
+     * @ORM\OneToOne(targetEntity="Pantono\Products\Entity\Product")
      */
     protected $product;
     /**
-     * @OneToOne(targetEntity="Pantono\Products\Entity\Draft")
+     * @ORM\OneToOne(targetEntity="Pantono\Products\Entity\Draft")
      */
     protected $productDraft;
     /**
-     * @OneToOne(targetEntity="Pantono\Products\Entity\Variation")
+     * @ORM\OneToOne(targetEntity="Pantono\Products\Entity\Variation")
      */
     protected $productVariant;
 
     /**
-     * @Column(type="integer", scale=10, precision=2)
+     * @ORM\Column(type="integer", scale=10, precision=2)
      */
     protected $price;
     /**
-     * @Column(type="integer", scale=10, precision=2)
+     * @ORM\Column(type="integer", scale=10, precision=2)
      */
     protected $vat;
     /**
-     * @Column(type="integer", scale=10, precision=2)
+     * @ORM\Column(type="integer", scale=10, precision=2)
      */
     protected $delivery;
 
