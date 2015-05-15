@@ -7,11 +7,8 @@ use Pantono\Core\Event\Dispatcher;
 use Pantono\Form\Element\ElementInterface;
 use Pantono\Form\Exception\ElementHandlerNotRegistered;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 use \Pantono\Core\Event\Events\Form as FormEvent;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 abstract class Form extends AbstractType
 {

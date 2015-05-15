@@ -6,7 +6,6 @@ use Pantono\Core\Block\Loader;
 use Pantono\Core\Bootstrap;
 use Pantono\Core\Event\Dispatcher;
 use Pantono\Core\Event\Manager;
-use Pantono\Core\Exception\Service\NotFound;
 use Pantono\Core\Model\Config\Config;
 use Doctrine\ORM\EntityManager;
 use Pantono\Core\Service\Locator;

@@ -6,7 +6,6 @@ use Pantono\Categories\Exception\CategoryNotFound;
 use Pantono\Categories\Model\Filter\CategoryListFilter;
 use Pantono\Core\Event\Dispatcher;
 use \Pantono\Core\Event\Events\Category as CategoryEvent;
-use Pantono\Database\Hydrator;
 use Pantono\Metadata\Metadata;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

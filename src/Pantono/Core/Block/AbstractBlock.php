@@ -3,7 +3,6 @@
 use Pantono\Core\Block\BlockInterface;
 use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Dispatcher;
-use Pantono\Core\Event\Manager;
 
 abstract class AbstractBlock implements BlockInterface
 {

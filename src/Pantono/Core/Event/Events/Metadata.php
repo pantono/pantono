@@ -1,6 +1,5 @@
 <?php namespace Pantono\Core\Event\Events;
 
-use Pantono\Assets\Entity\Asset as AssetEntity;
 
 class Metadata extends General
 {

@@ -14,8 +14,6 @@ use Pantono\Core\Event\Events\Metadata;
 use Pantono\Metadata\Entity\Metadata as MetadataEntity;
 use Pantono\Core\Event\Events\Template;
 use Pantono\Form\Element\ElementInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Form\FormBuilderInterface;
 
 class Dispatcher
 {
