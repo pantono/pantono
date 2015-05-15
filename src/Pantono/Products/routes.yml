@@ -1,0 +1,17 @@
+list_products:
+    route: '/admin/products'
+    controller: 'Pantono\Products\Controller\Product'
+    action: 'listAction'
+    admin: true
+add_product:
+    route: '/admin/products/add'
+    controller: 'Pantono\Products\Controller\Product'
+    action: 'addAction'
+    admin: true
+edit_product:
+    route: '/admin/products/edit/{id}'
+    controller: 'Pantono\Products\Controller\Product'
+    action: 'editAction'
+    admin: true
+    defaults:
+      id: null

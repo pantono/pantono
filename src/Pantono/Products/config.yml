@@ -4,3 +4,13 @@ services:
     arguments:
       - ["Repository", "Pantono\\Products\\Entity\\Product"]
       - "@EventManager"
+forms:
+  product:
+    attributes:
+      role: form
+      class: product-form
+    fields:
+      id:
+        type: hidden
+      title:
+        type: text
