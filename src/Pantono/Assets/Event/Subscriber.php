@@ -1,6 +1,5 @@
 <?php namespace Pantono\Assets\Event;
 
-use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Events\General;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use WyriHaximus\SliFly\FlysystemServiceProvider;

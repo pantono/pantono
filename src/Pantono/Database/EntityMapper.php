@@ -1,6 +1,5 @@
 <?php namespace Pantono\Database;
 
-use Pantono\Database\Doctrine\ManagerRegistry;
 use Pantono\Database\Exception\MappingNotFound;
 use Pantono\Database\Model\EntityMapping;
 

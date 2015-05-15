@@ -3,10 +3,6 @@
 use Pantono\Core\Event\Events\General;
 use Silex\Provider\SessionServiceProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Silex\Provider\TwigServiceProvider;
-use Pantono\Core\Model\Block;
-use Symfony\Bridge\Twig\Extension\TranslationExtension;
-use Pantono\Core\Form\Extensions;
 
 class Subscriber implements EventSubscriberInterface
 {
