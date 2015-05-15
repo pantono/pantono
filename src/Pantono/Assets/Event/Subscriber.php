@@ -7,11 +7,6 @@ use WyriHaximus\SliFly\FlysystemServiceProvider;
 
 class Subscriber implements EventSubscriberInterface
 {
-    /**
-     * @var Application
-     */
-    private $application;
-
     public static function getSubscribedEvents()
     {
         return [
@@ -23,8 +18,6 @@ class Subscriber implements EventSubscriberInterface
 
     public function onBootstrap(General $event)
     {
-        $this->application = $event->getApplication();
-
         $app = $event->getApplication();
         $app->register(new FlysystemServiceProvider(), [
             'flysystem.filesystems' => $app->getConfig()->getItem('filesystems', null, [])
