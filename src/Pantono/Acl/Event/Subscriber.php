@@ -2,7 +2,6 @@
 
 use Pantono\Core\Event\Events\General;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use WyriHaximus\SliFly\FlysystemServiceProvider;
 
 class Subscriber implements EventSubscriberInterface
 {

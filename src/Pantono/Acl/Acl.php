@@ -75,18 +75,6 @@ class Acl
     }
 
     /**
-     * @param null $userId
-     * @return AdminUser|null
-     */
-    private function getUserFromId($userId = null)
-    {
-        if (!$userId) {
-            $userId = $this->session->get('admin_user_id');
-        }
-        return $this->repository->getUserInfo($userId);
-    }
-
-    /**
      * Checks all voters registered to the provided resource/action
      *
      * @param $resource
@@ -97,9 +85,12 @@ class Acl
      */
     private function isAllowedVoters($resource, $action, $arguments, AdminUser $user)
     {
-        foreach ($this->getVotersForAction($resource, $action) as $voter) {
-            if ($voter->isAllowed($resource, $action, $arguments)) {
-                return true;
+        $voters = $this->getVotersForAction($resource, $action);
+        if (is_array($voters)) {
+            foreach ($voters as $voter) {
+                if ($voter->isAllowed($resource, $action, $arguments, $user)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -122,6 +113,19 @@ class Acl
             }
         }
         return false;
+    }
+
+
+    /**
+     * @param null $userId
+     * @return AdminUser|null
+     */
+    private function getUserFromId($userId = null)
+    {
+        if (!$userId) {
+            $userId = $this->session->get('admin_user_id');
+        }
+        return $this->repository->getUserInfo($userId);
     }
 
     /**
