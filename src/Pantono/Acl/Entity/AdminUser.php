@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class AdminUser
  *
  * @package Pantono\Acl\Entity
- * @ORM\Entity(repositoryClass="Pantono\Acl\Entity\Repository\AdminUserRepository")
+ * @ORM\Entity(repositoryClass="Pantono\Acl\Entity\Repository\AclRepository")
  * @ORM\Table(name="admin_user")
  */
 class AdminUser
@@ -22,7 +22,7 @@ class AdminUser
      */
     protected $contact;
     /**
-     * @ORM\OneToOne(targetEntity="Pantono\Acl\Entity\AdminRole")
+     * @ORM\ManyToMany(targetEntity="Pantono\Acl\Entity\AdminRole")
      */
     protected $role;
     /**
@@ -41,6 +41,11 @@ class AdminUser
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $lastLogin;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $superAdmin;
 
     /**
      * @return mixed
@@ -152,5 +157,21 @@ class AdminUser
     public function setUsername($username)
     {
         $this->username = $username;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSuperAdmin()
+    {
+        return $this->superAdmin;
+    }
+
+    /**
+     * @param mixed $superAdmin
+     */
+    public function setSuperAdmin($superAdmin)
+    {
+        $this->superAdmin = $superAdmin;
     }
 }

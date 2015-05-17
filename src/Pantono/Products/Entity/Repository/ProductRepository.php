@@ -18,11 +18,15 @@ class ProductRepository extends EntityRepository
     public function getProducts(ProductListingFilter $filter)
     {
         $qb = $this->_em->createQueryBuilder();
-        $qb->select('p')
-            ->from('Products\Entity\Product', 'p');
+        $qb->select('p', 'd')
+            ->from('Pantono\Products\Entity\Product', 'p')
+            ->leftJoin('p.draft', 'd');
         if ($filter->getName()) {
             $qb->where('p.name like :name')
                 ->setParameter('name', '%' . $filter->getName() . '%');
+        }
+        if ($filter->getSupplier() > 0) {
+            $qb->where('p.supplier = :supplier', $this->_em->getReference('Pantono\Suppliers\Entity\Supplier', $filter->getSupplier()));
         }
         return $qb->getQuery()->getResult();
     }

@@ -1,7 +1,7 @@
 <?php namespace Pantono\Acl;
 
 use Pantono\Acl\Entity\AdminUser;
-use Pantono\Acl\Entity\Repository\AdminUserRepository;
+use Pantono\Acl\Entity\Repository\AclRepository;
 use Pantono\Contacts\Entity\Contact;
 use Pantono\Core\Model\Config\Config;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -12,7 +12,7 @@ class AdminAuthentication
     private $session;
     private $config;
 
-    public function __construct(AdminUserRepository $repository, Session $session, Config $config)
+    public function __construct(AclRepository $repository, Session $session, Config $config)
     {
         $this->repository = $repository;
         $this->session = $session;

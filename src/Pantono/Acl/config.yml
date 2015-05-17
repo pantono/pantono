@@ -5,11 +5,19 @@ services:
         - ['Repository', 'Pantono\Acl\Entity\AdminUser']
         - @session
         - @config
-
+    Acl:
+      class: 'Pantono\Acl\Acl'
+      arguments:
+        - ['Repository', 'Pantono\Acl\Entity\AdminUser']
+        - @session
+        - @PrivilegeRegistry
+    PrivilegeRegistry:
+      class: 'Pantono\Acl\PrivilegeRegistry'
 commands:
   - Pantono\Acl\Command\CreateUser
   - Pantono\Acl\Command\ChangePassword
-
+event_subscribers:
+    - 'Pantono\Acl\Event\Subscriber'
 forms:
   login:
     attributes:
