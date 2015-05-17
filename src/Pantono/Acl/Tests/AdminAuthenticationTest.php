@@ -15,7 +15,7 @@ class AdminAuthentication extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->authRepository = $this->getPantonoMock('Pantono\Acl\Entity\Repository\AdminUserRepository');
+        $this->authRepository = $this->getPantonoMock('Pantono\Acl\Entity\Repository\AclRepository');
         $this->session = $this->getPantonoMock('Symfony\Component\HttpFoundation\Session\Session');
         $this->config = $this->getPantonoMock('Pantono\Core\Model\Config\Config');
         $this->adminAuthentication = new \Pantono\Acl\AdminAuthentication($this->authRepository, $this->session, $this->config);
