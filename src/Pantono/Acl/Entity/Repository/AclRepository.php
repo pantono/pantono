@@ -44,7 +44,7 @@ class AclRepository extends EntityRepository
      */
     public function getUserInfo($userId)
     {
-        return $this->find($userId);
+        return $this->_em->getRepository('Pantono\Acl\Entity\AdminUser')->find($userId);
     }
 
     /**
