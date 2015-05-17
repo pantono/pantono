@@ -9,13 +9,13 @@ class Subscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'pantono.bootstrap.start' => [
-                ['onBootstrap', 50]
+            'pantono.application.start' => [
+                ['loadAclPrivileges', 100]
             ]
         ];
     }
 
-    public function onBootstrap(General $event)
+    public function loadAclPrivileges(General $event)
     {
         $app = $event->getApplication();
         $app->getPantonoService('Acl')->loadPrivileges();

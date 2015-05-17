@@ -2,6 +2,7 @@
 
 namespace Pantono\Core\Controller;
 
+use Pantono\Acl\Exception\Acl\Forbidden;
 use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Dispatcher;
 use Pantono\Core\Event\Events\Template;
@@ -21,6 +22,14 @@ abstract class Controller
         $this->controller = $controller;
         $this->action = $action;
         $this->eventDispatcher = $dispatcher;
+        $this->checkAcl();
+    }
+
+    protected function checkAcl()
+    {
+        if (!$this->getApplication()->getPantonoService('Acl')->isAllowed($this->controller, $this->action)) {
+            throw new Forbidden('You are not authorised to view this resource');
+        }
     }
 
     protected function getApplication()

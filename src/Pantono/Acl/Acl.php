@@ -76,7 +76,7 @@ class Acl
 
     /**
      * @param null $userId
-     * @return null|AdminUser
+     * @return AdminUser|null
      */
     private function getUserFromId($userId = null)
     {

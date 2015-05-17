@@ -1,6 +1,5 @@
 <?php namespace Pantono\Core;
 
-use Pantono\Acl\Exception\Acl\Forbidden;
 use Pantono\Core\Container\Application;
 use Pantono\Core\Exception\Bootstrap\Routes;
 use Pantono\Core\Model\Config\Config;
@@ -152,9 +151,6 @@ class Bootstrap
                     if (!$app->getPantonoService('AdminAuthentication')->isCurrentUserAuthenticated()) {
                         return new RedirectResponse('/admin/login');
                     }
-                }
-                if (!$app->getPantonoService('Acl')->isAllowed($route['controller'], $route['action'])) {
-                    throw new Forbidden('You are not authorised to view this resource');
                 }
             })
             ->bind($name);
