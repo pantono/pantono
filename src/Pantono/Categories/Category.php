@@ -8,6 +8,7 @@ use Pantono\Core\Event\Dispatcher;
 use \Pantono\Core\Event\Events\Category as CategoryEvent;
 use Pantono\Metadata\Metadata;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Pantono\Categories\Entity\Category as CategoryEntity;
 
 class Category
 {
@@ -42,7 +43,7 @@ class Category
         return null;
     }
 
-    public function saveCategoryEntity(\Pantono\Categories\Entity\Category $category)
+    public function saveCategoryEntity(CategoryEntity $category)
     {
         if ($category->getMetadata() !== null) {
             $metadata = $this->metadata->saveMetadata($category->getMetadata());

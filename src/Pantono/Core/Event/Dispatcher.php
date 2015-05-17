@@ -14,6 +14,8 @@ use Pantono\Core\Event\Events\Metadata;
 use Pantono\Metadata\Entity\Metadata as MetadataEntity;
 use Pantono\Core\Event\Events\Template;
 use Pantono\Form\Element\ElementInterface;
+use Pantono\Core\Event\Events\Category as CategoryEvent;
+use Pantono\Core\Event\Events\Asset as AssetEvent;
 
 class Dispatcher
 {
@@ -69,7 +71,7 @@ class Dispatcher
 
     public function dispatchCategoryEvent($event, $data, Category $category = null)
     {
-        $catEvent = new \Pantono\Core\Event\Events\Category($this->application);
+        $catEvent = new CategoryEvent($this->application);
         $catEvent->setCategoryEntity($category);
         $catEvent->setData($data);
         $this->application['dispatcher']->dispatch($event, $catEvent);
@@ -77,7 +79,7 @@ class Dispatcher
 
     public function dispatchAssetEvent($event, Asset $asset)
     {
-        $assetEvent = new \Pantono\Core\Event\Events\Asset($this->application);
+        $assetEvent = new AssetEvent($this->application);
         $assetEvent->setAsset($asset);
         $this->application['dispatcher']->dispatch($event, $assetEvent);
     }

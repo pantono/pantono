@@ -8,6 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Pantono\Core\Model\Config\Database;
 use Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
+use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 
 class Subscriber implements EventSubscriberInterface
 {
@@ -39,7 +40,7 @@ class Subscriber implements EventSubscriberInterface
                 ],
             ]
         );
-        $this->getApplication()->getEntityManager()->getConfiguration()->setNamingStrategy(new \Doctrine\ORM\Mapping\UnderscoreNamingStrategy());
+        $this->getApplication()->getEntityManager()->getConfiguration()->setNamingStrategy(new UnderscoreNamingStrategy());
         $this->getApplication()->getServiceLocator()->registerAlias('EntityManager', 'orm.em');
     }
 
