@@ -20,7 +20,6 @@ class Acl
 
     public function __construct(AclRepository $repository, Session $session, PrivilegeRegistry $privilegeRegistry, Bootstrap $bootstrap)
     {
-        /* @todo Don't inject boostrap, find different way of getting permissions from conf */
         $this->repository = $repository;
         $this->session = $session;
         $this->privilegeRegistry = $privilegeRegistry;
