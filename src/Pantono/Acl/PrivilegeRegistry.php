@@ -25,7 +25,6 @@ class PrivilegeRegistry
     {
         if (!in_array($resource, $this->resources)) {
             $this->addResource($resource);
-            //throw new RoleNotFound('Resource ' . $resource . ' has not been registered. Add before registering privilege ');
         }
         $this->privileges[$resource][$privilege] = [
             'roles' => $roles
