@@ -82,12 +82,4 @@ class Permissions extends Controller
     {
         return $this->getApplication()->getPantonoService('Acl');
     }
-
-    /**
-     * @return \Pantono\Acl\PrivilegeRegistry
-     */
-    private function getPrivilegeRegistry()
-    {
-        return $this->getApplication()->getPantonoService('PrivilegeRegistry');
-    }
 }
