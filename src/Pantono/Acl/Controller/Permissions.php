@@ -8,9 +8,6 @@ class Permissions extends Controller
 {
     public function overviewAction(Request $request)
     {
-        if ($request->getMethod() == 'POST') {
-            var_dump($request->request->all());exit;
-        }
         $roles = $this->getAclClass()->getRolesWithUserCounts();
         $permissions = $this->getAclClass()->getDefinedPermissions();
         return $this->renderTemplate('admin/permissions/list.twig',
