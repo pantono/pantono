@@ -1,7 +1,5 @@
 <?php namespace Pantono\Acl;
 
-use Pantono\Acl\Exception\Acl\RoleNotFound;
-
 class PrivilegeRegistry
 {
     private $resources;

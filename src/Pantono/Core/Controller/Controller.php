@@ -7,7 +7,6 @@ use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Dispatcher;
 use Pantono\Core\Event\Events\Template;
 use Pantono\Database\Model\EntityMapping;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 abstract class Controller
 {
