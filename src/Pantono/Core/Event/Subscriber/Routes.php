@@ -98,12 +98,4 @@ class Routes implements EventSubscriberInterface
             }
         }
     }
-
-    /**
-     * @return Application
-     */
-    private function getApplication()
-    {
-        return $this->application;
-    }
 }
