@@ -9,7 +9,7 @@ login:
 permissions_list:
     route: '/admin/permissions'
     controller: 'Pantono\Acl\Controller\Permissions'
-    action: 'listingAction'
+    action: 'overviewAction'
     admin: true
 permissions_list:
     route: '/admin/permissions/add'
@@ -20,6 +20,20 @@ permission_edit:
     route: '/admin/permissions/edit/{id}'
     controller: 'Pantono\Acl\Controller\Permissions'
     action: 'editAction'
+    admin: true
+    defaults:
+      id: null
+delete_role:
+    route: '/admin/permissions/delete-role/{id}'
+    controller: 'Pantono\Acl\Controller\Permissions'
+    action: 'deleteRoleAction'
+    admin: true
+    defaults:
+      id: null
+add_role:
+    route: '/admin/permissions/add-role'
+    controller: 'Pantono\Acl\Controller\Permissions'
+    action: 'addRoleAction'
     admin: true
     defaults:
       id: null

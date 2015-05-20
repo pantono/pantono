@@ -7,6 +7,7 @@ use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Dispatcher;
 use Pantono\Core\Event\Events\Template;
 use Pantono\Database\Model\EntityMapping;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 abstract class Controller
 {
@@ -45,6 +46,15 @@ abstract class Controller
         $this->eventDispatcher->dispatchTemplateEvent(Template::PRE_RENDER, $templatePath, $renderedContent, $this->controller, $this->action);
         return $renderedContent;
     }
+
+    protected function renderJson($options, $status = 200)
+    {
+        $this->eventDispatcher->dispatchTemplateEvent(Template::JSON_PREPROCESS, $templatePath, $options, $this->controller, $this->action);
+        $renderedContent = $this->getApplication()->json($options, $status);
+        $this->eventDispatcher->dispatchTemplateEvent(Template::JSON_POSTPROCESS, $templatePath, $renderedContent, $this->controller, $this->action);
+        return $renderedContent;
+    }
+
 
     protected function translate($string, $options = [])
     {

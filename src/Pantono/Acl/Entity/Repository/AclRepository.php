@@ -2,10 +2,10 @@
 
 namespace Pantono\Acl\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Pantono\Acl\Entity\AdminUser;
+use Pantono\Database\Repository\AbstractRepository;
 
-class AclRepository extends EntityRepository
+class AclRepository extends AbstractRepository
 {
     /**
      * @param $userId
@@ -47,6 +47,17 @@ class AclRepository extends EntityRepository
         return $this->_em->getRepository('Pantono\Acl\Entity\AdminUser')->find($userId);
     }
 
+    public function getSingleRole($id)
+    {
+        return $this->_em->getRepository('Pantono\Acl\Entity\AdminRole')->find($id);
+    }
+
+
+    public function findRoleByName($name)
+    {
+        return $this->_em->getRepository('Pantono\Acl\Entity\AdminRole')->findOneBy(['name' => $name]);
+    }
+
     /**
      * @param $username
      * @return AdminUser|null
@@ -56,9 +67,19 @@ class AclRepository extends EntityRepository
         return $this->findOneBy(['username' => $username]);
     }
 
-    public function save($entity)
+    public function getRolesWithUserCounts()
     {
-        $this->_em->persist($entity);
-        $this->_em->flush();
+        $pdo = $this->_em->getConnection();
+        $statement = $pdo->prepare('
+          SELECT admin_role.id, admin_role.name, (SELECT COUNT(1) from admin_user_admin_role
+          LEFT JOIN admin_user on admin_user_admin_role.admin_user_id=admin_user.id
+          where admin_role_id=admin_role.id and active=1) as active_count,
+          (SELECT COUNT(1) from admin_user_admin_role
+          LEFT JOIN admin_user on admin_user_admin_role.admin_user_id=admin_user.id
+          where admin_role_id=admin_role.id and active=0) as inactive_count
+          from admin_role
+        ');
+        $statement->execute();
+        return $statement->fetchAll();
     }
 }

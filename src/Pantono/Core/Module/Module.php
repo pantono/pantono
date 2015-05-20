@@ -2,6 +2,7 @@
 
 namespace Pantono\Core\Module;
 
+use Pantono\Acl\Model\Permission;
 use Pantono\Core\Container\Application;
 use Pantono\Core\Model\Config\Config;
 use Symfony\Component\Yaml\Parser;
@@ -15,6 +16,7 @@ class Module
     private $routes = [];
     private $application;
     private $eventListeners;
+    private $permissions = [];
 
     public function __construct(Application $application, $namespace)
     {
@@ -29,6 +31,7 @@ class Module
         $this->loadRoutes();
         $this->loadServices();
         $this->loadEventListeners();
+        $this->loadPermissions();
     }
 
     public function getConfigFile()
@@ -95,9 +98,24 @@ class Module
     private function loadServices()
     {
         foreach ($this->getConfig()->getItem('services', null, []) as $name => $service) {
-            $class = isset($service['class'])?$service['class']:null;
-            $arguments = isset($service['arguments'])?$service['arguments']:null;
+            $class = isset($service['class']) ? $service['class'] : null;
+            $arguments = isset($service['arguments']) ? $service['arguments'] : null;
             $this->application->getServiceLocator()->registerService($name, $class, $arguments);
+        }
+    }
+
+    private function loadPermissions()
+    {
+        $permissions = $this->getConfig()->getItem('permissions', null, []);
+        foreach ($permissions as $resource => $permission) {
+            foreach ($permission['actions'] as $action => $actionName) {
+                $permissionModel = new Permission();
+                $permissionModel->setResourceName($permission['name']);
+                $permissionModel->setName($actionName);
+                $permissionModel->setAction($action);
+                $permissionModel->setResource($resource);
+                $this->permissions[$resource . '::' . $action] = $permissionModel;
+            }
         }
     }
 
@@ -168,5 +186,13 @@ class Module
     public function setRoutes(array $routes)
     {
         $this->routes = $routes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPermissions()
+    {
+        return $this->permissions;
     }
 }

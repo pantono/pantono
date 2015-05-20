@@ -24,7 +24,7 @@ class AdminUser
     /**
      * @ORM\ManyToMany(targetEntity="Pantono\Acl\Entity\AdminRole")
      */
-    protected $role;
+    protected $roles;
     /**
      * @ORM\OneToOne(targetEntity="Pantono\Suppliers\Entity\Supplier")
      */
@@ -46,6 +46,16 @@ class AdminUser
      * @ORM\Column(type="boolean")
      */
     protected $superAdmin;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $active;
+
+    /*
+     * This is used to signify an anonymous user, no database field required.
+     */
+    private $anonymous = false;
 
     /**
      * @return mixed
@@ -114,17 +124,17 @@ class AdminUser
     /**
      * @return mixed
      */
-    public function getRole()
+    public function getRoles()
     {
-        return $this->role;
+        return $this->roles;
     }
 
     /**
-     * @param mixed $role
+     * @param mixed $roles
      */
-    public function setRole($role)
+    public function setRoles($roles)
     {
-        $this->role = $role;
+        $this->roles = $roles;
     }
 
     /**
@@ -173,5 +183,37 @@ class AdminUser
     public function setSuperAdmin($superAdmin)
     {
         $this->superAdmin = $superAdmin;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param mixed $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnonymous()
+    {
+        return $this->anonymous;
+    }
+
+    /**
+     * @param mixed $anonymous
+     */
+    public function setAnonymous($anonymous)
+    {
+        $this->anonymous = $anonymous;
     }
 }

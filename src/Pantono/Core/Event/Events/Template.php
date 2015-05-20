@@ -13,6 +13,8 @@ class Template extends Event
 
     const PRE_RENDER = 'pantono.template.prerender';
     const POST_RENDER = 'pantono.template.postrender';
+    const JSON_PREPROCESS = 'pantono.template.json.preprocess';
+    const JSON_POSTPROCESS = 'pantono.template.json.preprocess';
 
     /**
      * @return string

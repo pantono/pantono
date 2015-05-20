@@ -1,13 +1,8 @@
 <?php namespace Pantono\Core;
 
 use Pantono\Core\Container\Application;
-use Pantono\Core\Exception\Bootstrap\Routes;
 use Pantono\Core\Model\Config\Config;
-use Pantono\Core\Model\Route;
 use Pantono\Core\Module\Module;
-use Silex\Controller;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 class Bootstrap
 {
@@ -18,7 +13,6 @@ class Bootstrap
      */
     private $application;
     private $modules;
-    private $controllers;
     private $serverVariables;
 
     public function __construct($configFile = '')
@@ -39,7 +33,6 @@ class Bootstrap
         $this->initDefinitions();
         $this->initLocale();
         $this->loadModules();
-        $this->loadRoutes();
         return $this->application;
     }
 
@@ -105,76 +98,6 @@ class Bootstrap
         return $this->modules;
     }
 
-    public function loadRoutes()
-    {
-        $routes = [];
-        foreach ($this->getModules() as $module) {
-            $routes = array_merge_recursive($routes, $module->getRoutes());
-        }
-        $this->application['defined_routes'] = $routes;
-        foreach ($routes as $name => $route) {
-            $controllerId = $this->createController($route);
-            if ($route['route']) {
-                $this->loadRoute($controllerId, $name, $route);
-            }
-        }
-    }
-
-    private function createController($route)
-    {
-        if (!class_exists($route['controller'])) {
-            throw new Routes('Controller ' . $route['controller'] . ' for route ' . $route['route'] . ' does not exist');
-        }
-
-        if (!method_exists($route['controller'], $route['action'])) {
-            throw new Routes('Action ' . $route['action'] . ' does not exist within controller ' . $route['controller']);
-        }
-        $controllerId = str_replace('\\', '.', $route['controller']);
-        if (!isset($this->controllers[$controllerId])) {
-            $app = $this->application;
-            $app[$controllerId] = $app->share(function() use ($app, $route) {
-                $controller = $route['controller'];
-                return new $controller($app, $app->getEventDispatcher(), $route['controller'], $route['action']);
-            });
-        }
-        return $controllerId;
-    }
-
-    private function loadRoute($controllerId, $name, array $route)
-    {
-        $app = $this->application;
-        $routeModel = $this->getRouteModel($route);
-        $routeObject = $app->match($route['route'], $controllerId . ':' . $route['action'])
-            ->before(function(Request $request, Application $app) use ($route, $routeModel) {
-                $request->attributes->add(['pantono_route' => $routeModel]);
-                if ($route['admin']) {
-                    if (!$app->getPantonoService('AdminAuthentication')->isCurrentUserAuthenticated()) {
-                        return new RedirectResponse('/admin/login');
-                    }
-                }
-            })
-            ->bind($name);
-        $this->addRouteDefaults($routeObject, $route);
-    }
-
-    private function getRouteModel($route)
-    {
-        $routeModel = new Route();
-        $routeModel->setController($route['controller']);
-        $routeModel->setAction($route['action']);
-        $routeModel->setPath($route['route']);
-        $routeModel->setRequiresAdminAuth(isset($route['admin']) ? $route['admin'] : false);
-        return $routeModel;
-    }
-
-    private function addRouteDefaults(Controller $routeObject, $route)
-    {
-        if (isset($route['defaults'])) {
-            foreach ($route['defaults'] as $name => $value) {
-                $routeObject->value($name, $value);
-            }
-        }
-    }
 
     public function getCommandLineRunner()
     {

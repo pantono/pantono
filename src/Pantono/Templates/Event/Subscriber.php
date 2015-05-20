@@ -41,6 +41,7 @@ class Subscriber implements EventSubscriberInterface
         }
 
         $this->registerPantonoBlockHelper($app);
+        $this->registerPantonoAclHelper($app);
     }
 
     /**
@@ -53,6 +54,13 @@ class Subscriber implements EventSubscriberInterface
             array_shift($args);
             $content = $app->getServiceLocator()->getService('Blocks')->renderBlock($block, $args);
             return $content;
+        }, ['is_safe' => ['html']]));
+    }
+
+    public function registerPantonoAclHelper($app)
+    {
+        $app['twig']->addFunction(new \Twig_SimpleFunction('is_allowed', function ($resource, $action, $role) use ($app) {
+            return $app->getPantonoService('Acl')->isRoleAllowed($resource, $action, $role);
         }, ['is_safe' => ['html']]));
     }
 

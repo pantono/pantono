@@ -97,6 +97,7 @@ class AdminAuthentication
         $adminUser->setUsername($userName);
         $adminUser->setContact($contact);
         $this->repository->save($adminUser);
+        $this->repository->flush();
         return $adminUser;
     }
 
@@ -109,6 +110,7 @@ class AdminAuthentication
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $user->setPassword($hashedPassword);
         $this->repository->save($user);
+        $this->repository->flush();
     }
 
     /**

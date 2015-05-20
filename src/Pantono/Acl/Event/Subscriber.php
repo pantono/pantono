@@ -9,7 +9,7 @@ class Subscriber implements EventSubscriberInterface
     {
         return [
             'pantono.application.start' => [
-                ['loadAclPrivileges', 100]
+                ['loadAclPrivileges', 99]
             ]
         ];
     }

@@ -1,5 +1,6 @@
 event_subscribers:
     - 'Pantono\Core\Event\Subscriber\Core'
+    - 'Pantono\Core\Event\Subscriber\Routes'
 services:
   SfEventDispatcher:
     class: Symfony\Component\EventDispatcher\EventDispatcher

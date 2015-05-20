@@ -1,0 +1,64 @@
+{% extends 'admin/layout.twig' %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Roles</h2>
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Users</th>
+                    <th width="20"><a href="/admin/permissions/add-role" class="btn btn-success add-role fa fa-plus">Add New Role</a></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for role in roles %}
+                    <tr>
+                        <td>{{ role.name }}</td>
+                        <td>{{ role.active_count }} / {{ role.inactive_count }}</td>
+                        <td>
+                            <a class="fa fa-edit btn-primary btn edit-role" href="#"></a>
+                            <a class="fa fa-trash-o btn-danger btn delete-role" href="/admin/permissions/delete-role/{{ role.id }}"></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Privileges</h2>
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    {% for role in roles %}
+                        <th>{{ role.name }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% set lastResource = null %}
+                {% for permission in permissions %}
+                    {% if permission.resourceName != lastResource %}
+                        {% set lastResource = permission.resourceName %}
+                        <tr>
+                            <th colspan="5">{{ lastResource }}</th>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                    <td>{{ permission.name }}</td>
+                    {% for role in roles %}
+                        <td><input type="checkbox" name="permissions[{{ permission.resource }}][{{ permission.action }}][{{ role.id }}]" {% if is_allowed(permission.resource, permission.action, role.name) %}checked{% endif %}/></td>
+                     {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script type="text/javascript" src="/themes/core/admin/js/permissions.js"></script>
+{% endblock %}

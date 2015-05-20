@@ -22,7 +22,7 @@ class Core implements EventSubscriberInterface
         return [
             'pantono.bootstrap.start' => [
                 ['onBootstrap', 100]
-            ]
+            ],
         ];
     }
 
@@ -37,6 +37,7 @@ class Core implements EventSubscriberInterface
         $app->register(new ValidatorServiceProvider());
         $app->register(new FormServiceProvider());
         $this->registerTranslationServiceProvider();
+        $app->getServiceLocator()->registerAlias('bootstrap', 'bootstrap');
     }
 
     private function registerTranslationServiceProvider()
@@ -59,6 +60,9 @@ class Core implements EventSubscriberInterface
             return $translator;
         }));
     }
+
+
+
 
     /**
      * @return Application

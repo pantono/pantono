@@ -24,7 +24,8 @@ class PrivilegeRegistry
     public function addPrivilege($resource, $privilege, $roles)
     {
         if (!in_array($resource, $this->resources)) {
-            throw new RoleNotFound('Resource ' . $resource . ' has not been registered. Add before registering privilege ');
+            $this->addResource($resource);
+            //throw new RoleNotFound('Resource ' . $resource . ' has not been registered. Add before registering privilege ');
         }
         $this->privileges[$resource][$privilege] = [
             'roles' => $roles
@@ -35,7 +36,7 @@ class PrivilegeRegistry
     {
         $privilege = $this->privileges[$resource][$privilege];
         $parents = $this->getRoleParents($role);
-        if (in_array($role, $privilege)) {
+        if (in_array($role, $privilege['roles'])) {
             return true;
         }
         foreach ($parents as $parent)
@@ -55,5 +56,29 @@ class PrivilegeRegistry
         $parent = $this->roles[$role]['parent'];
         $roleArray[] = $parent;
         return array_merge($roleArray, $parent);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResources()
+    {
+        return $this->resources;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrivileges()
+    {
+        return $this->privileges;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoles()
+    {
+        return $this->roles;
     }
 }

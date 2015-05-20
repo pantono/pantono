@@ -11,6 +11,7 @@ services:
         - ['Repository', 'Pantono\Acl\Entity\AdminUser']
         - @session
         - @PrivilegeRegistry
+        - @bootstrap
     PrivilegeRegistry:
       class: 'Pantono\Acl\PrivilegeRegistry'
 commands:
@@ -19,6 +20,21 @@ commands:
 event_subscribers:
     - 'Pantono\Acl\Event\Subscriber'
 forms:
+  add_role:
+    attributes:
+      role: form
+      class: add-role-form
+      id: add_role_form
+    fields:
+      name:
+        type: text
+        placeholder: Enter role name here
+        class: form-control
+        label: Name
+      parent:
+        type: select
+        choice_populator: Acl::getRoleList
+        class: form-control
   login:
     attributes:
       role: form
@@ -52,3 +68,14 @@ forms:
         type: checkbox
         label: Remember Me
         required: false
+permissions:
+  Pantono\Acl\Controller\Authentication:
+    name: Authentication
+    actions:
+      loginAction: Login
+  Pantono\Acl\Controller\Permissions:
+    name: Administer Permissions
+    actions:
+      overviewAction: See overview of permission
+      addAction: Add new permission
+      editAction: Edit permission

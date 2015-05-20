@@ -7,6 +7,9 @@ class Builder extends Form
     public function buildFormFields()
     {
         $this->setEntity();
+        foreach ($this->getAttributes() as $name => $value) {
+            $this->addAttribute($name, $value);
+        }
         foreach ($this->getFields() as $name => $fieldData) {
             $this->getDispatcher()->dispatchFormFieldEvent('pantono.formfield.prebuild', $this->getName(), $name, $fieldData);
             $field = $this->getHandlerForType($fieldData['type']);
@@ -23,6 +26,11 @@ class Builder extends Form
             $this->addElement($field);
 
         }
+    }
+
+    public function getAttributes()
+    {
+        return isset($this->config['attributes']) ? $this->config['attributes'] : [];
     }
 
     public function getFields()

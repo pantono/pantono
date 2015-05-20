@@ -1,9 +1,12 @@
 <?php namespace Pantono\Acl;
 
+use Pantono\Acl\Entity\AdminRole;
 use Pantono\Acl\Entity\AdminUser;
 use Pantono\Acl\Entity\Repository\AclRepository;
+use Pantono\Acl\Exception\Acl\RoleNotFound;
 use Pantono\Acl\Model\Voter;
 use Pantono\Acl\Voter\VoterInterface;
+use Pantono\Core\Bootstrap;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class Acl
@@ -12,12 +15,21 @@ class Acl
     private $voters;
     private $session;
     private $privilegeRegistry;
+    private $bootstrap;
+    const ANONYMOUS_USER_ROLE = 999999;
 
-    public function __construct(AclRepository $repository, Session $session, PrivilegeRegistry $privilegeRegistry)
+    public function __construct(AclRepository $repository, Session $session, PrivilegeRegistry $privilegeRegistry, Bootstrap $bootstrap)
     {
+        /* @todo Don't inject boostrap, find different way of getting permissions from conf */
         $this->repository = $repository;
         $this->session = $session;
         $this->privilegeRegistry = $privilegeRegistry;
+        $this->bootstrap = $bootstrap;
+    }
+
+    public function getRolesWithUserCounts()
+    {
+        return $this->repository->getRolesWithUserCounts();
     }
 
     /**
@@ -74,6 +86,61 @@ class Acl
         return $this->isAllowedVoters($resource, $action, $arguments, $user);
     }
 
+    public function isRoleAllowed($resource, $action, $roleName)
+    {
+        return $this->privilegeRegistry->isRoleAllowed($roleName, $resource, $action);
+    }
+
+    public function getDefinedPermissions()
+    {
+        $modules = $this->bootstrap->getModules();
+        $permissions = [];
+        foreach ($modules as $module) {
+            $permissions = array_merge($permissions, $module->getPermissions());
+        }
+        ksort($permissions);
+        return $permissions;
+    }
+
+    public function deleteRole($id)
+    {
+        $role = $this->repository->getSingleRole($id);
+        if ($id == self::ANONYMOUS_USER_ROLE || !$role) {
+            throw new RoleNotFound('Role does not exist');
+        }
+        $this->repository->delete($role);
+        $this->repository->flush();
+        return true;
+    }
+
+    public function addRole($roleName)
+    {
+        if (!$roleName) {
+            throw new \Exception('Role name is required');
+        }
+
+        $exists = $this->repository->findRoleByName($roleName);
+        if ($exists !== null) {
+            throw new \Exception('Role name must be unique');
+        }
+
+        $role = new AdminRole();
+        $role->setName($roleName);
+        $this->repository->save($role);
+        $this->repository->flush();
+        return $role;
+    }
+
+    public function getRoleList()
+    {
+        $roles = [];
+        $roleList = $this->repository->getRoles();
+        foreach ($roleList as $role) {
+            $roles[$role->getId()] = $role->getName();
+        }
+        return $roles;
+    }
+
     /**
      * Checks all voters registered to the provided resource/action
      *
@@ -106,13 +173,26 @@ class Acl
      */
     private function isAllowedRegistry($resource, $action, AdminUser $user)
     {
-        $roles = $this->repository->getRolesForUser($user->getId());
+        $roles = $this->getRolesForUser($user);
         foreach ($roles as $role) {
             if ($this->privilegeRegistry->isRoleAllowed($role['name'], $resource, $action)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private function getRolesForUser(AdminUser $user)
+    {
+        if ($user->getAnonymous()) {
+            $anonymousRole = $this->repository->getSingleRole(self::ANONYMOUS_USER_ROLE);
+            return [[
+                'id' => $anonymousRole->getId(),
+                'name' => $anonymousRole->getName(),
+                'parent' => $anonymousRole->getParent()
+            ]];
+        }
+        return $this->repository->getRolesForUser($user->getId());
     }
 
 
@@ -124,6 +204,14 @@ class Acl
     {
         if (!$userId) {
             $userId = $this->session->get('admin_user_id');
+        }
+        if (!$userId) {
+            $user = new AdminUser();
+            $user->setAnonymous(true);
+            $user->setId(-1);
+            $role = $this->repository->getSingleRole(self::ANONYMOUS_USER_ROLE);
+            $user->setRoles([$role]);
+            return $user;
         }
         return $this->repository->getUserInfo($userId);
     }
