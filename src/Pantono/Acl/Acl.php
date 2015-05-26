@@ -1,5 +1,6 @@
 <?php namespace Pantono\Acl;
 
+use Pantono\Acl\Entity\AdminPrivilege;
 use Pantono\Acl\Entity\AdminRole;
 use Pantono\Acl\Entity\AdminUser;
 use Pantono\Acl\Entity\Repository\AclRepository;
@@ -16,7 +17,7 @@ class Acl
     private $session;
     private $privilegeRegistry;
     private $bootstrap;
-    const ANONYMOUS_USER_ROLE = 999999;
+    const ANONYMOUS_USER_ROLE = 1;
 
     public function __construct(AclRepository $repository, Session $session, PrivilegeRegistry $privilegeRegistry, Bootstrap $bootstrap)
     {
@@ -99,6 +100,27 @@ class Acl
         }
         ksort($permissions);
         return $permissions;
+    }
+
+    /**
+     * @param array $resources
+     * @return bool
+     */
+    public function updatePrivileges(array $resources)
+    {
+        $this->repository->deleteAllPrivileges();
+        foreach ($resources as $resource => $actions) {
+            foreach ($actions as $privilege => $roles) {
+                $permission = new AdminPrivilege();
+                $permission->setResource($resource);
+                $permission->setAllowed(true);
+                $permission->setPrivilege($privilege);
+                $permission->setRoles($this->repository->getRoleReferences(array_keys($roles)));
+                $this->repository->save($permission);
+            }
+        }
+        $this->repository->flush();
+        return true;
     }
 
     public function deleteRole($id)

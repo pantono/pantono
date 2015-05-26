@@ -6,7 +6,7 @@ class Builder extends Form
 
     public function buildFormFields()
     {
-        $this->setEntity();
+        $this->addAttribute('id', $this->getName());
         foreach ($this->getFields() as $name => $fieldData) {
             $this->getDispatcher()->dispatchFormFieldEvent('pantono.formfield.prebuild', $this->getName(), $name, $fieldData);
             $field = $this->getHandlerForType($fieldData['type']);
@@ -32,14 +32,6 @@ class Builder extends Form
         }
         return $this->config['fields'];
     }
-
-    private function setEntity()
-    {
-        if (isset($this->getConfig()['entity'])) {
-            $this->setEntityClassName($this->getConfig()['entity']);
-        }
-    }
-
 
     /**
      * @return array

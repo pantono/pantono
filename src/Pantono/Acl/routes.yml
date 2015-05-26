@@ -2,27 +2,20 @@ admin_login:
     route: '/admin/login'
     controller: 'Pantono\Acl\Controller\Authentication'
     action: 'adminLoginAction'
+    skip_acl: true
 login:
     route: '/login'
     controller: 'Pantono\Acl\Controller\Authentication'
     action: 'loginAction'
+logout:
+    route: '/admin/logout'
+    controller: 'Pantono\Acl\Controller\Authentication'
+    action: 'adminLogoutAction'
 permissions_list:
     route: '/admin/permissions'
     controller: 'Pantono\Acl\Controller\Permissions'
     action: 'overviewAction'
     admin: true
-permissions_list:
-    route: '/admin/permissions/add'
-    controller: 'Pantono\Acl\Controller\Permissions'
-    action: 'addAction'
-    admin: true
-permission_edit:
-    route: '/admin/permissions/edit/{id}'
-    controller: 'Pantono\Acl\Controller\Permissions'
-    action: 'editAction'
-    admin: true
-    defaults:
-      id: null
 delete_role:
     route: '/admin/permissions/delete-role/{id}'
     controller: 'Pantono\Acl\Controller\Permissions'
@@ -34,6 +27,30 @@ add_role:
     route: '/admin/permissions/add-role'
     controller: 'Pantono\Acl\Controller\Permissions'
     action: 'addRoleAction'
+    admin: true
+    defaults:
+      id: null
+admin_users:
+    route: '/admin/users'
+    controller: 'Pantono\Acl\Controller\Authentication'
+    action: 'adminUsersAction'
+    admin: true
+add_admin_user:
+    route: '/admin/users/add'
+    controller: 'Pantono\Acl\Controller\Authentication'
+    action: 'addAdminUserAction'
+    admin: true
+edit_admin_user:
+    route: '/admin/users/edit/{id}'
+    controller: 'Pantono\Acl\Controller\Authentication'
+    action: 'editAdminUserAction'
+    admin: true
+    defaults:
+      id: null
+delete_admin_user:
+    route: '/admin/users/delete/{id}'
+    controller: 'Pantono\Acl\Controller\Authentication'
+    action: 'deleteAdminUserAction'
     admin: true
     defaults:
       id: null

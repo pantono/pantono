@@ -54,6 +54,7 @@ abstract class Form extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options = [])
     {
+        $options['block_name'] = $this->getName();
         $this->setBuilder($builder);
         $this->setOptions($options);
         $this->dispatcher->dispatchFormEvent(FormEvent::PRE_BUILD, $this->getName(), $builder);
@@ -75,6 +76,11 @@ abstract class Form extends AbstractType
 
     abstract public function buildFormFields();
 
+    /**
+     * @param $type
+     * @return \Pantono\Form\Element\Element
+     * @throws ElementHandlerNotRegistered
+     */
     protected function getHandlerForType($type)
     {
         if (!isset($this->application['form_element_handlers'][$type])) {

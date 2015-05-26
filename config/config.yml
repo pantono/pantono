@@ -4,6 +4,9 @@ database:
     password: pantono
     host: localhost
     driver: pdo_mysql
+settings:
+  long_date_format: d/m/Y H:i:s
+  short_date_format: d/m/Y
 debug: true
 locales:
     en: locales/en.yml

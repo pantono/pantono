@@ -2,6 +2,7 @@
 
 use Pantono\Acl\Exception\Acl\RoleNotFound;
 use Pantono\Core\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class Permissions extends Controller
@@ -10,19 +11,15 @@ class Permissions extends Controller
     {
         $roles = $this->getAclClass()->getRolesWithUserCounts();
         $permissions = $this->getAclClass()->getDefinedPermissions();
+        if ($request->getMethod() == 'POST') {
+            $permissions = $request->request->get('permissions');
+            $this->getAclClass()->updatePrivileges($permissions);
+            $this->flashMessenger('Permissions have been updated');
+            return new RedirectResponse('/admin/permissions');
+        }
         return $this->renderTemplate('admin/permissions/list.twig',
             ['roles' => $roles, 'permissions' => $permissions]
         );
-    }
-
-    public function addAction(Request $request)
-    {
-        return $this->renderTemplate('admin/permissions/add');
-    }
-
-    public function editAction(Request $request)
-    {
-        return $this->renderTemplate('admin/permissions/edit');
     }
 
     public function checkPermissionAction(Request $reqest)

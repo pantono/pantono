@@ -5,6 +5,7 @@ class Route
     private $path;
     private $controller;
     private $action;
+    private $skipAcl = false;
     private $requiresAdminAuth = false;
 
     /**
@@ -69,5 +70,21 @@ class Route
     public function setRequiresAdminAuth($requiresAdminAuth)
     {
         $this->requiresAdminAuth = $requiresAdminAuth;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSkipAcl()
+    {
+        return $this->skipAcl;
+    }
+
+    /**
+     * @param boolean $skipAcl
+     */
+    public function setSkipAcl($skipAcl)
+    {
+        $this->skipAcl = $skipAcl;
     }
 }

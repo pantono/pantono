@@ -32,6 +32,11 @@ class Draft
      * @ORM\OneToMany(targetEntity="Brand", mappedBy="id")
      */
     protected $brand;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Pantono\Categories\Entity\Category")
+     */
+    protected $categories;
     /**
      * @ORM\OneToMany(targetEntity="Pantono\Acl\Entity\AdminUser", mappedBy="id")
      */
@@ -314,5 +319,37 @@ class Draft
     public function setDateCreated($dateCreated)
     {
         $this->dateCreated = $dateCreated;
+    }
+
+    /**
+     * @return \Pantono\Categories\Entity\Category
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param mixed $categories
+     */
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
+    }
+
+    public function getPriceMinMax()
+    {
+        $min = $max = 0;
+        foreach ($this->getVariations() as $variation)
+        {
+            if ($variation->getMinPrice() <= $min || $min == 0) {
+                $min = $variation->getMinPrice();
+            }
+
+            if ($variation->getMaxPrice() > $max || $max == 0) {
+                $max = $variation->getMaxPrice();
+            }
+        }
+        return ['min' => $min, 'max' => $max];
     }
 }

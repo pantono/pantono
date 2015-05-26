@@ -35,8 +35,10 @@ $(function() {
 
 var PantonoJS = {
     modal: null,
+    forms: null,
     init : function() {
         this.modal = PantonoModal.init();
+        addJavascript('/themes/core/admin/js/forms.js', function() { Pantono.forms.init(); });
         return this;
     }
 };

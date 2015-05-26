@@ -1,0 +1,5 @@
+services:
+  Suppliers:
+    class: Pantono\Suppliers\Suppliers
+    arguments:
+      - ['Repository', 'Pantono\Suppliers\Entity\Supplier']

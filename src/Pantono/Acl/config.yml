@@ -5,6 +5,7 @@ services:
         - ['Repository', 'Pantono\Acl\Entity\AdminUser']
         - @session
         - @config
+        - @PantonoEventDispatcher
     Acl:
       class: 'Pantono\Acl\Acl'
       arguments:
@@ -35,6 +36,53 @@ forms:
         type: select
         choice_populator: Acl::getRoleList
         class: form-control
+  admin_user:
+    attributes:
+      role: form
+      class: add-user-form
+      id: add_user_form
+    fields:
+      id:
+        type: hidden
+        weight: 10
+      username:
+        type: email
+        placeholder: E-mail address of user
+        class: form-control
+        required: true
+        label: E-Mail
+        weight: 20
+        constraints:
+          - Symfony\Component\Validator\Constraints\NotBlank
+          - Symfony\Component\Validator\Constraints\Email
+      contact_id:
+        type: hidden
+        weight: 30
+      first_name:
+        type: text
+        placeholder: First Name (e.g. John)
+        class: form-control
+        label: First Name
+        required: true
+        weight: 40
+        constraints:
+          - Symfony\Component\Validator\Constraints\NotBlank
+      last_name:
+        type: text
+        placeholder: Last Name (e.g. Smith)
+        class: form-control
+        label: Last Name
+        required: true
+        weight: 50
+        constraints:
+          - Symfony\Component\Validator\Constraints\NotBlank
+      supplier:
+        type: select
+        choice_populator: Suppliers::getSupplierList
+        label: Supplier
+        required: false
+        class: form-control
+        weight: 60
   login:
     attributes:
       role: form
@@ -73,9 +121,30 @@ permissions:
     name: Authentication
     actions:
       loginAction: Login
+      adminUsersAction: Manage all admin users
+      onlyManagerCurrentSuppliers: Limit user admin to current supplier only
+      addAdminUserAction: Add new admin user
+      editAdminUserAction: Edit admin user
   Pantono\Acl\Controller\Permissions:
     name: Administer Permissions
     actions:
       overviewAction: See overview of permission
       addAction: Add new permission
       editAction: Edit permission
+entity_mapping:
+  admin_user:
+    entities:
+      user: 'Pantono\Acl\Entity\AdminUser'
+    mapping:
+      id:
+        mapping: user.id
+      username:
+        mapping: user.username
+      contact_id:
+        mapping: user.contact.id
+      first_name:
+        mapping: user.contact.firstName
+      last_name:
+        mapping: user.contact.lastName
+      supplier:
+        mapping: user.supplier

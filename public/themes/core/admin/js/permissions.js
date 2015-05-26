@@ -9,7 +9,6 @@ $(function () {
         Pantono.modal.showAjaxModal(url, 'Add New Role', '<button class="btn btn-success" id="performRoleAdd" aria-hidden="true">Add</button>', function () {
             $('#performRoleAdd').off('click').on('click', function (e) {
                 var form = $('#add_role_form');
-                console.log(url, 'Here');
                 $.post(url, form.serialize(), function (data) {
                     if (data.success) {
                         Pantono.modal.closeModal();
@@ -23,6 +22,18 @@ $(function () {
                     }
                 });
             });
+        });
+    });
+
+    $('.form-filters #find').on('keyup', function (e) {
+        var search = $(this).val().toLowerCase();
+        $('.privilege-table tbody tr').each(function(e) {
+            var name = $(this).children('td:eq(0)').text();
+            if (name.toLowerCase().indexOf(search) !== -1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
         });
     });
 });

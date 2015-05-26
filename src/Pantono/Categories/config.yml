@@ -16,26 +16,38 @@ forms:
           type: hidden
         title:
           type: text
+          class: form-control
+          label: Title
         parent:
           type: select
+          label: Parent
+          class: form-control
           choice_populator: Category::getCategoryListTree
         urlKey:
           type: text
+          class: form-control
+          label: URL Slug
           readonly: true
         active:
+          label: Active
           type: checkbox
         metadata_id:
           type: hidden
         metadata_pageTitle:
           type: textarea
+          class: form-control
         metadata_metaDescription:
           type: textarea
+          class: form-control
         metadata_metaDescription:
           type: text
+          class: form-control
         metadata_metaRobots:
           type: select
+          class: form-control
         image:
           type: file
+          class: form-control
 entity_mapping:
   category_add:
     entities:

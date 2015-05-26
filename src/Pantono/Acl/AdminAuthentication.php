@@ -2,21 +2,26 @@
 
 use Pantono\Acl\Entity\AdminUser;
 use Pantono\Acl\Entity\Repository\AclRepository;
+use Pantono\Acl\Model\Filter\AdminUserList;
 use Pantono\Contacts\Entity\Contact;
+use Pantono\Core\Event\Dispatcher;
 use Pantono\Core\Model\Config\Config;
 use Symfony\Component\HttpFoundation\Session\Session;
+use \Pantono\Core\Event\Events\AdminUser as AdminUserEvent;
 
 class AdminAuthentication
 {
     private $repository;
     private $session;
     private $config;
+    private $dispatcher;
 
-    public function __construct(AclRepository $repository, Session $session, Config $config)
+    public function __construct(AclRepository $repository, Session $session, Config $config, Dispatcher $dispatcher)
     {
         $this->repository = $repository;
         $this->session = $session;
         $this->config = $config;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -55,6 +60,24 @@ class AdminAuthentication
         return $currentUserId;
     }
 
+    public function getSingleUser($id)
+    {
+        return $this->repository->getUserInfo($id);
+    }
+
+    public function deleteAdminUserById($id)
+    {
+
+    }
+
+    public function deleteAdminUser(AdminUser $user)
+    {
+        $this->dispatcher->dispatchAdminUserEvent(AdminUserEvent::PRE_DELETE, $user);
+        $this->repository->delete($user);
+        $this->dispatcher->dispatchAdminUserEvent(AdminUserEvent::POST_DELETE, $user);
+        return true;
+    }
+
     /**
      * @param $username
      * @param $password
@@ -67,17 +90,29 @@ class AdminAuthentication
             return false;
         }
 
+        if (!$user->getActive()) {
+            return false;
+        }
         if (password_verify($password, $user->getPassword())) {
             if (password_needs_rehash($user->getPassword(), PASSWORD_DEFAULT)) {
                 $hash = password_hash($user->getPassword(), PASSWORD_DEFAULT);
                 $user->setPassword($hash);
-                $this->repository->save($user);
             }
+            $user->setLastLogin(new \DateTime);
+            $this->repository->save($user);
+            $this->repository->flush();
             $this->session->set('admin_user_id', $user->getId());
             $this->session->set('last_admin_action', (new \DateTime)->format('Y-m-d H:i:s'));
             return $user;
         }
         return false;
+    }
+
+    public function logoutUser()
+    {
+        $this->session->set('admin_user_id', null);
+        $this->session->set('last_admin_action', null);
+        return true;
     }
 
     /**
@@ -131,5 +166,19 @@ class AdminAuthentication
     {
         $user = $this->repository->getUserByUsername($email);
         return $user;
+    }
+
+    public function getAdminUserList(AdminUserList $filter)
+    {
+        return $this->repository->getAdminUserList($filter);
+    }
+
+    public function saveAdminUser(AdminUser $user)
+    {
+        $this->dispatcher->dispatchAdminUserEvent(AdminUserEvent::PRE_SAVE, $user);
+        $this->repository->save($user);
+        $this->repository->flush();
+        $this->dispatcher->dispatchAdminUserEvent(AdminUserEvent::POST_SAVE, $user);
+        return true;
     }
 }

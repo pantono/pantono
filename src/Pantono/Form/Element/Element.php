@@ -190,6 +190,7 @@ abstract class Element
         if ($this->isRequired() !== null) {
             $options['required'] = $this->isRequired();
         }
+        $options['constraints'] = $this->getConstraints();
         return $options;
     }
 

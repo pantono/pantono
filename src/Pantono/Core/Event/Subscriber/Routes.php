@@ -57,7 +57,7 @@ class Routes implements EventSubscriberInterface
             $app = $this->application;
             $app[$controllerId] = $app->share(function() use ($app, $route) {
                 $controller = $route['controller'];
-                return new $controller($app, $app->getEventDispatcher(), $route['controller'], $route['action']);
+                return new $controller($app, $app->getEventDispatcher());
             });
         }
         return $controllerId;
@@ -68,7 +68,17 @@ class Routes implements EventSubscriberInterface
         $app = $this->application;
         $routeModel = $this->getRouteModel($route);
         $routeObject = $app->match($route['route'], $controllerId . ':' . $route['action'])
-            ->before(function(Request $request, Application $app) use ($route, $routeModel) {
+            ->before(function(Request $request, Application $app) use ($route, $routeModel, $controllerId) {
+                $app[$controllerId]->setController($route['controller']);
+                $app[$controllerId]->setAction($route['action']);
+                $app[$controllerId]->setRequest($request);
+                if (!$routeModel->isSkipAcl()) {
+                    $currentUserId = $app['session']->get('admin_user_id');
+                    if ($currentUserId === null) {
+                        return new RedirectResponse('/admin/login');
+                    }
+                    $app[$controllerId]->checkAcl();
+                }
                 $request->attributes->add(['pantono_route' => $routeModel]);
                 if ($route['admin']) {
                     if (!$app->getPantonoService('AdminAuthentication')->isCurrentUserAuthenticated()) {
@@ -86,6 +96,9 @@ class Routes implements EventSubscriberInterface
         $routeModel->setController($route['controller']);
         $routeModel->setAction($route['action']);
         $routeModel->setPath($route['route']);
+        if (isset($route['skip_acl']) && $route['skip_acl'] == 'true') {
+            $routeModel->setSkipAcl(true);
+        }
         $routeModel->setRequiresAdminAuth(isset($route['admin']) ? $route['admin'] : false);
         return $routeModel;
     }

@@ -2,6 +2,7 @@
 
 namespace Pantono\Core\Event;
 
+use Pantono\Acl\Entity\AdminUser;
 use Pantono\Assets\Entity\Asset;
 use Pantono\Categories\Entity\Category;
 use Pantono\Core\Block\BlockInterface;
@@ -16,6 +17,9 @@ use Pantono\Core\Event\Events\Template;
 use Pantono\Form\Element\ElementInterface;
 use Pantono\Core\Event\Events\Category as CategoryEvent;
 use Pantono\Core\Event\Events\Asset as AssetEvent;
+use Pantono\Core\Event\Events\AdminUser as AdminUserEvent;
+use Pantono\Templates\Model\Table;
+use \Pantono\Core\Event\Events\Table as TableEvent;
 
 class Dispatcher
 {
@@ -90,4 +94,19 @@ class Dispatcher
         $metadataEvent->setMetadata($entity);
         $this->application['dispatcher']->dispatch($event, $metadataEvent);
     }
+
+    public function dispatchAdminUserEvent($event, AdminUser $user)
+    {
+        $adminUserEvent = new AdminUserEvent($this->application);
+        $adminUserEvent->setUser($user);
+        $this->application['dispatcher']->dispatch($event, $adminUserEvent);
+    }
+
+    public function dispatchTableEvent($event, Table $table)
+    {
+        $tableEvent = new TableEvent($this->application);
+        $tableEvent->setTable($table);
+        $this->application['dispatcher']->dispatch($event, $tableEvent);
+    }
+
 }

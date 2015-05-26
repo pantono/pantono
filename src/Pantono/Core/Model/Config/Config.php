@@ -4,7 +4,7 @@ namespace Pantono\Core\Model\Config;
 
 use Symfony\Component\Yaml\Parser;
 
-class Config
+class Config implements \ArrayAccess
 {
     private $files = [];
     private $contents;
@@ -53,5 +53,25 @@ class Config
             }
         }
         $this->contents = $contents;
+    }
+
+    public function offsetSet($offset, $value) {
+        if (is_null($offset)) {
+            $this->contents[] = $value;
+        } else {
+            $this->contents[$offset] = $value;
+        }
+    }
+
+    public function offsetExists($offset) {
+        return isset($this->contents[$offset]);
+    }
+
+    public function offsetUnset($offset) {
+        unset($this->contents[$offset]);
+    }
+
+    public function offsetGet($offset) {
+        return isset($this->contents[$offset]) ? $this->contents[$offset] : null;
     }
 }

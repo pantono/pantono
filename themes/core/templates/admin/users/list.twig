@@ -1,0 +1,53 @@
+{% extends 'admin/layout.twig' %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Admin Users</h1>
+        </div>
+        <div class="col-md-6">
+            <a href="/admin/users/add" class="btn btn-success add-user fa fa-user pull-right">Add New User</a>
+        </div>
+        <div class="col-md-12">
+
+            <table class="table table-bordered table-striped table-responsive">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    {% if is_allowed('Pantono\Acl\Controller\Authentication', 'adminUsersAction') %}
+                        <th>Supplier</th>
+                        <th>Roles</th>
+                    {% endif %}
+                    <th>Active</th>
+                    <th>Last Login</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in list %}
+                    <tr>
+                        <td>{{ user.contact.firstName }} {{ user.contact.lastName }}</td>
+                        <td>{{ user.username }}</td>
+                        {% if is_allowed('Pantono\Acl\Controller\Authentication', 'adminUsersAction') %}
+                            {% set roles = user.roles %}
+                            <td>{% if user.supplier %}{{ user.supplier.name }}{% else %}N/A{% endif %}</td>
+                            <td>{% for role in roles %}{{ role.name }},{% endfor %}</td>
+                        {% endif %}
+                        <td>{% if user.active %}Yes{% else %}No{% endif %}</td>
+                        <td>{{ user.lastLogin|date(pantono_config.getItem('settings', 'long_date_format')) }}</td>
+                        <td>
+                            <a class="fa fa-trash-o btn-danger btn delete-user"
+                               href="/admin/users/delete/{{ user.id }}"></a>
+                            <a class="fa fa-edit btn-primary btn edit-user" href="/admin/users/edit/{{ user.id }}"></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script type="text/javascript" src="/themes/core/admin/js/user-admin.js"></script>
+{% endblock %}

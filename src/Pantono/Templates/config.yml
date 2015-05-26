@@ -1,2 +1,11 @@
 event_subscribers:
-    - 'Pantono\Templates\Event\Subscriber'
+  - 'Pantono\Templates\Event\Subscriber'
+  - 'Pantono\Templates\Event\Table'
+services:
+  TableHelper:
+    class: Pantono\Templates\Helper\TableHelper
+    arguments:
+      - @PantonoEventDispatcher
+      - @twig
+templates:
+  - src/Pantono/Templates/Views

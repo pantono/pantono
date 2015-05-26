@@ -138,11 +138,19 @@ class AdminUser
     }
 
     /**
-     * @return mixed
+     * @return \Pantono\Suppliers\Entity\Supplier
      */
     public function getSupplier()
     {
         return $this->supplier;
+    }
+
+    public function isSupplier()
+    {
+        if (empty($this->supplier)) {
+            return false;
+        }
+        return true;
     }
 
     /**

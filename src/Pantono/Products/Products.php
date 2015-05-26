@@ -34,6 +34,10 @@ class Products
         return $productModel;
     }
 
+    /**
+     * @param ProductListingFilter $filter
+     * @return \Pantono\Products\Entity\Product[]
+     */
     public function getProductList(ProductListingFilter $filter)
     {
         $products = $this->repository->getProducts($filter);

@@ -3,6 +3,7 @@
 namespace Pantono\Acl\Entity\Repository;
 
 use Pantono\Acl\Entity\AdminUser;
+use Pantono\Acl\Model\Filter\AdminUserList;
 use Pantono\Database\Repository\AbstractRepository;
 
 class AclRepository extends AbstractRepository
@@ -52,6 +53,24 @@ class AclRepository extends AbstractRepository
         return $this->_em->getRepository('Pantono\Acl\Entity\AdminRole')->find($id);
     }
 
+    /**
+     * @param $name
+     * @return null|\Pantono\Acl\Entity\AdminRole
+     */
+    public function getRoleByName($name)
+    {
+        return $this->_em->getRepository('Pantono\Acl\Entity\AdminRole')->findOneBy(['name' => $name]);
+    }
+
+    public function getRoleReferences(array $roleIds)
+    {
+        $roles = [];
+        foreach ($roleIds as $roleId) {
+            $roles[] = $this->_em->getReference('Pantono\Acl\Entity\AdminRole', $roleId);
+        }
+        return $roles;
+    }
+
 
     public function findRoleByName($name)
     {
@@ -81,5 +100,35 @@ class AclRepository extends AbstractRepository
         ');
         $statement->execute();
         return $statement->fetchAll();
+    }
+
+    public function getAdminUserList(AdminUserList $filter)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('u')
+            ->from('Pantono\Acl\Entity\AdminUser', 'u');
+        if ($filter->isActive() !== null) {
+            $qb->where('u.active = :active')
+                ->setParameter('active', $filter->isActive());
+        }
+
+        if ($filter->getEmail()) {
+            $qb->where('u.username= :email')
+                ->setParameter('email', $filter->getEmail());
+        }
+
+        if ($filter->getSupplierId()) {
+            $qb->where('u.supplier = :supplier')
+                ->setParameter('supplier', $this->_em->getReference('Pantono\Suppliers\Entity\Supplier', $filter->getSupplierId()));
+        }
+        return $qb->getQuery()->getResult();
+    }
+
+    public function deleteAllPrivileges()
+    {
+        $query = $this->_em->createQuery('DELETE from Pantono\Acl\Entity\AdminPrivilege');
+        $query->execute();
+        $this->flush();
+        return true;
     }
 }
