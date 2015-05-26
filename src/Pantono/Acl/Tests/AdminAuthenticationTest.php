@@ -8,6 +8,7 @@ class AdminAuthentication extends \PHPUnit_Framework_TestCase
     private $authRepository;
     private $session;
     private $config;
+    private $eventDispatcher;
     /**
      * @var \Pantono\Acl\AdminAuthentication
      */
@@ -18,7 +19,8 @@ class AdminAuthentication extends \PHPUnit_Framework_TestCase
         $this->authRepository = $this->getPantonoMock('Pantono\Acl\Entity\Repository\AclRepository');
         $this->session = $this->getPantonoMock('Symfony\Component\HttpFoundation\Session\Session');
         $this->config = $this->getPantonoMock('Pantono\Core\Model\Config\Config');
-        $this->adminAuthentication = new \Pantono\Acl\AdminAuthentication($this->authRepository, $this->session, $this->config);
+        $this->eventDispatcher = $this->getPantonoMock('Pantono\Core\Event\Dispatcher');
+        $this->adminAuthentication = new \Pantono\Acl\AdminAuthentication($this->authRepository, $this->session, $this->config, $this->eventDispatcher);
     }
 
     public function testGetCurrentUserWhenExists()
@@ -189,6 +191,7 @@ class AdminAuthentication extends \PHPUnit_Framework_TestCase
         $adminUser = new AdminUser();
         $adminUser->setId(1);
         $adminUser->setUsername('test');
+        $adminUser->setActive(true);
         $password = password_hash('test', PASSWORD_DEFAULT);
         $adminUser->setPassword($password);
         return $adminUser;
