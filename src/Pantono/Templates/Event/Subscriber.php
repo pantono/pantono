@@ -10,11 +10,6 @@ use Symfony\Bridge\Twig\Extension\TranslationExtension;
 
 class Subscriber implements EventSubscriberInterface
 {
-    /**
-     * @var Application
-     */
-    private $application;
-
     public static function getSubscribedEvents()
     {
         return [
@@ -27,7 +22,6 @@ class Subscriber implements EventSubscriberInterface
     public function onBootstrap(General $event)
     {
         $app = $event->getApplication();
-        $this->application = $app;
         $this->registerTemplatePaths($app);
         $app['twig']->addExtension(new TranslationExtension($app['translator']));
         foreach ($app->getBootstrap()->getModules() as $module) {
