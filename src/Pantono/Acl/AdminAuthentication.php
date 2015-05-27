@@ -67,7 +67,11 @@ class AdminAuthentication
 
     public function deleteAdminUserById($id)
     {
-
+        $user = $this->getSingleUser($id);
+        if (!$user) {
+            return false;
+        }
+        return $this->deleteAdminUser($user);
     }
 
     public function deleteAdminUser(AdminUser $user)
