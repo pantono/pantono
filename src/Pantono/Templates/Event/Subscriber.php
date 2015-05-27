@@ -31,10 +31,7 @@ class Subscriber implements EventSubscriberInterface
         $app->register(new TwigServiceProvider(), array(
             'twig.path' => APPLICATION_BASE . '/themes/core/templates',
         ));
-        $moduleTemplates = $app->getConfig()->getItem('templates', null, []);
-        foreach ($moduleTemplates as $path) {
-            $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem(APPLICATION_BASE.'/'.$path));
-        }
+        $this->registerModuleTemplatePaths($app);
         $app['twig']->addExtension(new TranslationExtension($app['translator']));
         $app = $this->application;
         foreach ($app->getBootstrap()->getModules() as $module) {
@@ -50,6 +47,14 @@ class Subscriber implements EventSubscriberInterface
         $this->registerTwigGlobals($app);
         $this->registerTableHelper($app);
         $app->getServiceLocator()->registerAlias('twig', 'twig');
+    }
+
+    public function registerModuleTemplatePaths($app)
+    {
+        $moduleTemplates = $app->getConfig()->getItem('templates', null, []);
+        foreach ($moduleTemplates as $path) {
+            $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem(APPLICATION_BASE.'/'.$path));
+        }
     }
 
     public function registerTableHelper($app)
