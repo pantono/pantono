@@ -1,4 +1,4 @@
-<?php namespace Pantono\Templates\Model;
+<?php namespace Pantono\Templates\Model\Table;
 
 class Table
 {
@@ -71,14 +71,14 @@ class Table
     }
 
     /**
-     * @return mixed
+     * @return Row[]
      */
     public function getRows()
     {
         return $this->rows;
     }
 
-    public function addRow(array $row)
+    public function addRow(Row $row)
     {
         $this->rows[] = $row;
     }
@@ -125,5 +125,15 @@ class Table
     public function setRenderedContent($renderedContent)
     {
         $this->renderedContent = $renderedContent;
+    }
+
+    public function hasActions()
+    {
+        foreach ($this->getRows() as $row) {
+            if ($row->hasActions()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

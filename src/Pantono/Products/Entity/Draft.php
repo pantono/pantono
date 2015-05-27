@@ -339,17 +339,30 @@ class Draft
 
     public function getPriceMinMax()
     {
-        $min = $max = 0;
-        foreach ($this->getVariations() as $variation)
-        {
+        return ['min' => $this->getPriceMin(), 'max' => $this->getPriceMax()];
+    }
+
+    public function getPriceMin()
+    {
+        $min = 0;
+        foreach ($this->getVariations() as $variation) {
             if ($variation->getMinPrice() <= $min || $min == 0) {
                 $min = $variation->getMinPrice();
             }
+        }
+        return $min;
+    }
 
+    public function getPriceMax()
+    {
+        $max = 0;
+        foreach ($this->getVariations() as $variation)
+        {
             if ($variation->getMaxPrice() > $max || $max == 0) {
                 $max = $variation->getMaxPrice();
             }
         }
-        return ['min' => $min, 'max' => $max];
+        return $max;
     }
+
 }

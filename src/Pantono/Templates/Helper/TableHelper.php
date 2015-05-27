@@ -1,7 +1,7 @@
 <?php namespace Pantono\Templates\Helper;
 
 use Pantono\Core\Event\Dispatcher;
-use \Pantono\Templates\Model\Table;
+use \Pantono\Templates\Model\Table\Table;
 use \Pantono\Core\Event\Events\Table as TableEvent;
 
 class TableHelper

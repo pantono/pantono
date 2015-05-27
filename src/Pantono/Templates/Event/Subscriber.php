@@ -2,7 +2,7 @@
 
 use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Events\General;
-use Pantono\Templates\Model\Table;
+use Pantono\Templates\Model\Table\Table;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Silex\Provider\TwigServiceProvider;
 use Pantono\Core\Model\Block;

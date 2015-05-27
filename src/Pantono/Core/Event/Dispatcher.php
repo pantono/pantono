@@ -18,7 +18,7 @@ use Pantono\Form\Element\ElementInterface;
 use Pantono\Core\Event\Events\Category as CategoryEvent;
 use Pantono\Core\Event\Events\Asset as AssetEvent;
 use Pantono\Core\Event\Events\AdminUser as AdminUserEvent;
-use Pantono\Templates\Model\Table;
+use Pantono\Templates\Model\Table\Table;
 use \Pantono\Core\Event\Events\Table as TableEvent;
 
 class Dispatcher
