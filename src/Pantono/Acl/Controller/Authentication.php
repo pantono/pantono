@@ -35,12 +35,7 @@ class Authentication extends Controller
 
     public function adminUsersAction()
     {
-        $filter = new AdminUserList();
-        if ($this->getRequest()->getMethod() === 'POST') {
-            $filter->setActive($this->getRequest()->request->get('active', null));
-            $filter->setSupplierId($this->getRequest()->request->get('supplier_id', null));
-            $filter->setEmail($this->getRequest()->request->get('supplier_id', null));
-        }
+        $filter = $this->getAdminUsersFilter();
         if (!$this->getCurrentUser()->getSuperAdmin()) {
             if ($this->isAllowed('Pantono\Acl\Controller\Authentication', 'onlyManagerCurrentSuppliers')) {
                 if (!$this->getCurrentUser()->getSupplier()) {
@@ -51,6 +46,17 @@ class Authentication extends Controller
         }
         $list = $this->getAuthenticationModel()->getAdminUserList($filter);
         return $this->renderTemplate('admin/users/list.twig', ['list' => $list]);
+    }
+
+    private function getAdminUsersFilter()
+    {
+        $filter = new AdminUserList();
+        if ($this->getRequest()->getMethod() === 'POST') {
+            $filter->setActive($this->getRequest()->request->get('active', null));
+            $filter->setSupplierId($this->getRequest()->request->get('supplier_id', null));
+            $filter->setEmail($this->getRequest()->request->get('supplier_id', null));
+        }
+        return $filter;
     }
 
     public function addAdminUserAction()
