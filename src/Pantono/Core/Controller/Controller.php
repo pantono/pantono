@@ -7,7 +7,7 @@ use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Dispatcher;
 use Pantono\Core\Event\Events\Template;
 use Pantono\Database\Model\EntityMapping;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 
 abstract class Controller
 {
@@ -81,7 +81,7 @@ abstract class Controller
         return $this->getService('FlashMessenger')->addMessage($message, $type);
     }
 
-    protected function getFormErrors(Form $form)
+    protected function getFormErrors(FormInterface $form)
     {
         $errors = array();
 
