@@ -86,6 +86,9 @@ class AdminAuthentication
     public function authenticateAdminUser($username, $password)
     {
         $user = $this->getActiveAdminUserByUsername($username);
+        if (!$user) {
+            return false;
+        }
         if (password_verify($password, $user->getPassword())) {
             if (password_needs_rehash($user->getPassword(), PASSWORD_DEFAULT)) {
                 $hash = password_hash($user->getPassword(), PASSWORD_DEFAULT);
@@ -109,7 +112,7 @@ class AdminAuthentication
     public function getActiveAdminUserByUsername($username)
     {
         $user = $this->repository->getUserByUsername($username);
-        if ($user === null) {
+        if (!$user) {
             return null;
         }
 
