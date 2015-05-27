@@ -2,7 +2,7 @@
 
 use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Events\General;
-use Pantono\Templates\Model\Table\Table;
+use Pantono\Templates\Model\Table\Table as TableModel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Silex\Provider\TwigServiceProvider;
 use Pantono\Core\Model\Block;
@@ -52,7 +52,7 @@ class Subscriber implements EventSubscriberInterface
 
     public function registerTableHelper($app)
     {
-        $app['twig']->addFunction(new \Twig_SimpleFunction('pantono_table', function (Table $table) use ($app) {
+        $app['twig']->addFunction(new \Twig_SimpleFunction('pantono_table', function (TableModel $table) use ($app) {
             $content = $app->getServiceLocator()->getService('TableHelper')->renderTable($table);
             return $content;
         }, ['is_safe' => ['html']]));
