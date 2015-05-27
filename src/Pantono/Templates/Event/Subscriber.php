@@ -28,12 +28,8 @@ class Subscriber implements EventSubscriberInterface
     {
         $app = $event->getApplication();
         $this->application = $app;
-        $app->register(new TwigServiceProvider(), array(
-            'twig.path' => APPLICATION_BASE . '/themes/core/templates',
-        ));
-        $this->registerModuleTemplatePaths($app);
+        $this->registerTemplatePaths($app);
         $app['twig']->addExtension(new TranslationExtension($app['translator']));
-        $app = $this->application;
         foreach ($app->getBootstrap()->getModules() as $module) {
             $blocks = $module->getConfig()->getItem('blocks', null, []);
             foreach ($blocks as $blockId => $options) {
@@ -49,8 +45,11 @@ class Subscriber implements EventSubscriberInterface
         $app->getServiceLocator()->registerAlias('twig', 'twig');
     }
 
-    public function registerModuleTemplatePaths($app)
+    public function registerTemplatePaths($app)
     {
+        $app->register(new TwigServiceProvider(), array(
+            'twig.path' => APPLICATION_BASE . '/themes/core/templates',
+        ));
         $moduleTemplates = $app->getConfig()->getItem('templates', null, []);
         foreach ($moduleTemplates as $path) {
             $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem(APPLICATION_BASE.'/'.$path));
