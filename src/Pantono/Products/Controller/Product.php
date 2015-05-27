@@ -31,12 +31,7 @@ class Product extends Controller
 
         $products = $this->getProductClass()->getProductList($filter);
         $table = new Table();
-        $table->setHeaders([
-            'Title',
-            'Product Code',
-            'Price',
-            'Categories',
-        ]);
+        $table->setHeaders(['Title', 'Product Code', 'Price', 'Categories']);
         foreach ($products as $product) {
             $pricingCell = new Cell($product->getDraft()->getPriceMinMax());
             $pricingCell->setFormatter(function ($pricing) {
