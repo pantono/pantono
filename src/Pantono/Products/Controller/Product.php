@@ -40,23 +40,18 @@ class Product extends Controller
                 }
                 return $pricing['min'] . ' - ' . $pricing['max'];
             });
-            $categoriesCell = new Cell($product->getDraft()->getCategories());
-            $categoriesCell->setFormatter(function ($categories) {
-                $cats = [];
-                foreach ($categories as $category) {
-                    $cats[] = $category->getName();
-                }
-                return implode(', ', $cats);
-            });
+            $categoriesCell = new Cell($product->getDraft()->getCategoryString());
             $row = new Row();
             $row->addCell(new Cell($product->getDraft()->getTitle()));
             $row->addCell(new Cell($product->getDraft()->getSku()));
             $row->addCell($pricingCell);
             $row->addCell($categoriesCell);
-            $action = new Action();
-            $action->setClasses('btn btn-default fa fa-edit');
-            $action->setUrl('/admin/products/edit/' . $product->getId());
-            $row->addAction($action);
+            $editAction = new Action();
+            $editAction->setClasses('btn btn-default fa fa-edit');
+            $editAction->setUrl('/admin/products/edit/' . $product->getId());
+            $row->addAction($editAction);
+            $deleteAction = new Action();
+            $deleteAction->setUrl('/admin/products/delete/' . $product->getId());
             $table->addRow($row);
         }
         return $table;

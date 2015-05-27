@@ -322,11 +322,20 @@ class Draft
     }
 
     /**
-     * @return \Pantono\Categories\Entity\Category
+     * @return \Pantono\Categories\Entity\Category[]
      */
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    public function getCategoryString()
+    {
+        $cats = [];
+        foreach ($this->getCategories() as $category) {
+            $cats[] = $category->getTitle();
+        }
+        return implode(', ', $cats);
     }
 
     /**
