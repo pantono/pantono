@@ -85,14 +85,7 @@ class AdminAuthentication
      */
     public function authenticateAdminUser($username, $password)
     {
-        $user = $this->repository->getUserByUsername($username);
-        if (!$user) {
-            return false;
-        }
-
-        if (!$user->getActive()) {
-            return false;
-        }
+        $user = $this->getActiveAdminUserByUsername($username);
         if (password_verify($password, $user->getPassword())) {
             if (password_needs_rehash($user->getPassword(), PASSWORD_DEFAULT)) {
                 $hash = password_hash($user->getPassword(), PASSWORD_DEFAULT);
@@ -107,6 +100,25 @@ class AdminAuthentication
         }
         return false;
     }
+
+
+    /**
+     * @param $username
+     * @return null|AdminUser
+     */
+    public function getActiveAdminUserByUsername($username)
+    {
+        $user = $this->repository->getUserByUsername($username);
+        if ($user === null) {
+            return null;
+        }
+
+        if (!$user->getActive()) {
+            return null;
+        }
+        return $user;
+    }
+
 
     public function logoutUser()
     {
