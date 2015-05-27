@@ -3,7 +3,6 @@
 use Pantono\Acl\Exception\Acl\RoleNotFound;
 use Pantono\Core\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 class Permissions extends Controller
 {
