@@ -8,6 +8,9 @@ class Cell
     private $renderedContent;
     private $currency= false;
 
+    /**
+     * @param $data
+     */
     public function __construct($data)
     {
         $this->setContent($data);
@@ -23,10 +26,12 @@ class Cell
 
     /**
      * @param mixed $attributes
+     * @return $this
      */
     public function setAttributes($attributes)
     {
         $this->attributes = $attributes;
+        return $this;
     }
 
     /**
@@ -39,10 +44,12 @@ class Cell
 
     /**
      * @param mixed $content
+     * @return $this
      */
     public function setContent($content)
     {
         $this->content = $content;
+        return $this;
     }
 
     /**
@@ -55,10 +62,12 @@ class Cell
 
     /**
      * @param mixed $formatter
+     * @return $this
      */
     public function setFormatter($formatter)
     {
         $this->formatter = $formatter;
+        return $this;
     }
 
     /**
@@ -78,10 +87,12 @@ class Cell
 
     /**
      * @param mixed $renderedContent
+     * @return $this
      */
     public function setRenderedContent($renderedContent)
     {
         $this->renderedContent = $renderedContent;
+        return $this;
     }
 
     /**
@@ -94,9 +105,11 @@ class Cell
 
     /**
      * @param boolean $currency
+     * @return $this;
      */
     public function setCurrency($currency)
     {
         $this->currency = $currency;
+        return $this;
     }
 }

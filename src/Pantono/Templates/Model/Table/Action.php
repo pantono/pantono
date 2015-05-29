@@ -16,10 +16,12 @@ class Action
 
     /**
      * @param mixed $url
+     * @return $this
      */
     public function setUrl($url)
     {
         $this->url = $url;
+        return $this;
     }
 
     /**
@@ -28,6 +30,16 @@ class Action
     public function getClasses()
     {
         return $this->classes;
+    }
+
+    /**
+     * @param mixed $classes
+     * @return $this
+     */
+    public function setClasses($classes)
+    {
+        $this->classes = $classes;
+        return $this;
     }
 
     /**
@@ -40,23 +52,17 @@ class Action
 
     /**
      * @param mixed $attributes
+     * @return $this
      */
     public function setAttributes($attributes)
     {
         $this->attributes = $attributes;
+        return $this;
     }
 
     public function addAttribute($name, $value)
     {
         $this->attributes[$name] = $value;
-    }
-
-    /**
-     * @param mixed $classes
-     */
-    public function setClasses($classes)
-    {
-        $this->classes = $classes;
     }
 
     public function __toString()

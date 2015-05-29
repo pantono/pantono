@@ -32,20 +32,15 @@ class Product extends Controller
         $table = new Table();
         $table->setHeaders(['Title', 'Product Code', 'Price', 'Categories']);
         foreach ($products as $product) {
-            $pricingCell = new Cell($product->getDraft()->getPriceMinMax());
-            $pricingCell->setCurrency(true);
-            $categoriesCell = new Cell($product->getDraft()->getCategoryString());
             $row = new Row();
             $row->addCell(new Cell($product->getDraft()->getTitle()));
             $row->addCell(new Cell($product->getDraft()->getSku()));
-            $row->addCell($pricingCell);
-            $row->addCell($categoriesCell);
-            $editAction = new Action();
-            $editAction->setClasses('btn btn-default fa fa-edit');
-            $editAction->setUrl('/admin/products/edit/' . $product->getId());
+            $row->addCell((new Cell($product->getDraft()->getPriceMinMax()))->setCurrency(true));
+            $row->addCell(new Cell($product->getDraft()->getCategoryString()));
+            $editAction = (new Action())->setClasses('btn btn-default fa fa-edit')->setUrl('/admin/products/edit/' . $product->getId());
             $row->addAction($editAction);
-            $deleteAction = new Action();
-            $deleteAction->setUrl('/admin/products/delete/' . $product->getId());
+            $deleteAction = (new Action())->setUrl('/admin/products/delete/' . $product->getId());
+            $row->addAction($deleteAction);
             $table->addRow($row);
         }
         return $table;
