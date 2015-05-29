@@ -72,12 +72,10 @@ class Routes implements EventSubscriberInterface
                 $app[$controllerId]->setController($route['controller']);
                 $app[$controllerId]->setAction($route['action']);
                 $app[$controllerId]->setRequest($request);
-                if (!$routeModel->isSkipAcl()) {
-                    $currentUserId = $app['session']->get('admin_user_id');
-                    if ($currentUserId === null) {
-                        return new RedirectResponse('/admin/login');
-                    }
-                    $app[$controllerId]->checkAcl();
+                $app[$controllerId]->setRouteModel($routeModel);
+                $aclCheck = $app[$controllerId]->checkAcl();
+                if ($aclCheck !== true) {
+                    return $aclCheck;
                 }
                 $request->attributes->add(['pantono_route' => $routeModel]);
                 if ($route['admin']) {

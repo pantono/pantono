@@ -8,6 +8,7 @@ use Pantono\Core\Event\Dispatcher;
 use Pantono\Core\Event\Events\Template;
 use Pantono\Database\Model\EntityMapping;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 abstract class Controller
 {
@@ -16,6 +17,7 @@ abstract class Controller
     protected $controller;
     protected $action;
     protected $eventDispatcher;
+    protected $routeModel;
 
     public function __construct(Application $app, Dispatcher $dispatcher)
     {
@@ -25,6 +27,13 @@ abstract class Controller
 
     public function checkAcl()
     {
+        if ($this->getRouteModel()->isSkipAcl()) {
+            return true;
+        }
+        $currentUserId = $this->application['session']->get('admin_user_id');
+        if ($currentUserId === null) {
+            return new RedirectResponse('/admin/login');
+        }
         if (!$this->getApplication()->getPantonoService('Acl')->isAllowed($this->controller, $this->action)) {
             throw new Forbidden('You are not authorised to view this resource');
         }
@@ -176,4 +185,19 @@ abstract class Controller
         return $this->getApplication()->getForm($name);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRouteModel()
+    {
+        return $this->routeModel;
+    }
+
+    /**
+     * @param mixed $routeModel
+     */
+    public function setRouteModel($routeModel)
+    {
+        $this->routeModel = $routeModel;
+    }
 }
