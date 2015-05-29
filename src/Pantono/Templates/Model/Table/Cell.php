@@ -6,6 +6,7 @@ class Cell
     private $content;
     private $formatter;
     private $renderedContent;
+    private $currency= false;
 
     public function __construct($data)
     {
@@ -81,5 +82,21 @@ class Cell
     public function setRenderedContent($renderedContent)
     {
         $this->renderedContent = $renderedContent;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param boolean $currency
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
     }
 }

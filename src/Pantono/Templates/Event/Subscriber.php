@@ -46,7 +46,7 @@ class Subscriber implements EventSubscriberInterface
         ));
         $moduleTemplates = $app->getConfig()->getItem('templates', null, []);
         foreach ($moduleTemplates as $path) {
-            $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem(APPLICATION_BASE.'/'.$path));
+            $app['twig.loader']->addLoader(new \Twig_Loader_Filesystem(APPLICATION_BASE . '/' . $path));
         }
     }
 
@@ -107,8 +107,12 @@ class Subscriber implements EventSubscriberInterface
 
     private function registerTwigGlobals(Application $app)
     {
-        $app['twig']->addGlobal('long_date_format', $app->getConfig()->getItem('settings', 'long_date_format'));
-        $app['twig']->addGlobal('short_date_format', $app->getConfig()->getItem('settings', 'short_date_format'));
+        $dateFormat = $app->getConfig()->getItem('locale', 'dateFormats', []);
+        $app['twig']->addGlobal('long_date_format', $dateFormat['long']);
+        $app['twig']->addGlobal('short_date_format', $dateFormat['short']);
         $app['twig']->addGlobal('pantono_config', $app->getConfig());
+        $numberFormat = $app->getConfig()->getItem('local', 'numberFormat', ['2', '.', ',']);
+        $app['twig']->getExtension('core')->setNumberFormat($numberFormat[0], $numberFormat[1], $numberFormat[2]);
+        $app['twig']->getExtension('core')->setDateFormat($dateFormat['short'], $dateFormat['interval']);
     }
 }

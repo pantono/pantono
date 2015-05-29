@@ -34,12 +34,13 @@ class Product extends Controller
         $table->setHeaders(['Title', 'Product Code', 'Price', 'Categories']);
         foreach ($products as $product) {
             $pricingCell = new Cell($product->getDraft()->getPriceMinMax());
-            $pricingCell->setFormatter(function ($pricing) {
+            $pricingCell->setCurrency(true);
+            /*$pricingCell->setFormatter(function ($pricing) {
                 if ($pricing['min'] == $pricing['max']) {
                     return $pricing['min'];
                 }
-                return $pricing['min'] . ' - ' . $pricing['max'];
-            });
+                return $this->getCurrencySymbol().$pricing['min'] . ' - ' . $this->getCurrencySymbol().$pricing['max'];
+            });*/
             $categoriesCell = new Cell($product->getDraft()->getCategoryString());
             $row = new Row();
             $row->addCell(new Cell($product->getDraft()->getTitle()));

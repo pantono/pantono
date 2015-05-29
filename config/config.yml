@@ -4,13 +4,7 @@ database:
     password: pantono
     host: localhost
     driver: pdo_mysql
-settings:
-  long_date_format: d/m/Y H:i:s
-  short_date_format: d/m/Y
 debug: true
-locales:
-    en: locales/en.yml
-    es: locales/es.yml
 admin:
   session_timeout: 1800
 filesystems:
@@ -42,3 +36,20 @@ modules:
   - Pantono\Templates
   - Pantono\Suppliers
   - Pantono\Admin
+  - Pantono\Locale
+locale:
+  locales:
+    en: locales/en.yml
+    es: locales/es.yml
+  currencies:
+    - GBP
+    - USD
+  numberFormat:
+    - 2
+    - "."
+    - ","
+  timezone: Europe/London
+  dateFormat:
+    short: d/m/Y
+    long: d/m/Y H:i:s
+    interval: '%d days'

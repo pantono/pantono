@@ -8,6 +8,7 @@ use Pantono\Categories\Entity\Category;
 use Pantono\Core\Block\BlockInterface;
 use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Events\Block;
+use Pantono\Core\Event\Events\Currency as CurrencyEvent;
 use Pantono\Core\Event\Events\Form;
 use Pantono\Core\Event\Events\FormField;
 use Pantono\Core\Event\Events\General;
@@ -20,6 +21,7 @@ use Pantono\Core\Event\Events\Asset as AssetEvent;
 use Pantono\Core\Event\Events\AdminUser as AdminUserEvent;
 use Pantono\Templates\Model\Table\Table;
 use \Pantono\Core\Event\Events\Table as TableEvent;
+use \Pantono\Locale\Entity\Currency;
 
 class Dispatcher
 {
@@ -109,4 +111,10 @@ class Dispatcher
         $this->application['dispatcher']->dispatch($event, $tableEvent);
     }
 
+    public function dispatchCurrencyEvent($event, Currency $currency)
+    {
+        $currencyEvent = new CurrencyEvent($this->application);
+        $currencyEvent->setCurrency($currency);
+        $this->application['dispatcher']->dispatch($event, $currencyEvent);
+    }
 }

@@ -66,6 +66,11 @@ abstract class Controller
     }
 
 
+    protected function getCurrencySymbol()
+    {
+        return $this->getService('Currency')->getCurrentCurrency()->getSymbol();
+    }
+
     protected function translate($string, $options = [])
     {
         return $this->application->getTranslator()->trans($string, $options);

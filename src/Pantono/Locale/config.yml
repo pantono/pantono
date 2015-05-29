@@ -1,0 +1,17 @@
+event_subscribers:
+    - 'Pantono\Locale\Event\Subscriber'
+    - 'Pantono\Locale\Event\CurrencyHelper'
+services:
+  Currency:
+    class: Pantono\Locale\Currency
+    arguments:
+      - ['Repository', 'Pantono\Locale\Entity\Currency']
+      - @PantonoEventDispatcher
+      - @session
+  CurrencyHelper:
+    class: Pantono\Locale\Helper\CurrencyHelper
+    arguments:
+      - @Currency
+      - @twig
+templates:
+  - src/Pantono/Locale/Templates

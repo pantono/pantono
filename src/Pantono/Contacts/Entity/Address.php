@@ -41,7 +41,7 @@ class Address
      */
     protected $postcode;
     /**
-     * @ORM\ManyToOne(targetEntity="Country")
+     * @ORM\ManyToOne(targetEntity="Pantono\Locale\Entity\Country")
      */
     protected $country;
 

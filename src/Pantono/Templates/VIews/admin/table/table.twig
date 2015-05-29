@@ -13,7 +13,7 @@
 {% for row in table.getRows %}
     <tr>
         {% for column in row.getCells %}
-        <td>{{ column.getRenderedContent }}</td>
+        <td>{% if column.isCurrency %}{{ currency(column.getRenderedContent) }}{% else %}{{ column.getRenderedContent }}{% endif %}</td>
         {% endfor %}
         {% if row.hasActions %}
             <td>{{ row.getActionString|raw }}</td>

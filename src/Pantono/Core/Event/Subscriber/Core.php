@@ -49,7 +49,7 @@ class Core implements EventSubscriberInterface
 
         $app['translator'] = $app->share($app->extend('translator', function(Translator $translator, Application $app) {
             $translator->addLoader('yaml', new YamlFileLoader());
-            $locales = $app->getConfig()->getItem('locales');
+            $locales = $app->getConfig()->getItem('locale', 'locales', []);
             if (empty($locales)) {
                 $translator->addResource('yaml', APPLICATION_BASE . '/locales/en.yml', 'en');
                 return $translator;
