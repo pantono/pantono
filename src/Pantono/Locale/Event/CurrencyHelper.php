@@ -18,7 +18,7 @@ class CurrencyHelper implements EventSubscriberInterface
     {
         $app = $event->getApplication();
         $app['twig']->addFunction(new \Twig_SimpleFunction('currency', function ($to, $from = false) use ($app) {
-            if ($from == false) {
+            if ($from === false) {
                 return $app->getPantonoService('CurrencyHelper')->renderCurrency($to);
             }
             return $app->getPantonoService('CurrencyHelper')->renderCurrencyToFrom($to, $from);

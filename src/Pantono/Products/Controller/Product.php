@@ -28,7 +28,6 @@ class Product extends Controller
 
     private function getProductListingTable(ProductListingFilter $filter)
     {
-
         $products = $this->getProductClass()->getProductList($filter);
         $table = new Table();
         $table->setHeaders(['Title', 'Product Code', 'Price', 'Categories']);

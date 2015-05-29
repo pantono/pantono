@@ -30,6 +30,11 @@ class Currency
     {
         if (!$this->currentCurrency) {
             $currencies = $this->getActiveCurrencies();
+            $sessionCurrency = $this->session->get('currency');
+            if ($sessionCurrency) {
+                $this->currentCurrency = $sessionCurrency;
+                return $this->currentCurrency;
+            }
             if (empty($currencies)) {
                 throw new NoCurrenciesAvailable('No Currency available, Add a currency in main config file');
             }
@@ -50,6 +55,7 @@ class Currency
             throw new CurrencyNotFound('Currency ' . $code . ' is not in active currency list, add by using Currency::addaddActiveCurrency($code)');
         }
         $this->currentCurrency = $found;
+        $this->session->set('currency', $this->currentCurrency);
         return $this->currentCurrency;
     }
 
