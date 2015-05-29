@@ -35,12 +35,6 @@ class Product extends Controller
         foreach ($products as $product) {
             $pricingCell = new Cell($product->getDraft()->getPriceMinMax());
             $pricingCell->setCurrency(true);
-            /*$pricingCell->setFormatter(function ($pricing) {
-                if ($pricing['min'] == $pricing['max']) {
-                    return $pricing['min'];
-                }
-                return $this->getCurrencySymbol().$pricing['min'] . ' - ' . $this->getCurrencySymbol().$pricing['max'];
-            });*/
             $categoriesCell = new Cell($product->getDraft()->getCategoryString());
             $row = new Row();
             $row->addCell(new Cell($product->getDraft()->getTitle()));
