@@ -88,22 +88,26 @@ abstract class Controller
 
     protected function getFormErrors(FormInterface $form)
     {
-        $errors = array();
-
+        $errors = [];
         foreach ($form->getErrors() as $key => $error) {
             if ($form->isRoot()) {
                 $errors['#'][] = $error->getMessage();
-            } else {
-                $errors[] = $error->getMessage();
+                continue;
             }
+            $errors[] = $error->getMessage();
         }
+        $errors = array_merge($errors, $this->getFormErrorsFromFields($form));
+        return $errors;
+    }
 
+    public function getFormErrorsFromFields(FormInterface $form)
+    {
+        $errors = [];
         foreach ($form->all() as $child) {
             if (!$child->isValid()) {
                 $errors[$child->getName()] = $this->getFormErrors($child);
             }
         }
-
         return $errors;
     }
 
