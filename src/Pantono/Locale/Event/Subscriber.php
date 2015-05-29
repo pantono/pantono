@@ -18,7 +18,7 @@ class Subscriber implements EventSubscriberInterface
     public function onAppStart(General $event)
     {
         $app = $event->getApplication();
-        $currencies = $app->getConfig()->getItem('locale', 'currencies', null, []);
+        $currencies = $app->getConfig()->getItem('locale', 'currencies', []);
         $currencyClass = $app->getPantonoService('Currency');
         foreach ($currencies as $currency) {
             $currencyClass->addActiveCurrency($currency);
