@@ -2,9 +2,9 @@
 
 class PrivilegeRegistry
 {
-    private $resources;
-    private $privileges;
-    private $roles;
+    private $resources = [];
+    private $privileges = [];
+    private $roles = [];
 
     public function addResource($resource)
     {

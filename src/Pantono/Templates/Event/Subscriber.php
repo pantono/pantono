@@ -107,7 +107,7 @@ class Subscriber implements EventSubscriberInterface
 
     private function registerTwigGlobals(Application $app)
     {
-        $dateFormat = $app->getConfig()->getItem('locale', 'dateFormats', []);
+        $dateFormat = $app->getConfig()->getItem('locale', 'dateFormat', []);
         $app['twig']->addGlobal('long_date_format', $dateFormat['long']);
         $app['twig']->addGlobal('short_date_format', $dateFormat['short']);
         $app['twig']->addGlobal('pantono_config', $app->getConfig());

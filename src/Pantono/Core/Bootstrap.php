@@ -71,7 +71,7 @@ class Bootstrap
             $this->application['locale'] = 'en';
             return;
         }
-        $locale = locale_accept_from_http($this->serverVariables['HTTP_ACCEPT_LANGUAGE']);
+        $locale = \locale_accept_from_http($this->serverVariables['HTTP_ACCEPT_LANGUAGE']);
         if (false !== strpos($locale, '_')) {
             $localeArray = explode('_', $locale);
             $locale = $localeArray[0];

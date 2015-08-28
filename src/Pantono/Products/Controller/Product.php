@@ -18,12 +18,12 @@ class Product extends Controller
 
     public function addAction()
     {
-        return $this->renderTemplate('admin/products/add');
+        return $this->renderTemplate('admin/products/add.twig');
     }
 
     public function editAction()
     {
-        return $this->renderTemplate('admin/products/edit');
+        return $this->renderTemplate('admin/products/edit.twig');
     }
 
     private function getProductListingTable(ProductListingFilter $filter)

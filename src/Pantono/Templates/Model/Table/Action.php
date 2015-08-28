@@ -4,7 +4,7 @@ class Action
 {
     private $url;
     private $classes;
-    private $attributes;
+    private $attributes = [];
 
     /**
      * @return mixed

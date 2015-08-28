@@ -39,6 +39,9 @@ class Locator
 
     public function registerService($name, $class, $params)
     {
+        if (!is_array($params)) {
+            $params = [];
+        }
         $this->services[$name] = [
             'class' => $class,
             'params' => $params
