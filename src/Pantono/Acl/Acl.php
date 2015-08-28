@@ -75,6 +75,9 @@ class Acl
     public function isAllowed($resource, $action, $arguments = [], $userId = null)
     {
         $user = $this->getUserFromId($userId);
+        if (!$user) {
+            return false;
+        }
         if ($user->getSuperAdmin()) {
             return true;
         }
