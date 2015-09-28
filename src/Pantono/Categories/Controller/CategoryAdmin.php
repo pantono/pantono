@@ -7,9 +7,25 @@ use Pantono\Core\Controller\Controller;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Controller class for category related management
+ *
+ * Class Category
+ *
+ * @package Pantono\Categories\Controller
+ * @author  Chris Burton <csburton@gmail.com>
+ */
 class Category extends Controller
 {
+    /**
+     *
+     *
+     * @param Request $request Request object
+     *
+     * @return string|Response
+     */
     public function listAction(Request $request)
     {
         $id = $request->get('id', null);
