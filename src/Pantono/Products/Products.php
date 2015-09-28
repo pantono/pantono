@@ -44,6 +44,15 @@ class Products
         return $products;
     }
 
+    public function getStatusList()
+    {
+        return [
+            0 => 'Enabled',
+            1 => 'Disabled'
+        ];
+    }
+
+
     /**
      * @return Manager
      */

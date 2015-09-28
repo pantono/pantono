@@ -2,11 +2,23 @@
 
 use Pantono\Categories\Model\Filter\CategoryListFilter;
 use Pantono\Database\Repository\AbstractRepository;
+use Pantono\Categories\Entity\Category;
 
+/**
+ * Repository class for managing categories
+ *
+ * Class CategoryRepository
+ *
+ * @package Pantono\Categories\Entity\Repository
+ * @author  Chris Burton <csburton@gmail.com>
+ */
 class CategoryRepository extends AbstractRepository
 {
     /**
-     * @param CategoryListFilter $filter
+     * Gets list of categories filtered by state of the filter
+     *
+     * @param CategoryListFilter $filter Category list filter
+     *
      * @return \Pantono\Categories\Entity\Category[]
      */
     public function getCategoryList(CategoryListFilter $filter)
@@ -35,16 +47,36 @@ class CategoryRepository extends AbstractRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * Find category entity by its Url Key (Slug)
+     *
+     * @param string $urlKey Slug of category
+     *
+     * @return Category
+     */
     public function getCategoryByUrlKey($urlKey)
     {
         return $this->_em->getRepository('Pantono\Categories\Entity\Category')->findOneBy(['urlKey' => $urlKey]);
     }
 
+    /**
+     * Returns a doctrine reference to the provided category id
+     *
+     * @param int $id Category ID
+     *
+     * @return Category
+     * @throws \Doctrine\ORM\ORMException
+     */
     public function getCategoryReference($id)
     {
         return $this->_em->getReference('Pantono\Categories\Entity\Category', $id);
     }
 
+    /**
+     * Persists an entity to the database
+     *
+     * @param \stdClass $entity Entity to save
+     */
     public function save($entity)
     {
         $this->_em->persist($entity);

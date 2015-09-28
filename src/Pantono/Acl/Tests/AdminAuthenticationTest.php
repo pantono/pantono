@@ -2,6 +2,7 @@
 
 use Pantono\Acl\Entity\AdminUser;
 use Pantono\Contacts\Entity\Contact;
+use Pantono\Acl\AdminAuthentication as AdminAuthenticationClass;
 
 class AdminAuthentication extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +21,12 @@ class AdminAuthentication extends \PHPUnit_Framework_TestCase
         $this->session = $this->getPantonoMock('Symfony\Component\HttpFoundation\Session\Session');
         $this->config = $this->getPantonoMock('Pantono\Core\Model\Config\Config');
         $this->eventDispatcher = $this->getPantonoMock('Pantono\Core\Event\Dispatcher');
-        $this->adminAuthentication = new \Pantono\Acl\AdminAuthentication($this->authRepository, $this->session, $this->config, $this->eventDispatcher);
+        $this->adminAuthentication = new AdminAuthenticationClass(
+            $this->authRepository,
+            $this->session,
+            $this->config,
+            $this->eventDispatcher
+        );
     }
 
     public function testGetCurrentUserWhenExists()

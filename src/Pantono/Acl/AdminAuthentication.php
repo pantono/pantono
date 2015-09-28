@@ -9,6 +9,14 @@ use Pantono\Core\Model\Config\Config;
 use Symfony\Component\HttpFoundation\Session\Session;
 use \Pantono\Core\Event\Events\AdminUser as AdminUserEvent;
 
+/**
+ * Provides functionality related to Administrator authentication
+ *
+ * Class AdminAuthentication
+ *
+ * @package Pantono\Acl
+ * @author  Chris Buton <csburton@gmail.com>
+ */
 class AdminAuthentication
 {
     private $repository;
@@ -16,6 +24,12 @@ class AdminAuthentication
     private $config;
     private $dispatcher;
 
+    /**
+     * @param AclRepository $repository ACL Repository
+     * @param Session       $session    Session Class
+     * @param Config        $config     Config model
+     * @param Dispatcher    $dispatcher Dispatcher class
+     */
     public function __construct(AclRepository $repository, Session $session, Config $config, Dispatcher $dispatcher)
     {
         $this->repository = $repository;
@@ -25,7 +39,9 @@ class AdminAuthentication
     }
 
     /**
-     * @return null|object
+     * Gets currently logged in user details, null if no-one is logged in
+     *
+     * @return null|AdminUser
      */
     public function getCurrentUser()
     {
@@ -38,7 +54,9 @@ class AdminAuthentication
     }
 
     /**
-     * @return bool|mixed
+     * Check if currently logged in user is authenticated. Returns current user id if logged in
+     *
+     * @return bool|int
      */
     public function isCurrentUserAuthenticated()
     {
@@ -60,11 +78,25 @@ class AdminAuthentication
         return $currentUserId;
     }
 
+    /**
+     * Gets a singleuser record from the database given the ID
+     *
+     * @param int $id User ID
+     *
+     * @return null|AdminUser
+     */
     public function getSingleUser($id)
     {
         return $this->repository->getUserInfo($id);
     }
 
+    /**
+     * Deletes a user given their ID
+     *
+     * @param int $id User ID
+     *
+     * @return bool
+     */
     public function deleteAdminUserById($id)
     {
         $user = $this->getSingleUser($id);
@@ -74,6 +106,13 @@ class AdminAuthentication
         return $this->deleteAdminUser($user);
     }
 
+    /**
+     * Delete an admin user
+     *
+     * @param AdminUser $user User to delete
+     *
+     * @return bool
+     */
     public function deleteAdminUser(AdminUser $user)
     {
         $this->dispatcher->dispatchAdminUserEvent(AdminUserEvent::PRE_DELETE, $user);
@@ -83,8 +122,11 @@ class AdminAuthentication
     }
 
     /**
-     * @param $username
-     * @param $password
+     * Performs authentication on a given username and password pair
+     *
+     * @param string $username Username to check
+     * @param string $password Password to check
+     *
      * @return bool|AdminUser
      */
     public function authenticateAdminUser($username, $password)
@@ -110,7 +152,10 @@ class AdminAuthentication
 
 
     /**
-     * @param $username
+     * Get an active admin user by specified username
+     *
+     * @param string $username Username to check
+     *
      * @return null|AdminUser
      */
     public function getActiveAdminUserByUsername($username)
@@ -127,6 +172,11 @@ class AdminAuthentication
     }
 
 
+    /**
+     * Perform logout of current user
+     *
+     * @return bool
+     */
     public function logoutUser()
     {
         $this->session->set('admin_user_id', null);
@@ -135,9 +185,12 @@ class AdminAuthentication
     }
 
     /**
-     * @param $userName
-     * @param $password
-     * @param $realName
+     * Adds a new admin user
+     *
+     * @param string $userName Username
+     * @param string $password Password (plain text)
+     * @param string $realName Real name of user
+     *
      * @return AdminUser
      */
     public function addAdminUser($userName, $password, $realName)
@@ -156,8 +209,10 @@ class AdminAuthentication
     }
 
     /**
-     * @param AdminUser $user
-     * @param $password
+     * Changes a password for the given user
+     *
+     * @param AdminUser $user     User object
+     * @param string    $password New password (plain text)
      */
     public function changeUserPassword(AdminUser $user, $password)
     {
@@ -168,18 +223,24 @@ class AdminAuthentication
     }
 
     /**
-     * @param $email
+     * Checks if a username is already registered
+     *
+     * @param string $username Username to check
+     *
      * @return bool
      */
-    public function userExists($email)
+    public function userExists($username)
     {
-        $user = $this->repository->getUserByUsername($email);
+        $user = $this->repository->getUserByUsername($username);
         return ($user) ? true : false;
     }
 
     /**
-     * @param $email
-     * @return \Pantono\Acl\Entity\AdminUser|null
+     * Find a user by their e-mail (usernames are e-mail addresses)
+     *
+     * @param string $email Email/Username to check
+     *
+     * @return AdminUser|null
      */
     public function findSingleUserByEmail($email)
     {
@@ -187,11 +248,25 @@ class AdminAuthentication
         return $user;
     }
 
+    /**
+     * Returns a list of admin users
+     *
+     * @param AdminUserList $filter Filter model
+     *
+     * @return array
+     */
     public function getAdminUserList(AdminUserList $filter)
     {
         return $this->repository->getAdminUserList($filter);
     }
 
+    /**
+     * Saves an admin user and fires event handlers around user saving
+     *
+     * @param AdminUser $user User to save
+     *
+     * @return bool
+     */
     public function saveAdminUser(AdminUser $user)
     {
         $this->dispatcher->dispatchAdminUserEvent(AdminUserEvent::PRE_SAVE, $user);

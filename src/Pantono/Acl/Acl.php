@@ -4,23 +4,58 @@ use Pantono\Acl\Entity\AdminPrivilege;
 use Pantono\Acl\Entity\AdminRole;
 use Pantono\Acl\Entity\AdminUser;
 use Pantono\Acl\Entity\Repository\AclRepository;
+use Pantono\Acl\Exception\Acl\RoleAddError;
 use Pantono\Acl\Exception\Acl\RoleNotFound;
 use Pantono\Acl\Model\Voter;
 use Pantono\Acl\Voter\VoterInterface;
 use Pantono\Core\Bootstrap;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+/**
+ * Provides methods for ACL related functionality
+ *
+ * Class Acl
+ *
+ * @package Pantono\Acl
+ * @author  Chris Burton <csburton@gmail.com>
+ */
 class Acl
 {
+    /**
+     * @var AclRepository
+     */
     private $repository;
-    private $voters;
+    /**
+     * @var array
+     */
+    private $voters = [];
+    /**
+     * @var Session
+     */
     private $session;
+    /**
+     * @var PrivilegeRegistry
+     */
     private $privilegeRegistry;
+    /**
+     * @var Bootstrap
+     */
     private $bootstrap;
+
     const ANONYMOUS_USER_ROLE = 1;
 
-    public function __construct(AclRepository $repository, Session $session, PrivilegeRegistry $privilegeRegistry, Bootstrap $bootstrap)
-    {
+    /**
+     * @param AclRepository     $repository
+     * @param Session           $session
+     * @param PrivilegeRegistry $privilegeRegistry
+     * @param Bootstrap         $bootstrap
+     */
+    public function __construct(
+        AclRepository $repository,
+        Session $session,
+        PrivilegeRegistry $privilegeRegistry,
+        Bootstrap $bootstrap
+    ) {
         $this->repository = $repository;
         $this->session = $session;
         $this->privilegeRegistry = $privilegeRegistry;
@@ -49,7 +84,11 @@ class Acl
             $this->privilegeRegistry->addRole($role->getName(), $parent);
         }
         foreach ($privileges as $privilege) {
-            $this->privilegeRegistry->addPrivilege($privilege->getResource(), $privilege->getPrivilege(), $privilege->getRoleArray());
+            $this->privilegeRegistry->addPrivilege(
+                $privilege->getResource(),
+                $privilege->getPrivilege(),
+                $privilege->getRoleArray()
+            );
         }
     }
 
@@ -66,15 +105,20 @@ class Acl
 
     /**
      * Returns whether or not the specified resource/action is
-     * @param $resource
-     * @param $action
-     * @param array $arguments
-     * @param null $userId
+     *
+     * @param string   $resource  Resource to check
+     * @param string   $action    Action to check
+     * @param array    $arguments array of arguments to pass into check
+     * @param null|int $userId    User id to check, will default to currently logged in user if not supplied
+     *
      * @return bool
      */
     public function isAllowed($resource, $action, $arguments = [], $userId = null)
     {
         $user = $this->getUserFromId($userId);
+        if (!$user) {
+            return false;
+        }
         if ($user->getSuperAdmin()) {
             return true;
         }
@@ -86,11 +130,25 @@ class Acl
         return $this->isAllowedVoters($resource, $action, $arguments, $user);
     }
 
+    /**
+     * Checks if a role is allowed to access the specific resource/action pair
+     *
+     * @param string $resource
+     * @param string $action
+     * @param string $roleName
+     *
+     * @return bool
+     */
     public function isRoleAllowed($resource, $action, $roleName)
     {
         return $this->privilegeRegistry->isRoleAllowed($roleName, $resource, $action);
     }
 
+    /**
+     * Gets an array of defined permissions
+     *
+     * @return array
+     */
     public function getDefinedPermissions()
     {
         $modules = $this->bootstrap->getModules();
@@ -103,7 +161,10 @@ class Acl
     }
 
     /**
-     * @param array $resources
+     * Update all privileges given the input array
+     *
+     * @param array $resources Array of resources to insert
+     *
      * @return bool
      */
     public function updatePrivileges(array $resources)
@@ -123,6 +184,15 @@ class Acl
         return true;
     }
 
+    /**
+     * Deletes a role from the database
+     *
+     * @param int $id Role ID to delete
+     *
+     * @return bool
+     *
+     * @throws RoleNotFound
+     */
     public function deleteRole($id)
     {
         $role = $this->repository->getSingleRole($id);
@@ -134,15 +204,23 @@ class Acl
         return true;
     }
 
+    /**
+     * Adds a new role
+     *
+     * @param string $roleName Name of the role to add
+     *
+     * @return AdminRole
+     * @throws RoleAddError
+     */
     public function addRole($roleName)
     {
         if (!$roleName) {
-            throw new \Exception('Role name is required');
+            throw new RoleAddError('Role name is required');
         }
 
         $exists = $this->repository->findRoleByName($roleName);
         if ($exists !== null) {
-            throw new \Exception('Role name must be unique');
+            throw new RoleAddError('Role name must be unique');
         }
 
         $role = new AdminRole();
@@ -152,6 +230,11 @@ class Acl
         return $role;
     }
 
+    /**
+     * Gets list of roles currently in the database
+     *
+     * @return array
+     */
     public function getRoleList()
     {
         $roles = [];
@@ -165,10 +248,11 @@ class Acl
     /**
      * Checks all voters registered to the provided resource/action
      *
-     * @param $resource
-     * @param $action
-     * @param $arguments
-     * @param AdminUser $user
+     * @param string    $resource  Resource name to check
+     * @param string    $action    Action name to check
+     * @param array     $arguments Arguments to pass into check
+     * @param AdminUser $user      User to check
+     *
      * @return bool
      */
     private function isAllowedVoters($resource, $action, $arguments, AdminUser $user)
@@ -187,9 +271,10 @@ class Acl
     /**
      * Checks internal ACL database for access to specified resource/action
      *
-     * @param $resource
-     * @param $action
-     * @param AdminUser $user
+     * @param string    $resource Resource to check
+     * @param string    $action   Action to check
+     * @param AdminUser $user     User to check
+     *
      * @return bool
      */
     private function isAllowedRegistry($resource, $action, AdminUser $user)
@@ -203,6 +288,13 @@ class Acl
         return false;
     }
 
+    /**
+     * Get roles for specified user
+     *
+     * @param AdminUser $user User entity
+     *
+     * @return array|Entity\AdminRole[]
+     */
     private function getRolesForUser(AdminUser $user)
     {
         if ($user->getAnonymous()) {
@@ -218,7 +310,10 @@ class Acl
 
 
     /**
-     * @param null $userId
+     * Returns user object for specified ID, if user is null, currently logged in user will be used
+     *
+     * @param null|int $userId User id to check
+     *
      * @return AdminUser|null
      */
     private function getUserFromId($userId = null)
@@ -238,8 +333,11 @@ class Acl
     }
 
     /**
-     * @param $resource
-     * @param $action
+     * Gets voters for specified action
+     *
+     * @param string $resource Resource Name
+     * @param string $action   Action Name
+     *
      * @return VoterInterface[]
      */
     private function getVotersForAction($resource, $action)

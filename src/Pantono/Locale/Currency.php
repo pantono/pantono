@@ -11,7 +11,7 @@ class Currency
 {
     private $repository;
     private $dispatcher;
-    private $activeCurrencies;
+    private $activeCurrencies = [];
     private $session;
     private $currentCurrency;
 

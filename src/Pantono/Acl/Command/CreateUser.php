@@ -7,6 +7,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
+/**
+ * Symfony command handler for creating an admin user
+ *
+ * Class CreateUser
+ *
+ * @package Pantono\Acl\Command
+ * @author Chris Burton <csburton@gmail.com>
+ */
 class CreateUser extends AbstractCommand
 {
     use UserCommandTraits;

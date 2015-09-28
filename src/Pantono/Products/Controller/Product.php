@@ -1,5 +1,6 @@
 <?php namespace Pantono\Products\Controller;
 
+use Pantono\Categories\Category;
 use Pantono\Core\Controller\Controller;
 use Pantono\Products\Model\Filter\ProductListingFilter;
 use Pantono\Products\Products;
@@ -18,12 +19,15 @@ class Product extends Controller
 
     public function addAction()
     {
-        return $this->renderTemplate('admin/products/add');
+        $formWrapper = $this->getProductForm();
+        $categories = $this->getCategoriesClass()->getCategoryListTree();
+        var_dump($categories);exit;
+        return $this->renderTemplate('admin/products/add.twig', ['form' => $formWrapper->getForm()->createView()]);
     }
 
     public function editAction()
     {
-        return $this->renderTemplate('admin/products/edit');
+        return $this->renderTemplate('admin/products/edit.twig');
     }
 
     private function getProductListingTable(ProductListingFilter $filter)
@@ -47,10 +51,26 @@ class Product extends Controller
     }
 
     /**
+     * @return \Symfony\Component\Form\FormBuilderInterface
+     */
+    private function getProductForm()
+    {
+        return $this->getApplication()->getForm('product');
+    }
+
+    /**
      * @return Products
      */
     private function getProductClass()
     {
         return $this->getService('products');
+    }
+
+    /**
+     * @return Category
+     */
+    private function getCategoriesClass()
+    {
+        return $this->getService('Category');
     }
 }

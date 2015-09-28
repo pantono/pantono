@@ -17,8 +17,12 @@ class Category
     private $assets;
     private $metadata;
 
-    public function __construct(CategoryRepository $repository, Dispatcher $eventDispatcher, Assets $assets, Metadata $metadata)
-    {
+    public function __construct(
+        CategoryRepository $repository,
+        Dispatcher $eventDispatcher,
+        Assets $assets,
+        Metadata $metadata
+    ) {
         $this->repository = $repository;
         $this->dispatcher = $eventDispatcher;
         $this->assets = $assets;

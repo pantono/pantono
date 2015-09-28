@@ -1,4 +1,11 @@
 services:
+  CategoryAdmin:
+    class: Pantono\Categories\CategoryAdmin
+    arguments:
+      - ['Repository', 'Pantono\Categories\Entity\CategoryAdmin']
+      - @dispatcher
+      - @Assets
+      - @Metadata
   Category:
     class: Pantono\Categories\Category
     arguments:

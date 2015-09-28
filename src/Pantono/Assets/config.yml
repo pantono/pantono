@@ -7,3 +7,11 @@ services:
       - @public_files
       - ['Repository', 'Pantono\Assets\Entity\Asset']
       - @dispatcher
+  Css:
+    class: Pantono\Assets\Template\Css
+    arguments:
+      - @config
+  Javascript:
+    class: Pantono\Assets\Template\Javascript
+    arguments:
+      - @config

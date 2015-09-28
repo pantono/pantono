@@ -1,5 +1,13 @@
 <?php namespace Pantono\Acl\Model;
 
+/**
+ * Model to represent an ACL voter
+ *
+ * Class Voter
+ *
+ * @package Pantono\Acl\Model
+ * @author Chris Burton <csburton@gmail.com>
+ */
 class Voter
 {
     private $resource;
@@ -8,7 +16,9 @@ class Voter
     private $voterClass;
 
     /**
-     * @return mixed
+     * Gets resource name
+     *
+     * @return string
      */
     public function getResource()
     {
@@ -16,7 +26,9 @@ class Voter
     }
 
     /**
-     * @param mixed $resource
+     * Sets resource name
+     *
+     * @param string $resource
      */
     public function setResource($resource)
     {
@@ -24,7 +36,9 @@ class Voter
     }
 
     /**
-     * @return mixed
+     * Gets action name
+     *
+     * @return string
      */
     public function getAction()
     {
@@ -32,7 +46,9 @@ class Voter
     }
 
     /**
-     * @param mixed $action
+     * Sets action name
+     *
+     * @param string $action
      */
     public function setAction($action)
     {
@@ -40,7 +56,9 @@ class Voter
     }
 
     /**
-     * @return mixed
+     * Gets voter arguments
+     *
+     * @return array
      */
     public function getArguments()
     {
@@ -48,7 +66,9 @@ class Voter
     }
 
     /**
-     * @param mixed $arguments
+     * Sets voter arguments
+     *
+     * @param array $arguments
      */
     public function setArguments($arguments)
     {
@@ -56,7 +76,9 @@ class Voter
     }
 
     /**
-     * @return mixed
+     * Gets voter class name
+     *
+     * @return string
      */
     public function getVoterClass()
     {
@@ -64,7 +86,9 @@ class Voter
     }
 
     /**
-     * @param mixed $voterClass
+     * Sets voter class name
+     *
+     * @param string $voterClass
      */
     public function setVoterClass($voterClass)
     {

@@ -1,5 +1,13 @@
 <?php namespace Pantono\Acl\Model;
 
+/**
+ * Model used for representing a permission
+ *
+ * Class Permission
+ *
+ * @package Pantono\Acl\Model
+ * @author Chris Burton <csburton@gmail.com>
+ */
 class Permission
 {
     private $name;
@@ -7,8 +15,11 @@ class Permission
     private $resourceName;
     private $action;
     private $module;
+
     /**
-     * @return mixed
+     * Gets permission name
+     *
+     * @return string
      */
     public function getName()
     {
@@ -16,7 +27,9 @@ class Permission
     }
 
     /**
-     * @param mixed $name
+     * Sets permission name
+     *
+     * @param string $name
      */
     public function setName($name)
     {
@@ -24,6 +37,8 @@ class Permission
     }
 
     /**
+     * Sets resource name
+     *
      * @return mixed
      */
     public function getResource()
@@ -32,7 +47,9 @@ class Permission
     }
 
     /**
-     * @param mixed $resource
+     * Gets resource name
+     *
+     * @param string $resource
      */
     public function setResource($resource)
     {
@@ -40,7 +57,9 @@ class Permission
     }
 
     /**
-     * @return mixed
+     * Gets action name
+     *
+     * @return string
      */
     public function getAction()
     {
@@ -48,6 +67,8 @@ class Permission
     }
 
     /**
+     * Sets action name
+     *
      * @param mixed $action
      */
     public function setAction($action)
@@ -56,7 +77,9 @@ class Permission
     }
 
     /**
-     * @return mixed
+     * Gets resource name
+     *
+     * @return string
      */
     public function getResourceName()
     {
@@ -64,7 +87,9 @@ class Permission
     }
 
     /**
-     * @param mixed $resourceName
+     * Sets resource name
+     *
+     * @param string $resourceName
      */
     public function setResourceName($resourceName)
     {
@@ -72,7 +97,9 @@ class Permission
     }
 
     /**
-     * @return mixed
+     * Gets module name
+     *
+     * @return string
      */
     public function getModule()
     {
@@ -80,7 +107,9 @@ class Permission
     }
 
     /**
-     * @param mixed $module
+     * Sets module name
+     *
+     * @param string $module
      */
     public function setModule($module)
     {

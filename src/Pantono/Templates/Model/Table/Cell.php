@@ -105,7 +105,7 @@ class Cell
 
     /**
      * @param boolean $currency
-     * @return $this;
+     * @return $this
      */
     public function setCurrency($currency)
     {

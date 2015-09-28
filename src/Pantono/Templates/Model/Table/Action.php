@@ -4,7 +4,7 @@ class Action
 {
     private $url;
     private $classes;
-    private $attributes;
+    private $attributes = [];
 
     /**
      * @return mixed
@@ -43,7 +43,7 @@ class Action
     }
 
     /**
-     * @return mixed
+     * @return array
      */
     public function getAttributes()
     {
@@ -51,7 +51,8 @@ class Action
     }
 
     /**
-     * @param mixed $attributes
+     * @param array $attributes
+     *
      * @return $this
      */
     public function setAttributes($attributes)

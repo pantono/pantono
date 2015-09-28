@@ -14,7 +14,7 @@ class Subscriber implements EventSubscriberInterface
     {
         return [
             'pantono.application.start' => [
-                ['onBootstrap', 90]
+                ['onBootstrap', 100]
             ]
         ];
     }
@@ -37,6 +37,7 @@ class Subscriber implements EventSubscriberInterface
         $this->registerTwigGlobals($app);
         $this->registerTableHelper($app);
         $app->getServiceLocator()->registerAlias('twig', 'twig');
+        $this->registerTwigAssetHelper($app);
     }
 
     public function registerTemplatePaths($app)
@@ -107,12 +108,36 @@ class Subscriber implements EventSubscriberInterface
 
     private function registerTwigGlobals(Application $app)
     {
-        $dateFormat = $app->getConfig()->getItem('locale', 'dateFormats', []);
+        $dateFormat = $app->getConfig()->getItem('locale', 'dateFormat', []);
         $app['twig']->addGlobal('long_date_format', $dateFormat['long']);
         $app['twig']->addGlobal('short_date_format', $dateFormat['short']);
         $app['twig']->addGlobal('pantono_config', $app->getConfig());
         $numberFormat = $app->getConfig()->getItem('local', 'numberFormat', ['2', '.', ',']);
         $app['twig']->getExtension('core')->setNumberFormat($numberFormat[0], $numberFormat[1], $numberFormat[2]);
         $app['twig']->getExtension('core')->setDateFormat($dateFormat['short'], $dateFormat['interval']);
+    }
+
+
+    private function registerTwigAssetHelper(Application $app)
+    {
+        $app['twig'] = $app->share($app->extend('twig', function (\Twig_Environment $twig, Application $app) {
+            $twig->addFunction(new \Twig_SimpleFunction('css', function ($asset) use ($app) {
+                $app->getPantonoService('Css')->addFile($asset);
+            }));
+
+            $twig->addFunction(new \Twig_SimpleFunction('output_css', function () use ($app) {
+                return $app->getPantonoService('Css')->getCompiled();
+            }, ['is_safe' => ['html']]));
+
+            $twig->addFunction(new \Twig_SimpleFunction('javascript', function ($asset) use ($app) {
+                $app->getPantonoService('Javascript')->addFile($asset);
+            }));
+
+            $twig->addFunction(new \Twig_SimpleFunction('output_javascript', function () use ($app) {
+                return $app->getPantonoService('Javascript')->getCompiled();
+            }, ['is_safe' => ['html']]));
+
+            return $twig;
+        }));
     }
 }

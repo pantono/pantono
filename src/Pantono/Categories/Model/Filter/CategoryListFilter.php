@@ -1,15 +1,40 @@
 <?php namespace Pantono\Categories\Model\Filter;
 
+/**
+ * Model for representing a filter used for managing & viewing categories
+ *
+ * Class CategoryListFilter
+ *
+ * @package Pantono\Categories\Model\Filter
+ * @author  Chris Burton <csburton@gmail.com>
+ */
 class CategoryListFilter
 {
+    /**
+     * @var string Category name search
+     */
     private $search;
-    private $active;
+    /**
+     * @var bool Category active state
+     */
+    private $active = false;
+    /**
+     * @var int Parent Category ID
+     */
     private $parentId;
+    /**
+     * @var int Number of categories to show per page
+     */
     private $perPage = 20;
+    /**
+     * @var int Offset to begin showing records at
+     */
     private $offset = 0;
 
     /**
-     * @return mixed
+     * Set search string
+     *
+     * @return string
      */
     public function getSearch()
     {
@@ -17,7 +42,9 @@ class CategoryListFilter
     }
 
     /**
-     * @param mixed $search
+     * Get search string
+     *
+     * @param string $search
      */
     public function setSearch($search)
     {
@@ -25,7 +52,9 @@ class CategoryListFilter
     }
 
     /**
-     * @return mixed
+     * Sets active state
+     *
+     * @return bool
      */
     public function getActive()
     {
@@ -33,7 +62,9 @@ class CategoryListFilter
     }
 
     /**
-     * @param mixed $active
+     * Gets active state
+     *
+     * @param bool $active
      */
     public function setActive($active)
     {
@@ -41,7 +72,9 @@ class CategoryListFilter
     }
 
     /**
-     * @return mixed
+     * Gets parent category id
+     *
+     * @return int
      */
     public function getParentId()
     {
@@ -49,7 +82,9 @@ class CategoryListFilter
     }
 
     /**
-     * @param mixed $parentId
+     * Sets parent category id
+     *
+     * @param int $parentId
      */
     public function setParentId($parentId)
     {
@@ -57,7 +92,9 @@ class CategoryListFilter
     }
 
     /**
-     * @return mixed
+     * Sets number of results per page
+     *
+     * @return int
      */
     public function getPerPage()
     {
@@ -65,7 +102,9 @@ class CategoryListFilter
     }
 
     /**
-     * @param mixed $perPage
+     * Gets number of results per page
+     *
+     * @param int $perPage
      */
     public function setPerPage($perPage)
     {
@@ -73,6 +112,8 @@ class CategoryListFilter
     }
 
     /**
+     * Gets current offset
+     *
      * @return mixed
      */
     public function getOffset()
@@ -81,6 +122,8 @@ class CategoryListFilter
     }
 
     /**
+     * Sets current offset
+     *
      * @param mixed $offset
      */
     public function setOffset($offset)

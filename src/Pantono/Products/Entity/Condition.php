@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Condition
  *
  * @package Pantono\Products\Entity
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pantono\Products\Entity\Repository\ProductRepository")
  * @ORM\Table(name="product_condition")
  */
 class Condition

@@ -1,21 +1,5 @@
-database:
-    database_name: pantono
-    username: pantono
-    password: pantono
-    host: localhost
-    driver: pdo_mysql
-debug: true
 admin:
   session_timeout: 1800
-filesystems:
-  private:
-    adapter: 'League\Flysystem\Adapter\Local'
-    args:
-      - '../data'
-  assets:
-    adapter: 'League\Flysystem\Adapter\Local'
-    args:
-      - '../data/assets/'
 modules:
   - Pantono\Database
   - Pantono\Acl
