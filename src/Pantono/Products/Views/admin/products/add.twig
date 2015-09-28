@@ -1,0 +1,101 @@
+{% extends 'admin/layout.twig' %}
+{% form_theme form 'form/default-theme.twig' %}
+{% block content %}
+    <div class="row">
+        <div class="page-header">
+            <h1>{{ app.translator.trans('Add Product') }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_widget(form.id) }}
+        <div class="col-md-2">
+            <ul class="nav nav-pills nav-stacked product-nav" role="tablist">
+                <li class="active" role="presentation"><a href="#general">{{ app.translator.trans('General') }}</a></li>
+                <li role="presentation"><a href="#images">{{ app.translator.trans('Images') }}</a></li>
+                <li role="presentation"><a href="#categories">{{ app.translator.trans('Categories') }}</a></li>
+                <li role="presentation"><a href="#related">{{ app.translator.trans('Related Products') }}</a></li>
+                <li role="presentation"><a href="#meta">{{ app.translator.trans('Metadata') }}</a></li>
+            </ul>
+        </div>
+        <div class="col-md-10">
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="general">
+                    <div class="form-row">
+                        {{ form_label(form.title) }}
+                        {{ form_widget(form.title) }}
+                    </div>
+                    <div class="form-row">
+                        {{ form_label(form.description) }}
+                        {{ form_widget(form.description) }}
+                    </div>
+                    <div class="form-row">
+                        {{ form_label(form.short_description) }}
+                        {{ form_widget(form.short_description) }}
+                    </div>
+
+                    <div class="form-row">
+                        {{ form_label(form.manufacturer) }}
+                        {{ form_widget(form.manufacturer) }}
+                    </div>
+
+                    <div class="form-row">
+                        {{ form_label(form.sku) }}
+                        {{ form_widget(form.sku) }}
+                    </div>
+
+                    <div class="form-row">
+                        {{ form_label(form.weight) }}
+                        {{ form_widget(form.weight) }}
+                    </div>
+
+                    <div class="form-row">
+                        {{ form_label(form.status) }}
+                        {{ form_widget(form.status) }}
+                    </div>
+                    <div class="form-row">
+                        {{ form_label(form.brand) }}
+                        {{ form_widget(form.brand) }}
+                    </div>
+                    <div class="form-row">
+                        {{ form_label(form.condition) }}
+                        {{ form_widget(form.condition) }}
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="images">
+                    {{ form_widget(form.images) }}
+                </div>
+                <div role="tabpanel" class="tab-pane" id="categories">
+                    Categories
+                </div>
+                <div role="tabpanel" class="tab-pane" id="related">
+                    Related
+                </div>
+                <div role="tabpanel" class="tab-pane" id="meta">
+                    <div class="form-row">
+                        {{ form_label(form.meta_title) }}
+                        {{ form_widget(form.meta_title) }}
+                    </div>
+                    <div class="form-row">
+                        {{ form_label(form.meta_keywords) }}
+                        {{ form_widget(form.meta_keywords) }}
+                    </div>
+                    <div class="form-row">
+                        {{ form_label(form.meta_description) }}
+                        {{ form_widget(form.meta_description) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script>
+        $('.product-nav a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        })
+    </script>
+{% endblock %}

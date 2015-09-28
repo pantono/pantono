@@ -2,21 +2,38 @@
 
 use Pantono\Acl\AdminAuthentication;
 use Pantono\Core\Command\AbstractCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
+/**
+ * Symfony command handler for changing user passwords
+ *
+ * Class ChangePassword
+ *
+ * @package Pantono\Acl\Command
+ * @author Chris Burton <csburton@gmail.com>
+ */
 class ChangePassword extends AbstractCommand
 {
     use UserCommandTraits;
 
+    /**
+     * Configure the command
+     */
     protected function configure()
     {
         $this->setName('user:change-password')
             ->setDescription('Change admin user password');
     }
 
+    /**
+     * Execute the change password command
+     *
+     * @param InputInterface $input Input Interface
+     * @param OutputInterface $output Output Interface
+     * @return null|void
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $user = $this->askQuestion($input, $output, new Question($this->translate('Please enter the email address for the new user') . ': ', ''), 'error_min_length', ['%length%' => 4]);
@@ -34,6 +51,8 @@ class ChangePassword extends AbstractCommand
     }
 
     /**
+     * Gets the current admin authentication class
+     *
      * @return AdminAuthentication
      */
     private function getAuthenticationClass()

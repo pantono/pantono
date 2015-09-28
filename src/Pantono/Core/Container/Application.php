@@ -2,6 +2,7 @@
 
 namespace Pantono\Core\Container;
 
+use Doctrine\ORM\EntityRepository;
 use Pantono\Core\Block\Loader;
 use Pantono\Core\Bootstrap;
 use Pantono\Core\Event\Dispatcher;
@@ -9,22 +10,41 @@ use Pantono\Core\Event\Manager;
 use Pantono\Core\Model\Config\Config;
 use Doctrine\ORM\EntityManager;
 use Pantono\Core\Service\Locator;
+use Silex\Translator;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+/**
+ * Main Application Container
+ *
+ * @package Pantono\Core\Container
+ * @author  Chris Burton <csburton@gmail.com>
+ */
 class Application extends \Silex\Application
 {
-    private $pantonoServices;
+    /**
+     * @var array
+     */
+    private $pantonoServices = [];
 
+    /**
+     * Gets currently loaded pantono services
+     *
+     * @return array
+     */
     public function getServices()
     {
         return $this->pantonoServices;
     }
 
     /**
-     * @param $module - Module name
-     * @params $entity - Entity Name
-     * @return \Doctrine\ORM\EntityRepository
+     * Returns doctrine repository for the given module/entity pair
+     *
+     * @param string $module Module name
+     * @param string $entity Entity Name
+     *
+     * @return EntityRepository
      */
     public function getRepository($module, $entity)
     {
@@ -33,6 +53,8 @@ class Application extends \Silex\Application
     }
 
     /**
+     * Gets current doctrine entity manager
+     *
      * @return EntityManager
      */
     public function getEntityManager()
@@ -41,7 +63,9 @@ class Application extends \Silex\Application
     }
 
     /**
-     * @return \Symfony\Component\Form\FormFactory
+     * Gets instance of Symfony Form Factory
+     *
+     * @return FormFactory
      */
     public function getFormBuilder()
     {
@@ -49,7 +73,10 @@ class Application extends \Silex\Application
     }
 
     /**
-     * @param $name - Form Name
+     * Gets a form currently registered within the form builder
+     *
+     * @param string $name Form Name
+     *
      * @return Form
      */
     public function getForm($name)
@@ -59,6 +86,8 @@ class Application extends \Silex\Application
 
 
     /**
+     * Gets instance of site config model
+     *
      * @return Config
      */
     public function getConfig()
@@ -67,6 +96,8 @@ class Application extends \Silex\Application
     }
 
     /**
+     * Gets instance of Pantono event manager
+     *
      * @return Manager
      */
     public function getEventManager()
@@ -78,6 +109,8 @@ class Application extends \Silex\Application
     }
 
     /**
+     * Gets Pantono event dispatcher
+     *
      * @return Dispatcher
      */
     public function getEventDispatcher()
@@ -89,7 +122,9 @@ class Application extends \Silex\Application
     }
 
     /**
-     * @return \Silex\Translator
+     * Gets instance of Silex translator
+     *
+     * @return Translator
      */
     public function getTranslator()
     {
@@ -97,6 +132,8 @@ class Application extends \Silex\Application
     }
 
     /**
+     * Gets instance of Pantono block loader
+     *
      * @return Loader
      */
     public function getBlockLoader()
@@ -105,6 +142,8 @@ class Application extends \Silex\Application
     }
 
     /**
+     * Gets instance of symfony session
+     *
      * @return Session
      */
     public function getSession()
@@ -113,6 +152,8 @@ class Application extends \Silex\Application
     }
 
     /**
+     * Gets instance of Pantono bootstrap
+     *
      * @return Bootstrap
      */
     public function getBootstrap()
@@ -120,6 +161,11 @@ class Application extends \Silex\Application
         return $this['bootstrap'];
     }
 
+    /**
+     * Gets instance of pantono service locator
+     *
+     * @return Locator
+     */
     public function getServiceLocator()
     {
         if (!isset($this['pantono.service.locator'])) {
@@ -128,6 +174,15 @@ class Application extends \Silex\Application
         return $this['pantono.service.locator'];
     }
 
+    /**
+     * Returns pantono service
+     *
+     * @param string $name Service Name
+     *
+     * @return \stdClass
+     *
+     * @throws \Pantono\Core\Exception\Service\NotFound
+     */
     public function getPantonoService($name)
     {
         return $this->getServiceLocator()->getService($name);

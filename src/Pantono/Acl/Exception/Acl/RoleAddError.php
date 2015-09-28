@@ -1,7 +1,7 @@
 <?php namespace Pantono\Acl\Exception\Acl;
 
 /**
- * Exception thrown when a specified role is not found
+ * Exception thrown when an error is encountered adding a new role
  *
  * Class RoleNotFound
  *

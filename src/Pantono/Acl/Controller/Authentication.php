@@ -2,6 +2,8 @@
 
 namespace Pantono\Acl\Controller;
 
+use Pantono\Acl\AdminAuthentication;
+use Pantono\Acl\Entity\AdminUser;
 use Pantono\Acl\Model\Filter\AdminUserList;
 use Pantono\Core\Controller\Controller;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -10,9 +12,25 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Controller actions for authentication routes
+ *
+ * Class Authentication
+ *
+ * @package Pantono\Acl\Controller
+ * @author Chris Burton <csburton@gmail.com>
+ */
 class Authentication extends Controller
 {
+    /**
+     * Controller action for admin login
+     *
+     * @param Request $request Request object
+     *
+     * @return string|Response
+     */
     public function adminLoginAction(Request $request)
     {
         /**
@@ -33,6 +51,11 @@ class Authentication extends Controller
         return $this->renderTemplate('admin/login/login.twig', ['form' => $form->createView()]);
     }
 
+    /**
+     * Controller action for viewing admin users
+     *
+     * @return string|Response
+     */
     public function adminUsersAction()
     {
         $filter = $this->getAdminUsersFilter();
@@ -48,6 +71,85 @@ class Authentication extends Controller
         return $this->renderTemplate('admin/users/list.twig', ['list' => $list]);
     }
 
+    /**
+     * Controller action for adding a new admin user
+     *
+     * @return string|Response
+     */
+    public function addAdminUserAction()
+    {
+        $form = $this->getForm('admin_user');
+        $result = $this->handleAdminRequest($form);
+        if ($result !== null) {
+            return $result;
+        }
+        return $this->renderTemplate('admin/users/add.twig', ['form' => $form->getForm()->createView()]);
+    }
+
+    /**
+     * Controller action for editing an admin user
+     *
+     * @return string|Response
+     */
+    public function editAdminUserAction()
+    {
+        $form = $this->getForm('admin_user');
+        $id = $this->getRequest()->get('id');
+        if ($id !== null) {
+            $data = $this->getFlatUserData($id);
+            $data['image'] = null;
+            $form->getForm()->setData($data);
+        }
+        $result = $this->handleAdminRequest($form);
+        if ($result !== null) {
+            return $result;
+        }
+        return $this->renderTemplate('admin/users/add.twig', ['form' => $form->getForm()->createView()]);
+    }
+
+    /**
+     * Controller action for deleting an admin user
+     *
+     * @return string|Response
+     */
+    public function deleteAdminUserAction()
+    {
+        $id = $this->getRequest()->get('id');
+        $user = $this->getAuthenticationModel()->getSingleUser($id);
+        if ($this->getRequest()->getMethod() == 'POST') {
+            $this->getAuthenticationModel()->deleteAdminUser($id);
+        }
+
+        return $this->renderTemplate('admin/users/delete.twig', ['user' => $user]);
+    }
+
+
+    /**
+     * Controller action for admin user login
+     *
+     * @return string|Response
+     */
+    public function loginAction()
+    {
+        return $this->renderTemplate('user/login.twig');
+    }
+
+    /**
+     * Controller action for admin user logout
+     *
+     * @return RedirectResponse
+     */
+    public function adminLogoutAction()
+    {
+        $this->getAuthenticationModel()->logoutUser();
+        return new RedirectResponse('/admin/login');
+    }
+
+    /**
+     * Gets a filtering class to be used for viewing/managing admin users
+     *
+     * @return AdminUserList
+     */
     private function getAdminUsersFilter()
     {
         $filter = new AdminUserList();
@@ -59,16 +161,13 @@ class Authentication extends Controller
         return $filter;
     }
 
-    public function addAdminUserAction()
-    {
-        $form = $this->getForm('admin_user');
-        $result = $this->handleAdminRequest($form);
-        if ($result !== null) {
-            return $result;
-        }
-        return $this->renderTemplate('admin/users/add.twig', ['form' => $form->getForm()->createView()]);
-    }
-
+    /**
+     * Handles the request for adding an admin user
+     *
+     * @param FormBuilderInterface $formWrapper Admin user form
+     *
+     * @return null|JsonResponse|RedirectResponse
+     */
     private function handleAdminRequest(FormBuilderInterface $formWrapper)
     {
         $form = $formWrapper->getForm();
@@ -88,22 +187,13 @@ class Authentication extends Controller
         return null;
     }
 
-    public function editAdminUserAction()
-    {
-        $form = $this->getForm('admin_user');
-        $id = $this->getRequest()->get('id');
-        if ($id !== null) {
-            $data = $this->getFlatUserData($id);
-            $data['image'] = null;
-            $form->getForm()->setData($data);
-        }
-        $result = $this->handleAdminRequest($form);
-        if ($result !== null) {
-            return $result;
-        }
-        return $this->renderTemplate('admin/users/add.twig', ['form' => $form->getForm()->createView()]);
-    }
-
+    /**
+     * Gets an array of user data given a specific ID
+     *
+     * @param int $id User ID
+     *
+     * @return array
+     */
     private function getFlatUserData($id)
     {
         $data = $this->getApplication()->getPantonoService('EntityDehydrator')->dehydrateEntity(
@@ -113,17 +203,14 @@ class Authentication extends Controller
         return $data;
     }
 
-    public function deleteAdminUserAction()
-    {
-        $id = $this->getRequest()->get('id');
-        $user = $this->getAuthenticationModel()->getSingleUser($id);
-        if ($this->getRequest()->getMethod() == 'POST') {
-            $this->getAuthenticationModel()->deleteAdminUser($id);
-        }
-
-        return $this->renderTemplate('admin/users/delete.twig', ['user' => $user]);
-    }
-
+    /**
+     * Performs a login check given a specific user and password
+     *
+     * @param string $username Username to check
+     * @param string $password Password to check
+     *
+     * @return bool|AdminUser
+     */
     private function performLoginCheck($username, $password)
     {
         $user = $this->getAuthenticationModel()->authenticateAdminUser($username, $password);
@@ -135,21 +222,12 @@ class Authentication extends Controller
     }
 
     /**
-     * @return \Pantono\Acl\AdminAuthentication
+     * Returns instance of the AdminAuthentication class
+     *
+     * @return AdminAuthentication
      */
     private function getAuthenticationModel()
     {
         return $this->getApplication()->getPantonoService('AdminAuthentication');
-    }
-
-    public function loginAction()
-    {
-        return $this->renderTemplate('user/login.twig');
-    }
-
-    public function adminLogoutAction()
-    {
-        $this->getAuthenticationModel()->logoutUser();
-        return new RedirectResponse('/admin/login');
     }
 }

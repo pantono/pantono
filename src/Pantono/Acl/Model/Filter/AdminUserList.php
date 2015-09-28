@@ -1,5 +1,13 @@
 <?php namespace Pantono\Acl\Model\Filter;
 
+/**
+ * Model used for filtering admin users
+ *
+ * Class AdminUserList
+ *
+ * @package Pantono\Acl\Model\Filter
+ * @author Chris Burton <csburton@gmail.com>
+ */
 class AdminUserList
 {
     private $email;
@@ -7,7 +15,9 @@ class AdminUserList
     private $active = true;
 
     /**
-     * @return mixed
+     * Gets email address
+     *
+     * @return string
      */
     public function getEmail()
     {
@@ -15,7 +25,9 @@ class AdminUserList
     }
 
     /**
-     * @param mixed $email
+     * Sets email address
+     *
+     * @param string $email
      */
     public function setEmail($email)
     {
@@ -23,15 +35,19 @@ class AdminUserList
     }
 
     /**
-     * @return mixed
+     * Gets current supplier id
+     *
+     * @return integer
      */
     public function getSupplierId()
     {
-        return $this->supplierId;
+        return intval($this->supplierId);
     }
 
     /**
-     * @param mixed $supplierId
+     * Set the current supplier ID
+     *
+     * @param integer $supplierId
      */
     public function setSupplierId($supplierId)
     {
@@ -39,6 +55,8 @@ class AdminUserList
     }
 
     /**
+     * Returns status of active state to search for
+     *
      * @return boolean
      */
     public function isActive()
@@ -47,6 +65,8 @@ class AdminUserList
     }
 
     /**
+     * Sets status of the active state to search for
+     *
      * @param boolean $active
      */
     public function setActive($active)

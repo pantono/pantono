@@ -6,25 +6,68 @@ use Pantono\Acl\Exception\Acl\Forbidden;
 use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Dispatcher;
 use Pantono\Core\Event\Events\Template;
+use Pantono\Core\Model\Route;
 use Pantono\Database\Model\EntityMapping;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * Abstract controller class. All controllers should extend this class
+ *
+ * @package Pantono\Core\Controller
+ * @author  Chris Burton <csburton@gmail.com>
+ */
 abstract class Controller
 {
+    /**
+     * @var Application
+     */
     protected $application;
+
+    /**
+     * @var Request
+     */
     protected $request;
+
+    /**
+     * @var string
+     */
     protected $controller;
+
+    /**
+     * @var string
+     */
     protected $action;
+
+    /**
+     * @var Dispatcher
+     */
     protected $eventDispatcher;
+
+    /**
+     * @var Route
+     */
     protected $routeModel;
 
+    /**
+     * @param Application $app
+     * @param Dispatcher  $dispatcher
+     */
     public function __construct(Application $app, Dispatcher $dispatcher)
     {
         $this->application = $app;
         $this->eventDispatcher = $dispatcher;
     }
 
+    /**
+     * Checks current action against ACL registry
+     *
+     * @return bool|RedirectResponse
+     *
+     * @throws Forbidden
+     */
     public function checkAcl()
     {
         if ($this->getRouteModel()->isSkipAcl()) {
@@ -39,6 +82,12 @@ abstract class Controller
         }
     }
 
+    /**
+     * @param string $resource Resource to check
+     * @param string $action   Action to check
+     *
+     * @return bool
+     */
     protected function isAllowed($resource, $action)
     {
         return $this->getApplication()->getPantonoService('Acl')->isAllowed($resource, $action);
@@ -122,6 +171,7 @@ abstract class Controller
 
     /**
      * @param $name
+     *
      * @return EntityMapping
      */
     protected function getFormMapping($name)
@@ -178,15 +228,16 @@ abstract class Controller
     }
 
     /**
-     * @return \Symfony\Component\Form\FormBuilderInterface
+     * @return FormBuilderInterface
      */
     public function getForm($name)
     {
+
         return $this->getApplication()->getForm($name);
     }
 
     /**
-     * @return mixed
+     * @return Route
      */
     public function getRouteModel()
     {
@@ -194,9 +245,9 @@ abstract class Controller
     }
 
     /**
-     * @param mixed $routeModel
+     * @param Route $routeModel
      */
-    public function setRouteModel($routeModel)
+    public function setRouteModel(Route $routeModel)
     {
         $this->routeModel = $routeModel;
     }

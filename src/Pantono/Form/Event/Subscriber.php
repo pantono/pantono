@@ -1,6 +1,8 @@
 <?php namespace Pantono\Form\Event;
 
+use Pantono\Core\Container\Application;
 use Pantono\Core\Event\Events\General;
+use Pantono\Form\Element\Extensions\ImageUpload;
 use Pantono\Form\Extensions;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -24,5 +26,19 @@ class Subscriber implements EventSubscriberInterface
             return $extensions;
         }));
         $app['form_element_handlers'] = $app->getConfig()->getItem('form_elements', null, []);
+        $this->registerCustomTypes($app);
+    }
+
+    public function registerCustomTypes(Application $app)
+    {
+        $app['form.types'] = $app->share($app->extend('form.types', function ($types) use ($app) {
+            $customTypes = $app->getConfig()->getItem('custom_form_types', null, []);
+            foreach ($customTypes as $type) {
+                if (class_exists($type)) {
+                    $types[] = new $type;
+                }
+            }
+            return $types;
+        }));
     }
 }

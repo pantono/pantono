@@ -1,6 +1,7 @@
 <?php namespace Pantono\Assets\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Class Asset
  *

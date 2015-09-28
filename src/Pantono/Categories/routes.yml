@@ -1,6 +1,6 @@
 list_categories:
     route: '/admin/categories/{id}'
-    controller: 'Pantono\Categories\Controller\Category'
+    controller: 'Pantono\Categories\Controller\CategoryAdmin'
     action: 'listAction'
     admin: true
     defaults:

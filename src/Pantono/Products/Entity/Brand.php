@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Brand
  *
  * @package Pantono\Products\Entity
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pantono\Products\Entity\Repository\ProductRepository")
  * @ORM\Table(name="product_brand")
  */
 class Brand

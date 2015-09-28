@@ -6,10 +6,27 @@ class Select extends Element implements ElementInterface
 {
     use Visible;
     protected $choices = [];
+    protected $multiple = false;
 
     public function getType()
     {
         return 'choice';
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isMultiple()
+    {
+        return $this->multiple;
+    }
+
+    /**
+     * @param boolean $multiple
+     */
+    public function setMultiple($multiple)
+    {
+        $this->multiple = $multiple;
     }
 
     /**
@@ -36,6 +53,9 @@ class Select extends Element implements ElementInterface
         $options = array_merge_recursive($options, $this->getVisibleOptions());
         $options = array_merge_recursive($options, $this->getElementOptions());
         $options['choices'] = $this->getChoices();
+        if ($this->isMultiple()) {
+            $options['multiple'] = true;
+        }
         return $options;
     }
 }

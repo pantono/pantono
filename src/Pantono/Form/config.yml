@@ -9,3 +9,8 @@ form_elements:
     password: Pantono\Form\Element\Password
     select: Pantono\Form\Element\Select
     textarea: Pantono\Form\Element\TextArea
+    image_upload: Pantono\Form\Element\ImageUpload
+custom_form_types:
+    image_upload: Pantono\Form\Element\Extensions\ImageUpload
+templates:
+  - src/Pantono/Form/Views

@@ -21,9 +21,11 @@ class Bootstrap
     }
 
     /**
+     * @param array $serverVariables
+     *
      * @return Application
      */
-    public function boostrap($serverVariables = [])
+    public function bootstrap($serverVariables = [])
     {
         $this->serverVariables = $serverVariables;
         $application = new Application();
@@ -85,9 +87,17 @@ class Bootstrap
         if (empty($this->config)) {
             $this->config = new Config();
             $this->config->addFile($this->configFile);
+            if (file_exists(APPLICATION_BASE . '/config/config_' . $this->getEnv() . '.yml')) {
+                $this->config->addFile(APPLICATION_BASE . '/config/config_' . $this->getEnv() . '.yml');
+            }
             $this->application['config'] = $this->config;
         }
         return $this->config;
+    }
+
+    public function getEnv()
+    {
+        return isset($this->serverVariables['APPLICATION_ENV']) ? $this->serverVariables['APPLICATION_ENV'] : 'dev';
     }
 
     /**

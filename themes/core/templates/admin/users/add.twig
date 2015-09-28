@@ -1,7 +1,7 @@
+{% extends 'admin/layout.twig' %}
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            {#{{ form_start(form, {'attr': {'id': 'add_user_form'}}) }}#}
             {{ form_start(form) }}
             {{ form_errors(form) }}
             {{ form_widget(form) }}

@@ -30,4 +30,24 @@ class ProductRepository extends EntityRepository
         }
         return $qb->getQuery()->getResult();
     }
+
+
+    /**
+     * Returns list of brands currently in database
+     *
+     * @return \Pantono\Products\Entity\Brand[]
+     */
+    public function getBrandList()
+    {
+        return $this->_em->getRepository('Pantono\Products\Entity\Brand')->findAll();
+    }
+
+
+    /**
+     * @return \Pantono\Products\Entity\Condition[]
+     */
+    public function getConditionList()
+    {
+        return $this->_em->getRepository('Pantono\Products\Entity\Condition')->findAll();
+    }
 }

@@ -4,6 +4,16 @@ services:
     arguments:
       - ["Repository", "Pantono\\Products\\Entity\\Product"]
       - "@EventManager"
+  product_brands:
+    class: Pantono\Products\Brands
+    arguments:
+      - ["Repository", "Pantono\\Products\\Entity\\Brand"]
+      - "@EventManager"
+  product_condition:
+    class: Pantono\Products\Condition
+    arguments:
+      - ["Repository", "Pantono\\Products\\Entity\\Condition"]
+      - "@EventManager"
 forms:
   product:
     attributes:
@@ -14,5 +24,45 @@ forms:
         type: hidden
       title:
         type: text
+        label: Product Title
+        class: form-control
+      description:
+        type: textarea
+        class: form-control
+      short_description:
+        type: textarea
+        class: form-control
+      manufacturer:
+        type: text
+        class: form-control
+      brand:
+        type: select
+        class: form-control
+        choice_populator: product_brands::getDropdownList
+      condition:
+        type: select
+        class: form-control
+        choice_populator: product_condition::getDropdownList
+      sku:
+        type: text
+        class: form-control
+      weight:
+        type: text
+        class: form-control
+      status:
+        type: select
+        class: form-control
+        choice_populator: products::getStatusList
+      meta_title:
+        type: text
+        class: form-control
+      meta_keywords:
+        type: textarea
+        class: form-control
+      meta_description:
+        type: textarea
+        class: form-control
+      images:
+        type: image_upload
 templates:
   - src/Pantono/Products/Views
