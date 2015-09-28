@@ -1,6 +1,7 @@
 <?php namespace Pantono\Acl\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class AdminUser
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Pantono\Acl\Entity\Repository\AclRepository")
  * @ORM\Table(name="admin_user")
  */
-class AdminUser
+class AdminUser extends EntityAbstract
 {
     /**
      * @ORM\Id

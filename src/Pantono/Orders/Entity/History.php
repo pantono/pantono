@@ -1,6 +1,7 @@
 <?php namespace Pantono\Orders\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class History
@@ -8,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="order_history")
  */
-class History
+class History extends EntityAbstract
 {
     /**
      * @ORM\Id

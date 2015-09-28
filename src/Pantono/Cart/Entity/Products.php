@@ -1,6 +1,7 @@
 <?php namespace Pantono\Cart\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class Products
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="cart_products")
  */
-class Products
+class Products extends EntityAbstract
 {
     /**
      * @ORM\Id

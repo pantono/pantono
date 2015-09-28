@@ -1,6 +1,7 @@
 <?php namespace Pantono\Email\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class Message
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="email_message")
  */
-class Message
+class Message extends EntityAbstract
 {
     /**
      * @ORM\Id

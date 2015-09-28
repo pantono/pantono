@@ -1,6 +1,7 @@
 <?php namespace Pantono\Categories\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class CategoryStatus
@@ -8,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Pantono\Categories\Entity\Repository\CategoryRepository")
  * @ORM\Table(name="category_status")
  */
-class CategoryStatus
+class CategoryStatus extends EntityAbstract
 {
     /**
      * @ORM\Id

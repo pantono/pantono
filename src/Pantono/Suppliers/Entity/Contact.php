@@ -1,6 +1,7 @@
 <?php namespace Pantono\Suppliers\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class Contact
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="supplier_contact")
  */
-class Contact
+class Contact extends EntityAbstract
 {
     /**
      * @ORM\Id

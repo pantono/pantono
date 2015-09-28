@@ -1,6 +1,7 @@
 <?php namespace Pantono\Pages\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class Page
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="page")
  */
-class Page
+class Page extends EntityAbstract
 {
     /**
      * @ORM\Id

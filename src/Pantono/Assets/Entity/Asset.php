@@ -1,6 +1,7 @@
 <?php namespace Pantono\Assets\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class Asset
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Pantono\Assets\Entity\Repository\AssetsRepository")
  * @ORM\Table(name="asset")
  */
-class Asset
+class Asset extends EntityAbstract
 {
     /**
      * @ORM\Id

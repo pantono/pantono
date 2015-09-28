@@ -318,7 +318,7 @@ class Acl
      */
     private function getUserFromId($userId = null)
     {
-        if (!$userId) {
+        if ($userId === null) {
             $userId = $this->session->get('admin_user_id');
         }
         if (!$userId) {

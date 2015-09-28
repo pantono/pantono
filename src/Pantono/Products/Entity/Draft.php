@@ -1,6 +1,8 @@
 <?php namespace Pantono\Products\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
+
 /**
  * Class Draft
  *
@@ -8,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="product_draft")
  */
-class Draft
+class Draft extends EntityAbstract
 {
     /**
      * @ORM\Id

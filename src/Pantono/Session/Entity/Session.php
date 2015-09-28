@@ -1,6 +1,7 @@
 <?php namespace Pantono\Session\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class Session
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="session")
  */
-class Session
+class Session extends EntityAbstract
 {
     /**
      * @ORM\Id

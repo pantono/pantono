@@ -1,13 +1,14 @@
 <?php namespace Pantono\Locale\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class Country
  * @package Pantono\Locale\Entity
  * @ORM\Entity
  */
-class Country
+class Country extends EntityAbstract
 {
     /**
      * @ORM\Id

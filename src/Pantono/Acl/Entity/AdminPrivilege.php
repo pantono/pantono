@@ -1,6 +1,7 @@
 <?php namespace Pantono\Acl\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class AdminPrivilege
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Pantono\Acl\Entity\Repository\AclRepository")
  * @ORM\table(name="admin_privilege")
  */
-class AdminPrivilege
+class AdminPrivilege extends EntityAbstract
 {
     /**
      * @ORM\Id

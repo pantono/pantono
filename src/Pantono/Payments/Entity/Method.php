@@ -1,6 +1,7 @@
 <?php namespace Pantono\Payments\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class Method
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="payment_method")
  */
-class Method
+class Method extends EntityAbstract
 {
     /**
      * @ORM\Id

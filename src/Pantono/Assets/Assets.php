@@ -92,7 +92,9 @@ class Assets
         $asset->setFilesize($this->filesystem->getSize($filename));
         $asset->setMimeType($file->getMimeType());
         $asset->setPublicUrl($file->getClientOriginalName());
-        $asset->setType($this->repository->getTypeReference($this->getTypeFromMimeType($mimeType)));
+        if ($mimeType !== false) {
+            $asset->setType($this->repository->getTypeReference($this->getTypeFromMimeType($mimeType)));
+        }
         $this->dispatcher->dispatchAssetEvent(\Pantono\Core\Event\Events\Asset::PRE_SAVE, $asset);
         $this->repository->save($asset);
         $this->repository->flush();

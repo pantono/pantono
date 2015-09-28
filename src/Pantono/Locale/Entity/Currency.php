@@ -1,13 +1,14 @@
 <?php namespace Pantono\Locale\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class Currency
  * @package Pantono\Locale\Entity
  * @ORM\Entity(repositoryClass="Pantono\Locale\Entity\Repository\CurrencyRepository")
  */
-class Currency
+class Currency extends EntityAbstract
 {
     /**
      * @ORM\Id

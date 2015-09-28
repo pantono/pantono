@@ -1,6 +1,7 @@
 <?php namespace Pantono\Metadata\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class Metadata
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Pantono\Metadata\Entity\Repository\MetadataRepository")
  * @ORM\Table(name="metadata")
  */
-class Metadata
+class Metadata extends EntityAbstract
 {
     /**
      * @ORM\Id

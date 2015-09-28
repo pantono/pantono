@@ -1,6 +1,7 @@
 <?php namespace Pantono\Email\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class QueueItem
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="email_queue_item")
  */
-class QueueItem
+class QueueItem extends EntityAbstract
 {
     /**
      * @ORM\Id

@@ -1,6 +1,7 @@
 <?php namespace Pantono\Contacts\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class Address
@@ -8,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Repository\ContactRepository")
  * @ORM\Table(name="address")
  */
-class Address
+class Address extends EntityAbstract
 {
     /**
      * @ORM\Id

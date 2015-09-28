@@ -1,6 +1,7 @@
 <?php namespace Pantono\Products\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Class Pricing
@@ -8,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="product_pricing")
  */
-class Pricing
+class Pricing extends EntityAbstract
 {
     /**
      * @ORM\Id

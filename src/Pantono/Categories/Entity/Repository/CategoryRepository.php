@@ -3,6 +3,7 @@
 use Pantono\Categories\Model\Filter\CategoryListFilter;
 use Pantono\Database\Repository\AbstractRepository;
 use Pantono\Categories\Entity\Category;
+use Pantono\Database\Entity\EntityAbstract;
 
 /**
  * Repository class for managing categories
@@ -75,7 +76,7 @@ class CategoryRepository extends AbstractRepository
     /**
      * Persists an entity to the database
      *
-     * @param \stdClass $entity Entity to save
+     * @param EntityAbstract $entity Entity to save
      */
     public function save($entity)
     {

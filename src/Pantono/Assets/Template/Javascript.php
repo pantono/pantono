@@ -57,8 +57,7 @@ class Javascript
     public function getCompiled()
     {
         $output = '';
-        $defaultHost = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
-        $host = $this->config->getItem('website', 'host', $defaultHost);
+        $host = $this->config->getItem('website', 'host', '');
         if ($host != '') {
             $host = 'http://' . $host;
             if (substr($host, -1) !== '/') {
