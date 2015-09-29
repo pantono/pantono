@@ -21,8 +21,10 @@ class Product extends Controller
     {
         $formWrapper = $this->getProductForm();
         $categories = $this->getCategoriesClass()->getCategoryListTree();
-        var_dump($categories);exit;
-        return $this->renderTemplate('admin/products/add.twig', ['form' => $formWrapper->getForm()->createView()]);
+        return $this->renderTemplate(
+            'admin/products/add.twig',
+            ['form' => $formWrapper->getForm()->createView(), 'categories' => $categories]
+        );
     }
 
     public function editAction()
